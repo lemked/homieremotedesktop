@@ -1,0 +1,105 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:Homie.Admin.ViewModel"
+    xmlns:view="clr-namespace:Homie.Admin.View"
+    xmlns:localization="clr-namespace:Homie.Resources.Properties;assembly=Homie.Resources"
+    xmlns:converter="clr-namespace:MVVMLib.Converter;assembly=MVVMLib"
+    mc:Ignorable="d" 
+    x:Class="Homie.Admin.View.MainWindow"
+    Title="Homie RemoteDesktop Server" Width="636"
+    DataContext="{Binding RelativeSource={RelativeSource Self}}" 
+    d:DesignHeight="467" Visibility="Visible">
+    
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary >
+                    <converter:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+                </ResourceDictionary>
+                <ResourceDictionary Source="pack://application:,,,/Homie.Resources;component/Styles.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Homie.Resources;component/Images.xaml" />
+                <ResourceDictionary>
+                    <DataTemplate DataType="{x:Type local:EventLogViewModel}">
+                        <view:EventLogView />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type local:MachinesViewModel}">
+                        <view:MachinesView />
+                    </DataTemplate>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <DockPanel Background="#FFF0F0F0" >
+        <!-- Header -->
+        <StackPanel DockPanel.Dock="Top" Height="76" Margin="0">
+            <StackPanel.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFDCE5F4" Offset="0"/>
+                    <GradientStop Color="White" Offset="1"/>
+                </LinearGradientBrush>
+            </StackPanel.Background>
+            <!-- Icon and caption -->
+            <StackPanel Orientation="Horizontal" Margin="0,15,0,0" HorizontalAlignment="Center">
+                <Image Source="{StaticResource AppIcon_48x48}" />
+                <TextBlock Text="Homie Remotedesktop" FontSize="20" Foreground="#FF02166F" FontStyle="Italic" FontWeight="Bold" VerticalAlignment="Center" Grid.IsSharedSizeScope="True" Padding="20,0,0,0" />
+            </StackPanel>
+            <TextBlock Text="2012-2014 © Daniel Lemke" HorizontalAlignment="Right" Padding="0,0,6,0" Margin="0,-3,0,0" Foreground="#FF6A6A6A" FontSize="9"/>
+        </StackPanel>
+        <!-- Separator header/body (using color gradient) -->
+        <StackPanel DockPanel.Dock="Top" Height="3">
+            <StackPanel.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFD1D1D1" Offset="0"/>
+                    <GradientStop Color="#FFE5E5E5" Offset="1"/>
+                </LinearGradientBrush>
+            </StackPanel.Background>
+        </StackPanel>
+        
+        <!-- Footer -->
+        <DockPanel DockPanel.Dock="Bottom" Height="25" Background="Gainsboro">
+            <Image Height="16" Width="16" DockPanel.Dock="Left" />
+            <TextBlock Text="{x:Static localization:Resources.Status}" VerticalAlignment="Center" DockPanel.Dock="Left"  />
+            <Button DockPanel.Dock="Right" Margin="0,0,5,0" Cursor="Hand" BorderThickness="0" Command="{Binding Path=ReconnectCommand}">
+                <Image Height="16" Width="16" Source="{StaticResource Refresh_16x16}" />
+            </Button>
+            <ProgressBar DockPanel.Dock="Right" Width="100" Margin="4" Visibility="Visible" IsIndeterminate="{Binding Path=IsConnected, Converter={StaticResource InverseBooleanConverter}}" />
+            <TextBlock VerticalAlignment="Center" Margin="0,0,5,0" Text="{Binding StatusMessage}"/>
+            <TextBlock Text="Hier " VerticalAlignment="Center" Foreground="Blue" Cursor="Hand" Visibility="Collapsed">
+                <TextBlock.TextDecorations>
+                    <TextDecoration/>
+                    <!-- Underlining -->
+                </TextBlock.TextDecorations>
+            </TextBlock>
+            <TextBlock Text="klicken für weitere Informationen." Name="MoreInfoTextBlock" VerticalAlignment="Center" Visibility="Collapsed" />
+        </DockPanel>
+        
+        <!-- Navigation pane -->
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+            <Button 
+                            Content="{x:Static localization:Resources.EventLog}" 
+                            VerticalAlignment="Top" 
+                            Command="{Binding Path=ShowEventLogCommand}" 
+                            Style="{StaticResource DefaultButtonStyle}" 
+                        />
+            <Button
+                            Content="{x:Static localization:Resources.Machines}" 
+                            Command="{Binding Path=ShowMachinesCommand}"
+                            Style="{StaticResource DefaultButtonStyle}" 
+                        />
+            <Button
+                            Content="{x:Static localization:Resources.Users}" 
+                            IsEnabled="False"
+                            Style="{StaticResource DefaultButtonStyle}" 
+                        />
+        </StackPanel>
+
+        <!-- Body -->
+        <ContentControl Content="{Binding CurrentViewModel}" Padding="10" />
+
+    </DockPanel>
+    
+</Window>

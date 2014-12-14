@@ -1,0 +1,68 @@
+﻿<Window x:Class="Homie.Client.View.OptionsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Height="227.679" Width="400" ResizeMode="NoResize" WindowStyle="ToolWindow"
+        xmlns:helpers="clr-namespace:MVVMLib.Dialog;assembly=MVVMLib"
+        xmlns:localization="clr-namespace:Homie.Resources.Properties;assembly=Homie.Resources"
+        helpers:DialogCloser.DialogResult="{Binding DialogResult}"
+        >
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Homie.Resources;component/Styles.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Homie.Resources;component/Images.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <DockPanel Background="#FFF0F0F0">
+        <!-- Header -->
+        <StackPanel DockPanel.Dock="Top" Height="61" Margin="0">
+            <StackPanel.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFDCE5F4" Offset="0"/>
+                    <GradientStop Color="White" Offset="1"/>
+                </LinearGradientBrush>
+            </StackPanel.Background>
+            <!-- Icon and caption -->
+            <StackPanel Orientation="Horizontal" Margin="20,15,30,0" HorizontalAlignment="Left">
+                <Image Source="{StaticResource Settings_32x32}"/>
+                <TextBlock Text="{x:Static localization:Resources.Options}" FontSize="20" Foreground="#FF02166F" FontStyle="Italic" FontWeight="Bold" VerticalAlignment="Center" Grid.IsSharedSizeScope="True" Padding="20,0,0,0" />
+            </StackPanel>
+        </StackPanel>
+        <!-- Separator header/body (using color gradient) -->
+        <StackPanel DockPanel.Dock="Top" Height="3">
+            <StackPanel.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFD1D1D1" Offset="0"/>
+                    <GradientStop Color="#FFE5E5E5" Offset="1"/>
+                </LinearGradientBrush>
+            </StackPanel.Background>
+        </StackPanel>
+        <!-- Body -->
+        <Grid DockPanel.Dock="Top" Margin="20,20,20,10">
+            <!-- Grid definitions -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20" />
+                <RowDefinition Height="10" />
+                <RowDefinition Height="20" />
+                <RowDefinition Height="20" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <!-- Grid content -->
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static localization:Resources.ServerAddress}"/>
+            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding ServerAddress}" />
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static localization:Resources.ServerPort}"/>
+            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding ServerPort}" />
+            <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="{x:Static localization:Resources.Save}" VerticalAlignment="Top" Command="{Binding Path=SaveSettingsCommand}" Style="{StaticResource DefaultButtonStyle}" />
+                <Button Content="{x:Static localization:Resources.Cancel}" VerticalAlignment="Top" IsCancel="True" Style="{StaticResource DefaultButtonStyle}" />
+            </StackPanel>
+        </Grid>
+    </DockPanel>
+</Window>
