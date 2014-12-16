@@ -9,7 +9,7 @@ In short, **because it's extremely easy to use and even works via internet**. Th
 
 ### Powered by 
 
-![Image of Yaktocat](https://camo.githubusercontent.com/d94f160ac291837e52a5a9f0a56d0f087281460c/687474703a2f2f7777772e6a6574627261696e732e636f6d2f696d672f6c6f676f732f6c6f676f5f7265736861727065725f736d616c6c2e676966)
+![ReSharper](https://camo.githubusercontent.com/d94f160ac291837e52a5a9f0a56d0f087281460c/687474703a2f2f7777772e6a6574627261696e732e636f6d2f696d672f6c6f676f732f6c6f676f5f7265736861727065725f736d616c6c2e676966)
 
 ### License
 
