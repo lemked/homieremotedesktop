@@ -1,11 +1,11 @@
-#define MyAppName "Homie Remotedesktop"
+#define MyAppName "Homie Remotedesktop Service"
 #define MyAppVersion "0.1"
 #define MyAppPublisher "Daniel Lemke"
 #define MyAppURL "https://github.com/lemked/homieremotedesktop"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
-AppId={{EB48ACFA-BBCD-4CAC-B5D0-367EC0B6F7C7}
+AppId={{228EBE83-8850-451A-8C8C-80A54AAE3FC9}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
@@ -18,7 +18,7 @@ DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
 LicenseFile=..\LICENSE
 OutputDir=..\Setup
-OutputBaseFilename=HomieRemoteDesktop-Setup
+OutputBaseFilename=HomieService-Setup
 SetupIconFile=..\Setup\setup.ico
 Compression=lzma
 SolidCompression=yes
@@ -31,24 +31,15 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "german"; MessagesFile: "compiler:Languages\German.isl"
 
 [Files]
-Source: "C:\Projekte\homieremotedesktop\Homie.Client\bin\Release\Homie.Client.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: Client
-Source: "..\Homie.Client\bin\Release\Homie.Resources.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Homie.Client\bin\Release\Homie.Model.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Homie.Client\bin\Release\Homie.Common.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Homie.Client\bin\Release\MVVMLib.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Homie.Client\bin\Release\EntityFramework.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Projekte\homieremotedesktop\Homie.Client\bin\Release\de-DE\Homie.Resources.resources.dll"; DestDir: "{app}\de-DE"; Flags: ignoreversion; Languages: german
+Source: "..\Homie.Service\bin\Release\Homie.Service.exe"; DestDir: "{app}"; Flags: ignoreversion;
+Source: "..\Homie.Service\bin\Release\Homie.Model.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Homie.Service\bin\Release\Homie.Common.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Homie.Service\bin\Release\EntityFramework.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Homie.Service\bin\Release\EntityFramework.SqlServer.dll"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\{cm:ProgramOnTheWeb,{#MyAppName}}"; Filename: "{#MyAppURL}"
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 
-[Types]
-Name: "Client"; Description: "Connects to the remote host"
-Name: "Service"; Description: "Wakes up hosts and forwards client connections"
-Name: "ServiceAdmin"; Description: "Graphical user interface for the service"
-
-[Components]
-Name: "Client"; Description: "Connects to the remote host"; Types: Client
-Name: "Service"; Description: "Wakes up hosts and forwards client connections"; Types: Service
-Name: "ServiceAdmin"; Description: "Graphical user interface for the service"; Types: ServiceAdmin
+[ThirdParty]
+UseRelativePaths=True
