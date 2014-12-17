@@ -18,7 +18,7 @@ DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
 LicenseFile=..\LICENSE
 OutputDir=..\Setup
-OutputBaseFilename=HomieRemoteDesktop-Setup
+OutputBaseFilename=HomieClient-Setup
 SetupIconFile=..\Setup\setup.ico
 Compression=lzma
 SolidCompression=yes
@@ -31,7 +31,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "german"; MessagesFile: "compiler:Languages\German.isl"
 
 [Files]
-Source: "..\Homie.Client\bin\Release\Homie.Client.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: Client
+Source: "..\Homie.Client\bin\Release\Homie.Client.exe"; DestDir: "{app}"; Flags: ignoreversion;
 Source: "..\Homie.Client\bin\Release\Homie.Resources.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Homie.Client\bin\Release\Homie.Model.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Homie.Client\bin\Release\Homie.Common.dll"; DestDir: "{app}"; Flags: ignoreversion
