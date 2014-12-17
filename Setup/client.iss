@@ -31,10 +31,17 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "german"; MessagesFile: "compiler:Languages\German.isl"
 
 [Files]
-Source: "..\Homie.Client\bin\Release\Homie.Client.exe"; DestDir: "{app}"; Flags: ignoreversion
-; NOTE: Don't use "Flags: ignoreversion" on any shared system files
+Source: "..\Homie.Client\bin\Release\Homie.Client.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: Client
+Source: "..\Homie.Client\bin\Release\Homie.Resources.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Homie.Client\bin\Release\Homie.Model.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Homie.Client\bin\Release\Homie.Common.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Homie.Client\bin\Release\MVVMLib.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Homie.Client\bin\Release\EntityFramework.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Homie.Client\bin\Release\de-DE\Homie.Resources.resources.dll"; DestDir: "{app}\de-DE"; Flags: ignoreversion; Languages: german
 
 [Icons]
 Name: "{group}\{cm:ProgramOnTheWeb,{#MyAppName}}"; Filename: "{#MyAppURL}"
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 
+[ThirdParty]
+UseRelativePaths=True
