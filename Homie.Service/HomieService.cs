@@ -4,8 +4,7 @@ using System.Net.NetworkInformation;
 using System.ServiceModel;
 using System.Threading.Tasks;
 
-using MVVMLib;
-
+using Homie.Common;
 using Homie.Common.Interfaces;
 using Homie.Common.Logging;
 

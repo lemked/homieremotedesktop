@@ -11,7 +11,6 @@ using Homie.Model.Logging;
 using Homie.Common;
 using Homie.Common.Interfaces;
 using Homie.Common.Logging;
-using MVVMLib;
 
 using ServiceHost = System.ServiceModel.ServiceHost;
 

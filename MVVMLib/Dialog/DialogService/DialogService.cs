@@ -4,10 +4,12 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+
 using MVVMLib.Service.FrameworkDialogs;
 using MVVMLib.Service.FrameworkDialogs.FolderBrowse;
 using MVVMLib.Service.FrameworkDialogs.OpenFile;
 using MVVMLib.WindowViewModelMapping;
+
 using DialogResult = System.Windows.Forms.DialogResult;
 
 namespace MVVMLib.Service

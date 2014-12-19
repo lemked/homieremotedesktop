@@ -3,7 +3,6 @@ using System.Linq;
 using System.ServiceModel;
 using System.Windows.Input;
 
-using MVVMLib;
 using MVVMLib.Service;
 using MVVMLib.ViewModel;
 

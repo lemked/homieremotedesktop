@@ -34,8 +34,6 @@ namespace Homie.Service
     using Homie.Common.Interfaces;
     using Homie.Model.Logging;
 
-    using MVVMLib;
-
     /// <summary>
     /// The service log provider.
     /// </summary>

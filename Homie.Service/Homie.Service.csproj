@@ -107,10 +107,6 @@
       <Project>{27f8f5c6-56ce-41f1-aa8f-da6718b61546}</Project>
       <Name>Homie.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MVVMLib\MVVMLib.csproj">
-      <Project>{18B3E87E-1AD2-42E8-99DE-94854247B6EF}</Project>
-      <Name>MVVMLib</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
