@@ -58,7 +58,7 @@ namespace Homie.Admin.ViewModel
 
         protected abstract Task SaveMachine(Machine machine);
 
-        private async Task SaveMachineInternal(Machine machine)
+        private async void SaveMachineInternal(Machine machine)
         {
             try
             {
