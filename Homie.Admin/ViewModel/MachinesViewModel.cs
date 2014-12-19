@@ -100,7 +100,7 @@ namespace Homie.Admin.ViewModel
             }
         }
 
-        private async void ShowAddMachineDialog()
+        private async Task ShowAddMachineDialog()
         {
             // Show dialog.
             var addMachineWindowViewModel = new AddMachineWindowViewModel(machineControlService, new Machine());
@@ -117,7 +117,7 @@ namespace Homie.Admin.ViewModel
             dialogService.ShowDialog(this, editMachineWindowViewModel);
         }
 
-        private async void RemoveMachine()
+        private async Task RemoveMachine()
         {
             // Remove machine.
             await machineControlService.RemoveMachineAsync(selectedMachine.MachineID);

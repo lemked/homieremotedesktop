@@ -31,6 +31,7 @@ namespace Homie.Admin.ViewModel
         private RelayCommand reconnectCommand;
         private RelayCommand showMachinesCommand;
         private RelayCommand showEventLogCommand;
+        private RelayCommand showServiceControlCommand;
 
         private string statusMessage;
         private bool isConnected;
