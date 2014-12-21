@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Forms;
 using WindowInteropHelper = System.Windows.Interop.WindowInteropHelper;
 
-namespace MVVMLib.Service.FrameworkDialogs
+namespace MVVMLib.Dialog.FrameworkDialogs
 {
 	/// <summary>
 	/// WindowWrapper is an IWin32Window wrapper around a WPF window.

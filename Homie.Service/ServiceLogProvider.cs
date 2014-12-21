@@ -63,7 +63,7 @@ namespace Homie.Service
         /// Initializes a new instance of the <see cref="ServiceLogProvider"/> class.
         /// </summary>
         public ServiceLogProvider()
-            : this(ServiceLocator.Resolve<IServiceLogDataSource>())
+            : this(DependencyInjector.Resolve<IServiceLogDataSource>())
         {   
         }
 

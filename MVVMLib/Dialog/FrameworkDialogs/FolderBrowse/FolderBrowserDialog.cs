@@ -3,7 +3,7 @@ using System.Diagnostics.Contracts;
 using System.Windows.Forms;
 using WinFormsFolderBrowserDialog = System.Windows.Forms.FolderBrowserDialog;
 
-namespace MVVMLib.Service.FrameworkDialogs.FolderBrowse
+namespace MVVMLib.Dialog.FrameworkDialogs.FolderBrowse
 {
 	/// <summary>
 	/// Class wrapping System.Windows.Forms.FolderBrowserDialog, making it accept a ViewModel.

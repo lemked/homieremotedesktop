@@ -6,15 +6,15 @@ using System.Reflection;
 namespace Homie.Common
 {
 	/// <summary>
-	/// A very simple service locator.
+	/// A very simple dependency injectior.
 	/// </summary>
-	public static class ServiceLocator
+	public static class DependencyInjector
 	{
 		private static Dictionary<Type, ServiceInfo> services = new Dictionary<Type, ServiceInfo>();
 
 
 		/// <summary>
-		/// Registers a service.
+		/// Registers the implementation of an interface.
 		/// </summary>
 		public static void Register<TInterface, TImplemention>() where TImplemention : TInterface
 		{
@@ -23,7 +23,7 @@ namespace Homie.Common
 
 
 		/// <summary>
-		/// Registers a service as a singleton.
+		/// Registers an interface as a singleton.
 		/// </summary>
 		public static void RegisterSingleton<TInterface, TImplemention>() where TImplemention : TInterface
 		{
@@ -32,7 +32,7 @@ namespace Homie.Common
 
 
 		/// <summary>
-		/// Resolves a service.
+		/// Resolves an interface.
 		/// </summary>
 		public static TInterface Resolve<TInterface>()
 		{

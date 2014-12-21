@@ -3,7 +3,8 @@ using System.Linq;
 using System.ServiceModel;
 using System.Windows.Input;
 
-using MVVMLib.Service;
+using MVVMLib;
+using MVVMLib.Dialog.Service;
 using MVVMLib.ViewModel;
 
 using Homie.Client.Properties;

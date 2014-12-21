@@ -23,7 +23,7 @@ namespace Homie.Service
         private readonly IServiceLogProvider serviceLogProvider;
         private readonly IMachineControlService machineControlService;
 
-        public HomieService() : this(ServiceLocator.Resolve<IMachineControlService>(), ServiceLocator.Resolve<IServiceLogProvider>())
+        public HomieService() : this(DependencyInjector.Resolve<IMachineControlService>(), DependencyInjector.Resolve<IServiceLogProvider>())
         {
             
         }

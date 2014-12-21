@@ -2,10 +2,11 @@
 using System.Diagnostics.Contracts;
 using System.Windows;
 using System.Windows.Forms;
-using MVVMLib.Service.FrameworkDialogs.FolderBrowse;
-using MVVMLib.Service.FrameworkDialogs.OpenFile;
 
-namespace MVVMLib.Service
+using MVVMLib.Dialog.FrameworkDialogs.FolderBrowse;
+using MVVMLib.Dialog.FrameworkDialogs.OpenFile;
+
+namespace MVVMLib.Dialog.Service
 {
 	[ContractClassFor(typeof(IDialogService))]
 	abstract class IDialogServiceContract : IDialogService

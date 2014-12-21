@@ -3,10 +3,10 @@ using System.Diagnostics.Contracts;
 using System.Windows;
 using System.Windows.Forms;
 
-using MVVMLib.Service.FrameworkDialogs.FolderBrowse;
-using MVVMLib.Service.FrameworkDialogs.OpenFile;
+using MVVMLib.Dialog.FrameworkDialogs.FolderBrowse;
+using MVVMLib.Dialog.FrameworkDialogs.OpenFile;
 
-namespace MVVMLib.Service
+namespace MVVMLib.Dialog.Service
 {
 	/// <summary>
 	/// Interface responsible for abstracting ViewModels from Views.

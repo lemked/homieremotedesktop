@@ -3,9 +3,10 @@
     x:Class="Homie.Client.View.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:service="clr-namespace:MVVMLib.Service;assembly=MVVMLib"
+    xmlns:dialog="clr-namespace:MVVMLib.Dialog.Service;assembly=MVVMLib"
     xmlns:localization="clr-namespace:Homie.Resources.Properties;assembly=Homie.Resources"
-    service:DialogService.IsRegisteredView="True"
+    
+    dialog:DialogService.IsRegisteredView="True"
     Title="HomieService Remotedesktop" Height="320" Width="509" 
     Icon="pack://application:,,,/Homie.Resources;component/Images/AppIcon.ico" ResizeMode="NoResize">
 
