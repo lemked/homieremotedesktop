@@ -4,8 +4,9 @@ using System.ServiceModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-using MVVMLib.Service;
+using MVVMLib;
 using MVVMLib.ViewModel;
+using MVVMLib.Dialog.Service;
 
 using Homie.Common;
 using Homie.Common.Interfaces;

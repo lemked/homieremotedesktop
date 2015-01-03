@@ -3,7 +3,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
-using MVVMLib.Service;
+using MVVMLib;
+using MVVMLib.Dialog.Service;
 using MVVMLib.WindowViewModelMapping;
 
 using Homie.Admin.View;

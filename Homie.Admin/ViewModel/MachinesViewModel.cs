@@ -5,8 +5,8 @@ using System.Windows.Input;
 using Homie.Common.Interfaces;
 using Homie.Model;
 
-using MVVMLib.Service;
 using MVVMLib.ViewModel;
+using MVVMLib.Dialog.Service;
 
 namespace Homie.Admin.ViewModel
 {

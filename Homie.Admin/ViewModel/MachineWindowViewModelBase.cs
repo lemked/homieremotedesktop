@@ -4,8 +4,8 @@ using System.Windows;
 using System.Windows.Input;
 
 using MVVMLib;
-using MVVMLib.Service;
 using MVVMLib.ViewModel;
+using MVVMLib.Dialog.Service;
 
 using Homie.Common.Interfaces;
 using Homie.Model;
