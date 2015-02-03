@@ -11,5 +11,8 @@
     <Setting Name="ServerPort" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">8730</Value>
     </Setting>
+    <Setting Name="ServiceEndPoint" Type="System.String" Scope="User">
+      <Value Profile="(Default)">HomieServices</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

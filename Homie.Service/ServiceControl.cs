@@ -1,18 +1,21 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Configuration.Install;
+using System.Net.Mime;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
+using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
+using System.ServiceModel.Security;
 using System.ServiceProcess;
 using System.Threading.Tasks;
 
-using Homie.Model.Logging;
 using Homie.Common;
 using Homie.Common.Interfaces;
 using Homie.Common.Logging;
-
-using ServiceHost = System.ServiceModel.ServiceHost;
+using Homie.Model.Logging;
+using Homie.Service.Properties;
 
 namespace Homie.Service
 {
@@ -20,20 +23,6 @@ namespace Homie.Service
     {
         private const string NoServiceArgument = "/NOSERVICE";
         private const string InstallServiceArgument = "/INSTALL";
-
-        private CustomBinding CustomBinding
-        {
-            get
-            {
-                BindingElement lBindingElement = new TcpTransportBindingElement();
-                CustomBinding lResult = new CustomBinding(lBindingElement);
-                lResult.ReceiveTimeout = TimeSpan.MaxValue;
-                lResult.CloseTimeout = TimeSpan.MaxValue;
-                lResult.OpenTimeout = TimeSpan.MaxValue;
-                lResult.SendTimeout = TimeSpan.MaxValue;
-                return lResult;
-            }
-        }
 
         private ServiceHost serviceHost;
 
@@ -51,25 +40,24 @@ namespace Homie.Service
         /// <summary>
         /// The starting point of the service application.
         /// </summary>
-        /// <param name="pArgs">The p arguments.</param>
-        /// <author>Daniel Lemke - lemked@web.de</author>
-        public static void Main(string[] pArgs)
+        /// <param name="arguments">The p arguments.</param>
+        public static void Main(string[] arguments)
         {
             // Register global event handlers for unhandled exceptions.
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainUnhandledException;
             TaskScheduler.UnobservedTaskException += TaskSchedulerUnobservedTaskException;
 
             // Set up depedency injection.
-            ServiceLocator.Register<IServiceLogDataSource, DbServiceLogDataSource>();
-            ServiceLocator.Register<IServiceLogProvider, ServiceLogProvider>();
-            ServiceLocator.Register<IMachineControlService, MachineControlService>();
+            DependencyInjector.Register<IServiceLogDataSource, DbServiceLogDataSource>();
+            DependencyInjector.Register<IServiceLogProvider, ServiceLogProvider>();
+            DependencyInjector.Register<IMachineControlService, MachineControlService>();
 
             // Configure default logger
             ILogger textLogger = new FileLogger();
             textLogger.LogLevel = LogLevel.Trace;
             Log.Register(textLogger);
             
-            foreach (string lArgument in pArgs)
+            foreach (string lArgument in arguments)
             {
                 if (lArgument.Equals(NoServiceArgument, StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -96,6 +84,7 @@ namespace Homie.Service
         {
             Exception lException = ExceptionUtils.UnwrapExceptionObject(e.ExceptionObject);
             Log.Exception(lException);
+            Environment.Exit((int) ExceptionUtils.ExitCodes.UnhandledException);
         }
 
         private static void RunInConsoleMode()
@@ -117,7 +106,7 @@ namespace Homie.Service
         // Start the Windows service.
         protected override void OnStart(string[] pArgs)
         {
-            Log.Info(ServiceName + " was started.");
+            Log.Info("Service is starting ...");
 
             if (serviceHost != null)
             {
@@ -126,13 +115,14 @@ namespace Homie.Service
             }
 
             AddServiceEndpoint();
-            AddMexEndpoint();
 
             if (serviceHost != null)
             {
                 try
                 {
                     serviceHost.Open();
+
+                    Log.Info(ServiceName + " is up and running.");
                 }
                 catch (Exception lException)
                 {
@@ -140,53 +130,54 @@ namespace Homie.Service
                     throw;
                 }
             }
-
-            Log.Info(ServiceName + " is up and running.");
         }
 
         private void AddServiceEndpoint()
         {
-            var lTcpBaseAddress = new Uri(String.Format(Constants.SERVICE_URL_TEMPLATE, "localhost", Properties.Settings.Default.ListenPort , Constants.SERVICE_URL_END_POINT));
-            var lTcpServiceAddressTemplate = lTcpBaseAddress + "{0}/";
-            try
-            {
-                serviceHost = new ServiceHost(typeof(HomieService), lTcpBaseAddress);
-                
-                Log.Debug("Adding service endpoints ...");
-                var machineServiceEndPoint = String.Format(lTcpServiceAddressTemplate, Constants.MACHINECONTROLSERVICE_URL_END_POINT);
-                serviceHost.AddServiceEndpoint(typeof(IMachineControlService), CustomBinding, machineServiceEndPoint);
-                Log.Debug("Service endpoint added: " + machineServiceEndPoint);
-                var serviceLogProviderEndPoint = String.Format(lTcpServiceAddressTemplate, Constants.SERVICELOGREADER_URL_END_POINT);
-                serviceHost.AddServiceEndpoint(typeof(IServiceLogProvider), CustomBinding, serviceLogProviderEndPoint);
-                Log.Debug("Service endpoint added: " + serviceLogProviderEndPoint);
-            }
-            catch (Exception lException)
-            {
-                Log.Exception(lException);
-                throw;
-            }
-        }
-        
-        private void AddMexEndpoint()
-        {
-            BindingElement lBindingElement = new TcpTransportBindingElement();
-            var lBinding = new CustomBinding(lBindingElement);
+            var baseAddress = new Uri(String.Format(
+                Constants.WebServiceUrlTemplate, 
+                Settings.Default.Hostname, 
+                Settings.Default.ListenPort, 
+                Settings.Default.EndPoint));
 
             try
             {
-                Log.Debug("Adding MEX endpoint ...");
-                ServiceMetadataBehavior lMetadataBehavior = serviceHost.Description.Behaviors.Find<ServiceMetadataBehavior>();
-                if (lMetadataBehavior == null)
+                // Create Service Host
+                serviceHost = new ServiceHost(typeof(HomieService));
+
+                // Create HTTPS Binding with TransportWithMessageCredential security
+                var binding = new BasicHttpsBinding(BasicHttpsSecurityMode.TransportWithMessageCredential);
+
+                // Use UserName Message Authentication
+                binding.Security.Message.ClientCredentialType = BasicHttpMessageCredentialType.UserName;
+
+                serviceHost.Credentials.UserNameAuthentication.UserNamePasswordValidationMode = UserNamePasswordValidationMode.Custom;
+                serviceHost.Credentials.UserNameAuthentication.CustomUserNamePasswordValidator = new CredentialsValidator();
+
+                try
                 {
-                    lMetadataBehavior = new ServiceMetadataBehavior();
-                    serviceHost.Description.Behaviors.Add(lMetadataBehavior);
+                    // Attach a Certificate from the Certificate Store to the HTTP Binding
+                    serviceHost.Credentials.ServiceCertificate.SetCertificate(StoreLocation.LocalMachine, StoreName.My, X509FindType.FindByThumbprint, Settings.Default.CertificateThumbprint);
                 }
-                serviceHost.AddServiceEndpoint(typeof(IMetadataExchange), lBinding, "MEX");
-                Log.Debug("MEX endpoint was added.");
+                catch(FormatException exception)
+                {
+                    throw new Exception(string.Format("Not a valid certificate thumbprint: \"{0}\"", Settings.Default.CertificateThumbprint), exception);
+                }
+
+                Log.Debug("Adding service endpoints ...");
+
+                var machineServiceEndPoint = baseAddress + Constants.MachineControlServiceEndPoint;
+                serviceHost.AddServiceEndpoint(typeof(IMachineControlService), binding, new Uri(machineServiceEndPoint));
+                Log.Debug("Service endpoint added: " + machineServiceEndPoint);
+
+                var serviceLogProviderEndPoint = baseAddress + Constants.ServiceLogProviderEndPoint;
+                serviceHost.AddServiceEndpoint(typeof(IServiceLogProvider), binding, new Uri(serviceLogProviderEndPoint));
+                Log.Debug("Service endpoint added: " + serviceLogProviderEndPoint);
             }
-            catch (Exception lException)
+            catch (Exception exception)
             {
-                Log.Exception(lException);
+                Log.Exception(exception);
+                serviceHost = null;
                 throw;
             }
         }

@@ -13,32 +13,25 @@ namespace Homie.Common
     {
         public static T Create<T>(string address, int port, string serviceEndPoint) where T: IWebServiceSession
         {
-            var endPointUrl = String.Format(Constants.SERVICE_URL_TEMPLATE, address, port, serviceEndPoint);
+            var endPointUrl = String.Format(Constants.WebServiceUrlTemplate, address, port, serviceEndPoint);
 
             if (typeof(T) == typeof(IMachineControlService))
             {
-                endPointUrl = endPointUrl + Constants.MACHINECONTROLSERVICE_URL_END_POINT;
+                endPointUrl = endPointUrl + Constants.MachineControlServiceEndPoint;
             }
             if (typeof(T) == typeof(IServiceLogProvider))
             {
-                endPointUrl = endPointUrl + Constants.SERVICELOGREADER_URL_END_POINT;
+                endPointUrl = endPointUrl + Constants.ServiceLogProviderEndPoint;
             }
 
             var lAddress = new EndpointAddress(new Uri(endPointUrl));
 
-            var lBinding = new NetTcpBinding(SecurityMode.None);
+            var lBinding = new BasicHttpsBinding(BasicHttpsSecurityMode.TransportWithMessageCredential);
+            lBinding.Security.Message.ClientCredentialType = BasicHttpMessageCredentialType.UserName;
+
             var lFactory = new ChannelFactory<T>(lBinding, lAddress);
+
             return lFactory.CreateChannel();
-        }
-
-        public static T Create<T>(string address, int port) where T : IWebServiceSession
-        {
-            return Create<T>(address, port, Constants.SERVICE_URL_END_POINT);
-        }
-
-        public static T Create<T>() where T : IWebServiceSession
-        {
-            return Create<T>("localhost", Constants.DEFAULT_PORT, Constants.SERVICE_URL_END_POINT);
         }
     }
 }

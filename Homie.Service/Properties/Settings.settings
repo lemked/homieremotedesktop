@@ -5,8 +5,17 @@
     <Setting Name="Machines" Type="Homie.Common.TestClass" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="ListenPort" Type="System.Int32" Scope="Application">
+    <Setting Name="ListenPort" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">8730</Value>
+    </Setting>
+    <Setting Name="CertificateThumbprint" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Hostname" Type="System.String" Scope="User">
+      <Value Profile="(Default)">localhost</Value>
+    </Setting>
+    <Setting Name="EndPoint" Type="System.String" Scope="User">
+      <Value Profile="(Default)">HomieServices</Value>
     </Setting>
   </Settings>
 </SettingsFile>

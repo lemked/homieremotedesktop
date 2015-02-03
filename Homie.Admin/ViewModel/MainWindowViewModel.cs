@@ -180,8 +180,8 @@ namespace Homie.Admin.ViewModel
         {
             this.dialogService = dialogService;
 
-            machineControlService = WebServiceFactory.Create<IMachineControlService>(Settings.Default.ServerAddress, Settings.Default.ServerPort);
-            IServiceLogProvider serviceLogProvider = WebServiceFactory.Create<IServiceLogProvider>(Settings.Default.ServerAddress, Settings.Default.ServerPort);
+            machineControlService = WebServiceFactory.Create<IMachineControlService>(Settings.Default.ServerAddress, Settings.Default.ServerPort, Settings.Default.ServiceEndPoint);
+            IServiceLogProvider serviceLogProvider = WebServiceFactory.Create<IServiceLogProvider>(Settings.Default.ServerAddress, Settings.Default.ServerPort, Settings.Default.ServiceEndPoint);
 
             eventLogViewModel = new EventLogViewModel(serviceLogProvider);
             machinesViewModel = new MachinesViewModel(dialogService, machineControlService);
@@ -201,9 +201,8 @@ namespace Homie.Admin.ViewModel
                 await Task.Delay(1000);
 
                 // Recreate the service
-                machineControlService = WebServiceFactory.Create<IMachineControlService>(Settings.Default.ServerAddress, Settings.Default.ServerPort);
-
-                serviceLogProvider = WebServiceFactory.Create<IServiceLogProvider>(Settings.Default.ServerAddress, Settings.Default.ServerPort);
+                machineControlService = WebServiceFactory.Create<IMachineControlService>(Settings.Default.ServerAddress, Settings.Default.ServerPort, Settings.Default.ServiceEndPoint);
+                serviceLogProvider = WebServiceFactory.Create<IServiceLogProvider>(Settings.Default.ServerAddress, Settings.Default.ServerPort, Settings.Default.ServiceEndPoint);
 
                 eventLogViewModel = new EventLogViewModel(serviceLogProvider);
                 machinesViewModel = new MachinesViewModel(this.dialogService, machineControlService);

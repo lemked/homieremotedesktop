@@ -101,7 +101,7 @@ namespace Homie.Client.ViewModel
         public MainWindowViewModel(IDialogService pdialogService)
         {
             dialogService = pdialogService;
-            machineControlService = WebServiceFactory.Create<IMachineControlService>(Settings.Default.ServerAddress, Settings.Default.ServerPort);
+            machineControlService = WebServiceFactory.Create<IMachineControlService>(Settings.Default.ServerAddress, Settings.Default.ServerPort, Settings.Default.ServiceEndPoint);
 
             Initialize();
         }
