@@ -93,6 +93,14 @@ namespace Homie.Common.Logging
             }
         }
 
+        public void Error(string pLogMessage)
+        {
+            if (this.LogLevel <= LogLevel.Error)
+            {
+                Write(pLogMessage, LogLevel.Error);
+            }
+        }
+
         /// <summary>
         /// Writes the specified log message using the specified log level.
         /// </summary>

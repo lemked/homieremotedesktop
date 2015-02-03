@@ -56,6 +56,13 @@ namespace Homie.Common.Logging
         void Error(Exception pException);
 
         /// <summary>
+        /// Writes the specified log message with log level Error.
+        /// </summary>
+        /// <param name="pLogMessage">The log message.</param>
+        /// <author>Daniel Lemke - lemked@web.de</author>
+        void Error(string pLogMessage);
+
+        /// <summary>
         /// Writes the specified log message using the specified log level.
         /// </summary>
         /// <param name="pLogMessage">The log message.</param>

@@ -44,5 +44,13 @@ namespace Homie.Common.Logging
                 logger.Error(pException);
             }
         }
+
+        public static void Error(string pLogMessage)
+        {
+            foreach (var logger in loggers)
+            {
+                logger.Error(pLogMessage);
+            }
+        }
     }
 }
