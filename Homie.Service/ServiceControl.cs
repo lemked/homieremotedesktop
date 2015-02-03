@@ -114,21 +114,19 @@ namespace Homie.Service
                 serviceHost.Close();
             }
 
-            AddServiceEndpoint();
-
-            if (serviceHost != null)
+            // Create Service Host
+            serviceHost = new ServiceHost(typeof(HomieService));
+            
+            try
             {
-                try
-                {
-                    serviceHost.Open();
+                AddServiceEndpoint();
+                serviceHost.Open();
 
-                    Log.Info(ServiceName + " is up and running.");
-                }
-                catch (Exception lException)
-                {
-                    Log.Exception(lException);
-                    throw;
-                }
+                Log.Info(ServiceName + " is up and running.");
+            }
+            catch (Exception lException)
+            {
+                Log.Exception(lException);
             }
         }
 
@@ -140,46 +138,51 @@ namespace Homie.Service
                 Settings.Default.ListenPort, 
                 Settings.Default.EndPoint));
 
-            try
+            // Create HTTPS Binding with TransportWithMessageCredential security
+            var binding = new BasicHttpsBinding(BasicHttpsSecurityMode.TransportWithMessageCredential);
+
+            // Use UserName Message Authentication
+            binding.Security.Message.ClientCredentialType = BasicHttpMessageCredentialType.UserName;
+
+            serviceHost.Credentials.UserNameAuthentication.UserNamePasswordValidationMode = UserNamePasswordValidationMode.Custom;
+            serviceHost.Credentials.UserNameAuthentication.CustomUserNamePasswordValidator = new CredentialsValidator();
+
+            string[] certificates = System.IO.Directory.GetFiles("certificate", "*.cer", System.IO.SearchOption.TopDirectoryOnly);
+            if (certificates.Length > 0)
             {
-                // Create Service Host
-                serviceHost = new ServiceHost(typeof(HomieService));
+                // Load the certificate into an X509Certificate object.
+                X509Certificate cert = new X509Certificate();
+                cert.Import(certificates[0]);
+            }
 
-                // Create HTTPS Binding with TransportWithMessageCredential security
-                var binding = new BasicHttpsBinding(BasicHttpsSecurityMode.TransportWithMessageCredential);
-
-                // Use UserName Message Authentication
-                binding.Security.Message.ClientCredentialType = BasicHttpMessageCredentialType.UserName;
-
-                serviceHost.Credentials.UserNameAuthentication.UserNamePasswordValidationMode = UserNamePasswordValidationMode.Custom;
-                serviceHost.Credentials.UserNameAuthentication.CustomUserNamePasswordValidator = new CredentialsValidator();
-
+            // Attach a Certificate from the Certificate Store to the HTTP Binding using the specified Thumbprint
+            else if (!string.IsNullOrEmpty(Settings.Default.CertificateThumbprint))
+            {
                 try
                 {
-                    // Attach a Certificate from the Certificate Store to the HTTP Binding
                     serviceHost.Credentials.ServiceCertificate.SetCertificate(StoreLocation.LocalMachine, StoreName.My, X509FindType.FindByThumbprint, Settings.Default.CertificateThumbprint);
                 }
-                catch(FormatException exception)
+                catch (FormatException)
                 {
-                    throw new Exception(string.Format("Not a valid certificate thumbprint: \"{0}\"", Settings.Default.CertificateThumbprint), exception);
+                    Log.Error(string.Format("Not a valid certificate thumbprint: \"{0}\"", Settings.Default.CertificateThumbprint));
                 }
-
-                Log.Debug("Adding service endpoints ...");
-
-                var machineServiceEndPoint = baseAddress + Constants.MachineControlServiceEndPoint;
-                serviceHost.AddServiceEndpoint(typeof(IMachineControlService), binding, new Uri(machineServiceEndPoint));
-                Log.Debug("Service endpoint added: " + machineServiceEndPoint);
-
-                var serviceLogProviderEndPoint = baseAddress + Constants.ServiceLogProviderEndPoint;
-                serviceHost.AddServiceEndpoint(typeof(IServiceLogProvider), binding, new Uri(serviceLogProviderEndPoint));
-                Log.Debug("Service endpoint added: " + serviceLogProviderEndPoint);
             }
-            catch (Exception exception)
+
+            else
             {
-                Log.Exception(exception);
-                serviceHost = null;
-                throw;
+                Log.Error("No certificate found, cannot establish a secure connection. Service start aborted.");
+                return;
             }
+                
+            Log.Debug("Adding service endpoints ...");
+
+            var machineServiceEndPoint = baseAddress + Constants.MachineControlServiceEndPoint;
+            serviceHost.AddServiceEndpoint(typeof(IMachineControlService), binding, new Uri(machineServiceEndPoint));
+            Log.Debug("Service endpoint added: " + machineServiceEndPoint);
+
+            var serviceLogProviderEndPoint = baseAddress + Constants.ServiceLogProviderEndPoint;
+            serviceHost.AddServiceEndpoint(typeof(IServiceLogProvider), binding, new Uri(serviceLogProviderEndPoint));
+            Log.Debug("Service endpoint added: " + serviceLogProviderEndPoint);
         }
         
         protected override void OnStop()
