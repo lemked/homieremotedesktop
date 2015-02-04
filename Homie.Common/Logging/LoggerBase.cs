@@ -77,8 +77,8 @@ namespace Homie.Common.Logging
             if (this.LogLevel <= LogLevel.Error)
             {
                 // Format the exception.
-                string lLogMessage = string.Empty;
-                lLogMessage += "------------------------" + Environment.NewLine;
+                string lLogMessage = pException.Message + Environment.NewLine;
+                lLogMessage += "------------------------------------------------------------------" + Environment.NewLine;
                 lLogMessage += pException.StackTrace;
                 lLogMessage += Environment.NewLine;
                 if (pException.InnerException != null)
@@ -86,7 +86,7 @@ namespace Homie.Common.Logging
                     lLogMessage += pException.InnerException.Message + Environment.NewLine;
                     lLogMessage += pException.InnerException.StackTrace + Environment.NewLine;
                 }
-                lLogMessage += "------------------------";
+                lLogMessage += "------------------------------------------------------------------";
 
                 // Write the exception.
                 Write(lLogMessage, LogLevel.Error);
