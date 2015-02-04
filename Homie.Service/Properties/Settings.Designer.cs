@@ -81,5 +81,17 @@ namespace Homie.Service.Properties {
                 this["EndPoint"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("certificate")]
+        public string CertificateDirectoryName {
+            get {
+                return ((string)(this["CertificateDirectoryName"]));
+            }
+            set {
+                this["CertificateDirectoryName"] = value;
+            }
+        }
     }
 }

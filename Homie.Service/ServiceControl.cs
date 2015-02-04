@@ -1,8 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Configuration.Install;
+using System.IO;
 using System.Net.Mime;
 using System.Reflection;
+using System.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
@@ -104,7 +106,7 @@ namespace Homie.Service
         }
 
         // Start the Windows service.
-        protected override void OnStart(string[] pArgs)
+        protected override void OnStart(string[] arguments)
         {
             Log.Info("Service is starting ...");
 
@@ -117,17 +119,10 @@ namespace Homie.Service
             // Create Service Host
             serviceHost = new ServiceHost(typeof(HomieService));
             
-            try
-            {
-                AddServiceEndpoint();
-                serviceHost.Open();
+            AddServiceEndpoint();
+            serviceHost.Open();
 
-                Log.Info(ServiceName + " is up and running.");
-            }
-            catch (Exception lException)
-            {
-                Log.Exception(lException);
-            }
+            Log.Info(ServiceName + " is up and running.");
         }
 
         private void AddServiceEndpoint()
@@ -147,32 +142,7 @@ namespace Homie.Service
             serviceHost.Credentials.UserNameAuthentication.UserNamePasswordValidationMode = UserNamePasswordValidationMode.Custom;
             serviceHost.Credentials.UserNameAuthentication.CustomUserNamePasswordValidator = new CredentialsValidator();
 
-            string[] certificates = System.IO.Directory.GetFiles("certificate", "*.cer", System.IO.SearchOption.TopDirectoryOnly);
-            if (certificates.Length > 0)
-            {
-                // Load the certificate into an X509Certificate object.
-                X509Certificate cert = new X509Certificate();
-                cert.Import(certificates[0]);
-            }
-
-            // Attach a Certificate from the Certificate Store to the HTTP Binding using the specified Thumbprint
-            else if (!string.IsNullOrEmpty(Settings.Default.CertificateThumbprint))
-            {
-                try
-                {
-                    serviceHost.Credentials.ServiceCertificate.SetCertificate(StoreLocation.LocalMachine, StoreName.My, X509FindType.FindByThumbprint, Settings.Default.CertificateThumbprint);
-                }
-                catch (FormatException)
-                {
-                    Log.Error(string.Format("Not a valid certificate thumbprint: \"{0}\"", Settings.Default.CertificateThumbprint));
-                }
-            }
-
-            else
-            {
-                Log.Error("No certificate found, cannot establish a secure connection. Service start aborted.");
-                return;
-            }
+            ImportCertifcate();
                 
             Log.Debug("Adding service endpoints ...");
 
@@ -184,6 +154,40 @@ namespace Homie.Service
             serviceHost.AddServiceEndpoint(typeof(IServiceLogProvider), binding, new Uri(serviceLogProviderEndPoint));
             Log.Debug("Service endpoint added: " + serviceLogProviderEndPoint);
         }
+
+        private void ImportCertifcate()
+        {
+            if (Directory.Exists(Settings.Default.CertificateDirectoryName))
+            {
+                var certificates = Directory.GetFiles(Settings.Default.CertificateDirectoryName, "*.cer", SearchOption.TopDirectoryOnly);
+                if (certificates.Length > 0)
+                {
+                    // Load the certificate into an X509Certificate object.
+                    X509Certificate cert = new X509Certificate();
+                    cert.Import(certificates[0]);
+
+                    Log.Info(string.Format("Imported certificate \"{0}\" from certificate directory.", cert.Subject));
+                    return;
+                }
+            }
+
+            // Attach a Certificate from the Certificate Store to the HTTP Binding using the specified Thumbprint
+            if (!string.IsNullOrEmpty(Settings.Default.CertificateThumbprint))
+            {
+                try
+                {
+                    serviceHost.Credentials.ServiceCertificate.SetCertificate(StoreLocation.LocalMachine, StoreName.My, X509FindType.FindByThumbprint, Settings.Default.CertificateThumbprint);
+                    Log.Info(string.Format("Imported certificate with Thumbprint \"{0}\" from Certificate Store.", Settings.Default.CertificateThumbprint));
+                    return;
+                }
+                catch (FormatException exception)
+                {
+                    throw new SecurityException(string.Format("Not a valid certificate thumbprint: \"{0}\"", Settings.Default.CertificateThumbprint), exception);
+                }
+            }
+
+            throw new SecurityException("No certificate found, cannot establish a secure connection.");
+        }
         
         protected override void OnStop()
         {
@@ -192,6 +196,7 @@ namespace Homie.Service
                 serviceHost.Close();
                 serviceHost = null;
             }
+
             Log.Info(ServiceName + " was stopped.");
         }
     }

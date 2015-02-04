@@ -17,5 +17,8 @@
     <Setting Name="EndPoint" Type="System.String" Scope="User">
       <Value Profile="(Default)">HomieServices</Value>
     </Setting>
+    <Setting Name="CertificateDirectoryName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">certificate</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
