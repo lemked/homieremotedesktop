@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ServiceModel;
-
+using System.ServiceModel.Channels;
+using System.ServiceModel.Security;
 using Homie.Common.Interfaces;
 
 namespace Homie.Common
@@ -9,9 +10,21 @@ namespace Homie.Common
     /// Factory class for web services.
     /// </summary>
     /// <author>Daniel Lemke - lemked@web.de</author>
-    public static class WebServiceFactory
+    public class WebServiceFactory
     {
-        public static T Create<T>(string address, int port, string serviceEndPoint) where T: IWebServiceSession
+        private Binding binding;
+        private string address;
+        private int port;
+        private string serviceEndPoint;
+        public WebServiceFactory(Binding binding, string address, int port, string serviceEndPoint)
+        {
+            this.binding = binding;
+            this.address = address;
+            this.port = port;
+            this.serviceEndPoint = serviceEndPoint;
+        }
+
+        public T Create<T>(UserNamePasswordClientCredential credentials = null) where T : IWebServiceSession
         {
             var endPointUrl = String.Format(Constants.WebServiceUrlTemplate, address, port, serviceEndPoint);
 
@@ -26,10 +39,13 @@ namespace Homie.Common
 
             var lAddress = new EndpointAddress(new Uri(endPointUrl));
 
-            var lBinding = new BasicHttpsBinding(BasicHttpsSecurityMode.TransportWithMessageCredential);
-            lBinding.Security.Message.ClientCredentialType = BasicHttpMessageCredentialType.UserName;
+            var lFactory = new ChannelFactory<T>(binding, lAddress);
 
-            var lFactory = new ChannelFactory<T>(lBinding, lAddress);
+            if (lFactory.Credentials != null && credentials != null)
+            {
+                lFactory.Credentials.UserName.UserName = credentials.UserName;
+                lFactory.Credentials.UserName.Password = credentials.Password;
+            }
 
             return lFactory.CreateChannel();
         }

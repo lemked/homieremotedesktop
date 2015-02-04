@@ -129,15 +129,9 @@ namespace Homie.Service
                 Settings.Default.Hostname, 
                 Settings.Default.ListenPort, 
                 Settings.Default.EndPoint));
-
-            // Create HTTPS Binding with TransportWithMessageCredential security
-            var binding = new BasicHttpsBinding(BasicHttpsSecurityMode.TransportWithMessageCredential);
-
-            // Use UserName Message Authentication
-            binding.Security.Message.ClientCredentialType = BasicHttpMessageCredentialType.UserName;
-
-            serviceHost.Credentials.UserNameAuthentication.UserNamePasswordValidationMode = UserNamePasswordValidationMode.Custom;
-            serviceHost.Credentials.UserNameAuthentication.CustomUserNamePasswordValidator = new CredentialsValidator();
+            
+            // Create HTTPS Binding
+            var binding = new BasicHttpsBinding(BasicHttpsSecurityMode.Transport);
 
             ImportCertifcate();
                 

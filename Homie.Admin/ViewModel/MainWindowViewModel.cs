@@ -179,19 +179,25 @@ namespace Homie.Admin.ViewModel
         public MainWindowViewModel(IDialogService dialogService)
         {
             this.dialogService = dialogService;
-
-            machineControlService = WebServiceFactory.Create<IMachineControlService>(Settings.Default.ServerAddress, Settings.Default.ServerPort, Settings.Default.ServiceEndPoint);
-            IServiceLogProvider serviceLogProvider = WebServiceFactory.Create<IServiceLogProvider>(Settings.Default.ServerAddress, Settings.Default.ServerPort, Settings.Default.ServiceEndPoint);
-
-            eventLogViewModel = new EventLogViewModel(serviceLogProvider);
-            machinesViewModel = new MachinesViewModel(dialogService, machineControlService);
-
+            CreateChannelsAndAssignToViewModels();
             ConnectToServer();
         }
 
         #endregion Constructor
 
         #region Methods
+
+        private void CreateChannelsAndAssignToViewModels()
+        {
+            var binding = new BasicHttpsBinding(BasicHttpsSecurityMode.Transport);
+
+            var factory = new WebServiceFactory(binding, Settings.Default.ServerAddress, Settings.Default.ServerPort, Settings.Default.ServiceEndPoint);
+            machineControlService = factory.Create<IMachineControlService>();
+            serviceLogProvider = factory.Create<IServiceLogProvider>();
+
+            eventLogViewModel = new EventLogViewModel(serviceLogProvider);
+            machinesViewModel = new MachinesViewModel(dialogService, machineControlService);
+        }
 
         private async void ConnectToServer(bool faulted = false, int failCount = 0)
         {
@@ -200,12 +206,8 @@ namespace Homie.Admin.ViewModel
             {
                 await Task.Delay(1000);
 
-                // Recreate the service
-                machineControlService = WebServiceFactory.Create<IMachineControlService>(Settings.Default.ServerAddress, Settings.Default.ServerPort, Settings.Default.ServiceEndPoint);
-                serviceLogProvider = WebServiceFactory.Create<IServiceLogProvider>(Settings.Default.ServerAddress, Settings.Default.ServerPort, Settings.Default.ServiceEndPoint);
-
-                eventLogViewModel = new EventLogViewModel(serviceLogProvider);
-                machinesViewModel = new MachinesViewModel(this.dialogService, machineControlService);
+                // Recreate the channels.
+                CreateChannelsAndAssignToViewModels();
             }
             else if (faulted)
             {
