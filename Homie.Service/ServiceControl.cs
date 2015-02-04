@@ -2,13 +2,10 @@
 using System.ComponentModel;
 using System.Configuration.Install;
 using System.IO;
-using System.Net.Mime;
 using System.Reflection;
 using System.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
-using System.ServiceModel.Channels;
-using System.ServiceModel.Description;
 using System.ServiceModel.Security;
 using System.ServiceProcess;
 using System.Threading.Tasks;
