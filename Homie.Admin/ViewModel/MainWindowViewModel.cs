@@ -12,6 +12,7 @@ using Homie.Common;
 using Homie.Common.Interfaces;
 using Homie.Model;
 using Homie.Admin.Properties;
+using Homie.Common.WebService;
 
 namespace Homie.Admin.ViewModel
 {

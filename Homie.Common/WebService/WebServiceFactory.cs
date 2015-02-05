@@ -4,7 +4,7 @@ using System.ServiceModel.Channels;
 using System.ServiceModel.Security;
 using Homie.Common.Interfaces;
 
-namespace Homie.Common
+namespace Homie.Common.WebService
 {
     /// <summary>
     /// Factory class for web services.

@@ -10,6 +10,7 @@ using MVVMLib.ViewModel;
 using Homie.Client.Properties;
 using Homie.Common;
 using Homie.Common.Interfaces;
+using Homie.Common.WebService;
 using Homie.Model;
 
 namespace Homie.Client.ViewModel
