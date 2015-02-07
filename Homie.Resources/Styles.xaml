@@ -8,6 +8,14 @@
         <Setter Property="Margin" Value="0,0,6,0" />
     </Style>
 
+    <Style x:Key="DefaultTextBoxStyle" TargetType="TextBox">
+        <Setter Property="Height" Value="23" />
+    </Style>
+
+    <Style x:Key="DefaultPasswordBoxStyle" TargetType="PasswordBox">
+        <Setter Property="Height" Value="23" />
+    </Style>
+
     <!-- Resource Mapper for determining the maximum column width (using WidthConverter class) -->
     <wpf:WidthConverter x:Key="WidthConverterRes" />
     
