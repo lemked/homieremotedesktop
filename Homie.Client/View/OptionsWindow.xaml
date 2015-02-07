@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Height="510" Width="400" ResizeMode="NoResize" WindowStyle="ToolWindow"
+        xmlns:mvvmlib="clr-namespace:MVVMLib;assembly=MVVMLib"
         xmlns:helpers="clr-namespace:MVVMLib.Dialog;assembly=MVVMLib"
         xmlns:converter="clr-namespace:MVVMLib.Converter;assembly=MVVMLib"
         xmlns:localization="clr-namespace:Homie.Resources.Properties;assembly=Homie.Resources"
@@ -88,7 +89,10 @@
                         <TextBlock Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Text="{x:Static localization:Resources.Username}" />
                         <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Username}" Style="{StaticResource DefaultTextBoxStyle}"></TextBox>
                         <TextBlock Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Text="{x:Static localization:Resources.Password}" />
-                        <PasswordBox Grid.Column="1" Grid.Row="1" Name="PasswordBox" Style="{StaticResource DefaultPasswordBoxStyle}"/>
+                        <PasswordBox Grid.Column="1" Grid.Row="1" 
+                                     mvvmlib:PasswordBoxAssistant.BindPassword="True"  
+                                     mvvmlib:PasswordBoxAssistant.BoundPassword="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     Style="{StaticResource DefaultPasswordBoxStyle}"/>
                     </Grid>
                 </StackPanel>
             </GroupBox>

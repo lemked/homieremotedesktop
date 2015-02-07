@@ -116,7 +116,12 @@ namespace Homie.Client.ViewModel
         {
             get
             {
-                return Properties.Settings.Default.PasswordHash.ToString();
+                if (Properties.Settings.Default.PasswordHash != null)
+                {
+                    return Properties.Settings.Default.PasswordHash.ToString();
+                }
+
+                return string.Empty;
             }
             set
             {
