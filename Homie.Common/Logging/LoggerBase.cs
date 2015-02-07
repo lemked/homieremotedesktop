@@ -18,7 +18,7 @@ namespace Homie.Common.Logging
         /// <param name="pLogMessage">The log message.</param>
         /// <author>Daniel Lemke - lemked@web.de</author>
         /// <exception cref="System.NotImplementedException"></exception>
-        public void Debug(string pLogMessage)
+        public virtual void Debug(string pLogMessage)
         {
             if (this.LogLevel <= LogLevel.Debug)
             {
@@ -33,7 +33,7 @@ namespace Homie.Common.Logging
         /// <param name="pArgument">An argument to substitute in the log message (as if using String.Format()).</param>
         /// <author>Daniel Lemke - lemked@web.de</author>
         /// <exception cref="System.NotImplementedException"></exception>
-        public void Debug(string pLogMessage, object pArgument)
+        public virtual void Debug(string pLogMessage, object pArgument)
         {
             Debug(String.Format(pLogMessage, pArgument));
         }
@@ -44,7 +44,7 @@ namespace Homie.Common.Logging
         /// <param name="pLogMessage">The log message.</param>
         /// <author>Daniel Lemke - lemked@web.de</author>
         /// <exception cref="System.NotImplementedException"></exception>
-        public void Info(string pLogMessage)
+        public virtual void Info(string pLogMessage)
         {
             if (this.LogLevel <= LogLevel.Info)
             {
@@ -58,7 +58,7 @@ namespace Homie.Common.Logging
         /// <param name="pLogMessage">The log message.</param>
         /// <author>Daniel Lemke - lemked@web.de</author>
         /// <exception cref="System.NotImplementedException"></exception>
-        public void Warning(string pLogMessage)
+        public virtual void Warning(string pLogMessage)
         {
             if (this.LogLevel <= LogLevel.Warning)
             {
@@ -72,7 +72,7 @@ namespace Homie.Common.Logging
         /// <param name="pException">The p exception.</param>
         /// <author>Daniel Lemke - lemked@web.de</author>
         /// <exception cref="System.NotImplementedException"></exception>
-        public void Error(Exception pException)
+        public virtual void Error(Exception pException)
         {
             if (this.LogLevel <= LogLevel.Error)
             {
@@ -93,7 +93,7 @@ namespace Homie.Common.Logging
             }
         }
 
-        public void Error(string pLogMessage)
+        public virtual void Error(string pLogMessage)
         {
             if (this.LogLevel <= LogLevel.Error)
             {
