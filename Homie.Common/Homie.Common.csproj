@@ -82,7 +82,7 @@
     <Compile Include="Interfaces\IWebServiceSession.cs" />
     <Compile Include="DependencyInjector.cs" />
     <Compile Include="StringFormatConverter.cs" />
-    <Compile Include="WebService\SecurityMode.cs" />
+    <Compile Include="WebService\AuthenticationMode.cs" />
     <Compile Include="WebService\WebServiceFactory.cs" />
     <Compile Include="WPF\ListViewCustomComparer.cs" />
     <Compile Include="WPF\ListViewSorter.cs" />
