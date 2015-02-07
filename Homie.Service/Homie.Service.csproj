@@ -74,9 +74,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CredentialsValidator.cs" />
-    <Compile Include="EventLog\EventLogProvider.cs" />
-    <Compile Include="EventLog\EventLogUtils.cs" />
-    <Compile Include="EventLog\IEventLogProvider.cs" />
     <Compile Include="MachineControlService.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
