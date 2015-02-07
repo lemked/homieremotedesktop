@@ -48,6 +48,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converter\EnumBooleanConverter.cs" />
     <Compile Include="Converter\InverseBooleanConverter.cs" />
     <Compile Include="Dialog\DialogCloser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
