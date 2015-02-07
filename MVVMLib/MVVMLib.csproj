@@ -51,6 +51,7 @@
     <Compile Include="Converter\EnumBooleanConverter.cs" />
     <Compile Include="Converter\InverseBooleanConverter.cs" />
     <Compile Include="Dialog\DialogCloser.cs" />
+    <Compile Include="PasswordBoxAssistant.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Dialog\DialogService\DialogService.cs" />
     <Compile Include="Dialog\FrameworkDialogs\FileDialogViewModel.cs" />
