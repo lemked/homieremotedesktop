@@ -258,4 +258,25 @@
   <data name="Stop" xml:space="preserve">
     <value>Stop</value>
   </data>
+  <data name="Certificate" xml:space="preserve">
+    <value>Certificate</value>
+  </data>
+  <data name="Credentials" xml:space="preserve">
+    <value>Credentials</value>
+  </data>
+  <data name="CredentialsAndCertificate" xml:space="preserve">
+    <value>Credentials and certificate</value>
+  </data>
+  <data name="NoAuthentication" xml:space="preserve">
+    <value>No authentication</value>
+  </data>
+  <data name="FilePath" xml:space="preserve">
+    <value>Dateipfad</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>Username</value>
+  </data>
 </root>
