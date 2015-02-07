@@ -115,15 +115,6 @@ namespace Homie.Resources.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Establishing connection to host ....
-        /// </summary>
-        public static string ConnectingToHost {
-            get {
-                return ResourceManager.GetString("ConnectingToHost", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Connecting to server ....
         /// </summary>
         public static string ConnectingToServer {

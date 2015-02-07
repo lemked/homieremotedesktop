@@ -159,9 +159,6 @@
   <data name="ConnectionFailed" xml:space="preserve">
     <value>Connection failed.</value>
   </data>
-  <data name="ConnectingToHost" xml:space="preserve">
-    <value>Establishing connection to host ...</value>
-  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
