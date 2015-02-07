@@ -1,4 +1,7 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Windows.Input;
+using Homie.Common;
+using Homie.Common.WebService;
 using MVVMLib.ViewModel;
 
 namespace Homie.Client.ViewModel
@@ -8,60 +11,127 @@ namespace Homie.Client.ViewModel
 
         #region Properties
 
-        private string serverAddress;
+        /// <summary>
+        /// Gets or sets the server address.
+        /// </summary>
+        /// <value>
+        /// The server address.
+        /// </value>
         public string ServerAddress
         {
             get
             {
-                return serverAddress;
+                return Properties.Settings.Default.ServerAddress;
             }
             set
             {
 
-                serverAddress = value;
                 Properties.Settings.Default.ServerAddress = value;
                 base.OnPropertyChanged();
             }
         }
 
-        private int serverPort;
-
+        /// <summary>
+        /// Gets or sets the server port.
+        /// </summary>
+        /// <value>
+        /// The server port.
+        /// </value>
         public int ServerPort
         {
             get
             {
-                return serverPort;
+                return Properties.Settings.Default.ServerPort;
             }
             set
             {
-                serverPort = value;
                 Properties.Settings.Default.ServerPort = value;
                 base.OnPropertyChanged();
             }
         }
 
-
-        #endregion Properties
-
-
-        #region Constructor
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="OptionsWindowViewModel"/> class.
+        /// Gets or sets the authentication mode.
         /// </summary>
-        /// <author>Daniel Lemke - lemked@web.de</author>
-        public OptionsWindowViewModel()
+        /// <value>
+        /// The authentication mode.
+        /// </value>
+        public AuthenticationMode AuthenticationMode
         {
-            serverAddress = Properties.Settings.Default.ServerAddress;
-            serverPort = Properties.Settings.Default.ServerPort;
+            get
+            {
+                return Properties.Settings.Default.AuthenticationMode;
+            }
+            set
+            {
+                Properties.Settings.Default.AuthenticationMode = value; 
+                base.OnPropertyChanged();
+            }
         }
 
-        #endregion
+        /// <summary>
+        /// Gets or sets the certificate file path.
+        /// </summary>
+        /// <value>
+        /// The certificate file path.
+        /// </value>
+        public string CertificateFilePath
+        {
+            get
+            {
+                return Properties.Settings.Default.CertificateFilePath;
+            }
+            set
+            {
+                Properties.Settings.Default.CertificateFilePath = value;
+            }
+        }
 
+
+        /// <summary>
+        /// Gets or sets the username.
+        /// </summary>
+        /// <value>
+        /// The username.
+        /// </value>
+        public string Username
+        {
+            get
+            {
+                return Properties.Settings.Default.Username;
+            }
+            set
+            {
+                Properties.Settings.Default.Username = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the password.
+        /// </summary>
+        /// <value>
+        /// The password.
+        /// </value>
+        public string Password
+        {
+            get
+            {
+                return Properties.Settings.Default.PasswordHash.ToString();
+            }
+            set
+            {
+                var passwordHash = new PasswordHash(value);
+                var hashBytes = passwordHash.ToArray();
+                Properties.Settings.Default.PasswordHash = hashBytes;
+            }
+        }
+
+        #endregion Properties
 
         #region Commands
 
         private RelayCommand saveSettingsCommand;
+
         public ICommand SaveSettingsCommand
         {
             get
@@ -83,6 +153,7 @@ namespace Homie.Client.ViewModel
 
 
         #region Methods
+
         private void SaveSettings()
         {
             Properties.Settings.Default.Save();

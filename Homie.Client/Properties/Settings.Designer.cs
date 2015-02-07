@@ -70,5 +70,53 @@ namespace Homie.Client.Properties {
                 this["ServiceEndPoint"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("None")]
+        public global::Homie.Common.WebService.AuthenticationMode AuthenticationMode {
+            get {
+                return ((global::Homie.Common.WebService.AuthenticationMode)(this["AuthenticationMode"]));
+            }
+            set {
+                this["AuthenticationMode"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string CertificateFilePath {
+            get {
+                return ((string)(this["CertificateFilePath"]));
+            }
+            set {
+                this["CertificateFilePath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Username {
+            get {
+                return ((string)(this["Username"]));
+            }
+            set {
+                this["Username"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public byte[] PasswordHash
+        {
+            get {
+                return ((byte[])(this["PasswordHash"]));
+            }
+            set {
+                this["PasswordHash"] = value;
+            }
+        }
     }
 }
