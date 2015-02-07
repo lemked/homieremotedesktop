@@ -93,5 +93,17 @@ namespace Homie.Service.Properties {
                 this["CertificateDirectoryName"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("None")]
+        public global::Homie.Common.WebService.AuthenticationMode AuthenticationMode {
+            get {
+                return ((global::Homie.Common.WebService.AuthenticationMode)(this["AuthenticationMode"]));
+            }
+            set {
+                this["AuthenticationMode"] = value;
+            }
+        }
     }
 }

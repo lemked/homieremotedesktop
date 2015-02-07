@@ -84,6 +84,7 @@
     <Compile Include="DependencyInjector.cs" />
     <Compile Include="StringFormatConverter.cs" />
     <Compile Include="WebService\AuthenticationMode.cs" />
+    <Compile Include="WebService\Protocol.cs" />
     <Compile Include="WebService\WebServiceFactory.cs" />
     <Compile Include="WPF\ListViewCustomComparer.cs" />
     <Compile Include="WPF\ListViewSorter.cs" />

@@ -9,7 +9,6 @@ namespace Homie.Common.WebService
     /// <summary>
     /// Factory class for web services.
     /// </summary>
-    /// <author>Daniel Lemke - lemked@web.de</author>
     public class WebServiceFactory
     {
         private Binding binding;
@@ -26,7 +25,18 @@ namespace Homie.Common.WebService
 
         public T Create<T>(UserNamePasswordClientCredential credentials = null) where T : IWebServiceSession
         {
-            var endPointUrl = String.Format(Constants.WebServiceUrlTemplate, address, port, serviceEndPoint);
+            // Determine the protocol of the web service
+            var protocol = Protocol.Http; // default
+            if (binding is BasicHttpsBinding)
+            {
+                protocol = Protocol.Https;
+            }
+            else if (binding is NetTcpBinding)
+            {
+                protocol = Protocol.NetTcp;
+            }
+
+            var endPointUrl = String.Format(Constants.WebServiceUrlTemplate, protocol, address, port, serviceEndPoint);
 
             if (typeof(T) == typeof(IMachineControlService))
             {

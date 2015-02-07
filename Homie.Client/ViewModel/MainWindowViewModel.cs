@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
+using System.ServiceModel.Channels;
 using System.Windows.Input;
 
 using MVVMLib;
@@ -103,7 +105,24 @@ namespace Homie.Client.ViewModel
         {
             dialogService = pdialogService;
 
-            var binding = new BasicHttpsBinding(BasicHttpsSecurityMode.Transport);
+            Binding binding;
+            switch (Settings.Default.AuthenticationMode)
+            {
+                case AuthenticationMode.None:
+                    binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
+                    break;
+                case AuthenticationMode.Credentials:
+                    binding = new BasicHttpBinding(BasicHttpSecurityMode.TransportCredentialOnly);
+                    break;
+                case AuthenticationMode.Certificate:
+                    binding = new BasicHttpsBinding(BasicHttpsSecurityMode.Transport);
+                    break;
+                case AuthenticationMode.CertificateAndCredentials:
+                    binding = new BasicHttpsBinding(BasicHttpsSecurityMode.TransportWithMessageCredential);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("Unsupported authentication mode");
+            }
 
             var factory = new WebServiceFactory(binding, Settings.Default.ServerAddress, Settings.Default.ServerPort, Settings.Default.ServiceEndPoint);
             machineControlService = factory.Create<IMachineControlService>();
@@ -195,7 +214,7 @@ namespace Homie.Client.ViewModel
 
         private void ConnectToHost()
         {
-            this.StatusMessage = Resources.Properties.Resources.ConnectingToHost;
+            this.StatusMessage = Resources.Properties.Resources.ConnectingToServer;
             var connectionHandler = new ConnectionHandler(machineControlService);
             var connectionWindowViewModel = new ConnectWindowViewModel(connectionHandler, currentMachine);
             dialogService.ShowDialog(this, connectionWindowViewModel);

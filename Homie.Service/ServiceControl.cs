@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
+using System.ServiceModel.Channels;
 using System.ServiceModel.Security;
 using System.ServiceProcess;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 using Homie.Common;
 using Homie.Common.Interfaces;
 using Homie.Common.Logging;
+using Homie.Common.WebService;
 using Homie.Model.Logging;
 using Homie.Service.Properties;
 
@@ -124,17 +126,41 @@ namespace Homie.Service
 
         private void AddServiceEndpoint()
         {
-            var baseAddress = new Uri(String.Format(
-                Constants.WebServiceUrlTemplate, 
-                Settings.Default.Hostname, 
-                Settings.Default.ListenPort, 
-                Settings.Default.EndPoint));
-            
-            // Create HTTPS Binding
-            var binding = new BasicHttpsBinding(BasicHttpsSecurityMode.Transport);
+            Binding binding;
 
-            ImportCertifcate();
-                
+            switch (Settings.Default.AuthenticationMode)
+            {
+                case AuthenticationMode.None:
+                    binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
+                    break;
+                case AuthenticationMode.Credentials:
+                    binding = new BasicHttpBinding(BasicHttpSecurityMode.TransportCredentialOnly);
+                    break;
+                case AuthenticationMode.Certificate:
+                    binding = new BasicHttpsBinding(BasicHttpsSecurityMode.Transport);
+                    ImportCertifcate();
+                    break;
+                case AuthenticationMode.CertificateAndCredentials:
+                    binding = new BasicHttpsBinding(BasicHttpsSecurityMode.TransportWithMessageCredential);
+                    ImportCertifcate();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("Unsupported authentication mode");
+            }
+
+            var protocol = Protocol.Http;
+            if (binding is BasicHttpsBinding)
+            {
+                protocol = Protocol.Https;
+            }
+
+            var baseAddress = new Uri(String.Format(
+                Constants.WebServiceUrlTemplate,
+                protocol,
+                Settings.Default.Hostname,
+                Settings.Default.ListenPort,
+                Settings.Default.EndPoint));
+
             Log.Debug("Adding service endpoints ...");
 
             var machineServiceEndPoint = baseAddress + Constants.MachineControlServiceEndPoint;

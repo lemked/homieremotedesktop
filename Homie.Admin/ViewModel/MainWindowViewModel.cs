@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using System.ServiceModel;
+using System.ServiceModel.Channels;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -8,10 +11,11 @@ using MVVMLib;
 using MVVMLib.ViewModel;
 using MVVMLib.Dialog.Service;
 
-using Homie.Common;
 using Homie.Common.Interfaces;
 using Homie.Model;
+using Homie.Model.Logging;
 using Homie.Admin.Properties;
+using Homie.Common.Logging;
 using Homie.Common.WebService;
 
 namespace Homie.Admin.ViewModel
@@ -180,6 +184,12 @@ namespace Homie.Admin.ViewModel
         public MainWindowViewModel(IDialogService dialogService)
         {
             this.dialogService = dialogService;
+
+            // Configure default logger
+            ILogger textLogger = new FileLogger();
+            textLogger.LogLevel = Settings.Default.LogLevel;
+            Log.Register(textLogger);
+
             CreateChannelsAndAssignToViewModels();
             ConnectToServer();
         }
@@ -190,9 +200,29 @@ namespace Homie.Admin.ViewModel
 
         private void CreateChannelsAndAssignToViewModels()
         {
-            var binding = new BasicHttpsBinding(BasicHttpsSecurityMode.Transport);
+            HttpBindingBase binding;
+            switch (Settings.Default.AuthenticationMode)
+            {
+                case AuthenticationMode.None:
+                    binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
+                    break;
+                case AuthenticationMode.Credentials:
+                    binding = new BasicHttpBinding(BasicHttpSecurityMode.TransportCredentialOnly);
+                    break;
+                case AuthenticationMode.Certificate:
+                    binding = new BasicHttpsBinding(BasicHttpsSecurityMode.Transport);
+                    break;
+                case AuthenticationMode.CertificateAndCredentials:
+                    binding = new BasicHttpsBinding(BasicHttpsSecurityMode.TransportWithMessageCredential);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("Unsupported authentication mode");
+            }
+
+            binding.MaxReceivedMessageSize = 5242880; 
 
             var factory = new WebServiceFactory(binding, Settings.Default.ServerAddress, Settings.Default.ServerPort, Settings.Default.ServiceEndPoint);
+
             machineControlService = factory.Create<IMachineControlService>();
             serviceLogProvider = factory.Create<IServiceLogProvider>();
 
@@ -221,7 +251,7 @@ namespace Homie.Admin.ViewModel
             {
                 // Connect to the server.
                 IsConnected = false;
-                StatusMessage = "Connecting to server ...";
+                StatusMessage = Resources.Properties.Resources.ConnectingToServer;
                 await machineControlService.ConnectAsync();
 
                 // If connected, retrieve the data.
@@ -237,18 +267,21 @@ namespace Homie.Admin.ViewModel
             }
             catch (EndpointNotFoundException exception) // e.g. server not found / service not running
             {
-                ConnectToServer(true, failCount+1);
+                Log.Exception(exception);
                 LastException = exception;
+                ConnectToServer(true, failCount+1);
             }
             catch (CommunicationObjectFaultedException exception)
             {
-                ConnectToServer(true, failCount+1);
+                Log.Exception(exception);
                 LastException = exception;
+                ConnectToServer(true, failCount+1);
             }
             catch (CommunicationException exception) // e.g. connection aborted
             {
-                ConnectToServer(true, failCount+1);
+                Log.Exception(exception);
                 LastException = exception;
+                ConnectToServer(true, failCount+1);
             }
         }
 

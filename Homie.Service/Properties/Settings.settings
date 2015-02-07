@@ -20,5 +20,8 @@
     <Setting Name="CertificateDirectoryName" Type="System.String" Scope="User">
       <Value Profile="(Default)">certificate</Value>
     </Setting>
+    <Setting Name="AuthenticationMode" Type="Homie.Common.WebService.AuthenticationMode" Scope="User">
+      <Value Profile="(Default)">None</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
