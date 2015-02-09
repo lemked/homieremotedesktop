@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="Homie.Admin.UserControls.UserDetails"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:localization="clr-namespace:Homie.Resources.Properties;assembly=Homie.Resources"
+             xmlns:mvvmLib="clr-namespace:MVVMLib;assembly=MVVMLib"
+             mc:Ignorable="d" 
+             d:DesignWidth="300">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Homie.Resources;component/Styles.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Homie.Resources;component/Images.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Text="{Binding Source={x:Static localization:Resources.Username}, StringFormat={}{0}:}" />
+        <TextBox Text="{Binding Machine.Username}" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" TabIndex="0" Style="{StaticResource DefaultTextBoxStyle}" />
+
+        <TextBlock Text="{Binding Source={x:Static localization:Resources.Password}, StringFormat={}{0}:}" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" />
+        <PasswordBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" TabIndex="1" Style="{StaticResource DefaultPasswordBoxStyle}"
+                     mvvmLib:PasswordBoxAssistant.BindPassword="True"  
+                     mvvmLib:PasswordBoxAssistant.BoundPassword="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBlock Text="{Binding Source={x:Static localization:Resources.FirstName}, StringFormat={}{0}:}" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" />
+        <TextBox Text="{Binding Machine.FirstName}" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" TabIndex="2" Style="{StaticResource DefaultTextBoxStyle}" />
+
+        <TextBlock Text="{Binding Source={x:Static localization:Resources.LastName}, StringFormat={}{0}:}" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" />
+        <TextBox Text="{Binding Machine.LastName}" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" TabIndex="3" Style="{StaticResource DefaultTextBoxStyle}" />
+    </Grid>
+</UserControl>

@@ -28,14 +28,17 @@ namespace Homie.Admin.ViewModel
 
         private List<Machine> machines = new List<Machine>();
         private IMachineControlService machineControlService;
+        private IUserControlService userControlService;
         private IServiceLogProvider serviceLogProvider;
 
         private IViewModel currentViewModel;
         private EventLogViewModel eventLogViewModel;
+        private UsersViewModel usersViewModel;
         private MachinesViewModel machinesViewModel;
 
         private RelayCommand reconnectCommand;
         private RelayCommand showMachinesCommand;
+        private RelayCommand showUsersCommand;
         private RelayCommand showEventLogCommand;
 
         private string statusMessage;
@@ -148,6 +151,18 @@ namespace Homie.Admin.ViewModel
             }
         }
 
+        public ICommand ShowUsersCommand
+        {
+            get
+            {
+                if (showUsersCommand == null)
+                {
+                    showUsersCommand = new RelayCommand(action => CurrentViewModel = usersViewModel);
+                }
+                return showUsersCommand;
+            }
+        }
+
         public ICommand ShowEventLogCommand
         {
             get
@@ -228,6 +243,7 @@ namespace Homie.Admin.ViewModel
 
             eventLogViewModel = new EventLogViewModel(serviceLogProvider);
             machinesViewModel = new MachinesViewModel(dialogService, machineControlService);
+            usersViewModel = new UsersViewModel(dialogService, userControlService);
         }
 
         private async void ConnectToServer(bool faulted = false, int failCount = 0)

@@ -18,8 +18,11 @@ namespace Homie.Admin
             // Mapping for the main window
             {typeof (EventLogViewModel), typeof (EventLogView)},
             {typeof (MachinesViewModel), typeof (MachinesView)},
+            {typeof (UsersViewModel), typeof (UsersView)},
             {typeof (AddMachineWindowViewModel), typeof (AddMachineWindow)},
-            {typeof (EditMachineWindowViewModel), typeof (EditMachineWindow)}
+            {typeof (EditMachineWindowViewModel), typeof (EditMachineWindow)},
+            {typeof (AddUserWindowViewModel), typeof (AddUserWindow)},
+            {typeof (EditUserWindowViewModel), typeof (EditUserWindow)}
 	    };
 
 		/// <summary>

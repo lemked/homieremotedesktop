@@ -28,6 +28,9 @@
                     <DataTemplate DataType="{x:Type local:MachinesViewModel}">
                         <view:MachinesView />
                     </DataTemplate>
+                    <DataTemplate DataType="{x:Type local:UsersViewModel}">
+                        <view:UsersView />
+                    </DataTemplate>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -92,7 +95,7 @@
                         />
             <Button
                             Content="{x:Static localization:Resources.Users}" 
-                            IsEnabled="False"
+                            Command="{Binding Path=ShowUsersCommand}"
                             Style="{StaticResource DefaultButtonStyle}" 
                         />
         </StackPanel>
