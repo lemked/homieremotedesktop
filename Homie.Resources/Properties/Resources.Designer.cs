@@ -70,6 +70,15 @@ namespace Homie.Resources.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add new userID.
+        /// </summary>
+        public static string AddNewUser {
+            get {
+                return ResourceManager.GetString("AddNewUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string Cancel {
@@ -250,6 +259,15 @@ namespace Homie.Resources.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to First name.
+        /// </summary>
+        public static string FirstName {
+            get {
+                return ResourceManager.GetString("FirstName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hint:.
         /// </summary>
         public static string Hint {
@@ -273,6 +291,15 @@ namespace Homie.Resources.Properties {
         public static string Info {
             get {
                 return ResourceManager.GetString("Info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last name.
+        /// </summary>
+        public static string LastName {
+            get {
+                return ResourceManager.GetString("LastName", resourceCulture);
             }
         }
         
@@ -318,6 +345,15 @@ namespace Homie.Resources.Properties {
         public static string Machines {
             get {
                 return ResourceManager.GetString("Machines", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Machine &quot;{0}&quot; was successfully updated..
+        /// </summary>
+        public static string MachineSuccessfullyUpdated {
+            get {
+                return ResourceManager.GetString("MachineSuccessfullyUpdated", resourceCulture);
             }
         }
         
@@ -511,6 +547,15 @@ namespace Homie.Resources.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to remove user account: User not found..
+        /// </summary>
+        public static string UnableToRemoveUserAccountUserNotFound {
+            get {
+                return ResourceManager.GetString("UnableToRemoveUserAccountUserNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Username.
         /// </summary>
         public static string Username {
@@ -520,11 +565,47 @@ namespace Homie.Resources.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Username \&quot;{0}\&quot; already exists..
+        /// </summary>
+        public static string UsernameAlreadyExists {
+            get {
+                return ResourceManager.GetString("UsernameAlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username &quot;{0}&quot; does not exist..
+        /// </summary>
+        public static string UsernameDoesNotExist {
+            get {
+                return ResourceManager.GetString("UsernameDoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Users.
         /// </summary>
         public static string Users {
             get {
                 return ResourceManager.GetString("Users", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User \&quot;{0}\&quot; was successfully added..
+        /// </summary>
+        public static string UserSuccessfullyAdded {
+            get {
+                return ResourceManager.GetString("UserSuccessfullyAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User &quot;{0}&quot; was removed..
+        /// </summary>
+        public static string UserWasRemoved {
+            get {
+                return ResourceManager.GetString("UserWasRemoved", resourceCulture);
             }
         }
         
