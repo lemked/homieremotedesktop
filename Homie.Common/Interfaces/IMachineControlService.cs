@@ -7,7 +7,7 @@ using Homie.Model;
 namespace Homie.Common.Interfaces
 {
     [ServiceContract]
-    public interface IMachineControlService : IWebServiceSession
+    public interface IMachineControlService
     {
         /// <summary>
         /// Adds a new machine.

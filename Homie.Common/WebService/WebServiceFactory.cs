@@ -23,7 +23,7 @@ namespace Homie.Common.WebService
             this.serviceEndPoint = serviceEndPoint;
         }
 
-        public T Create<T>(UserNamePasswordClientCredential credentials = null) where T : IWebServiceSession
+        public T Create<T>(UserNamePasswordClientCredential credentials = null)
         {
             // Determine the protocol of the web service
             var protocol = Protocol.Http; // default

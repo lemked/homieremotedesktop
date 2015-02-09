@@ -7,10 +7,8 @@ using Homie.Model.Logging;
 
 namespace Homie.Common.Interfaces
 {
-    using System.ServiceProcess;
-
     [ServiceContract]
-    public interface IServiceLogProvider : IWebServiceSession
+    public interface IServiceLogProvider 
     {
         [OperationContract]
         Task<IEnumerable<LogMessage>> GetLogEntriesAsync();
