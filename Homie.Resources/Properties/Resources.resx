@@ -303,4 +303,25 @@
   <data name="UserWasRemoved" xml:space="preserve">
     <value>User "{0}" was removed.</value>
   </data>
+  <data name="UnsupportedAuthenticationMode" xml:space="preserve">
+    <value>Unsupported authentication mode</value>
+  </data>
+  <data name="ServiceIsUpAndRunning" xml:space="preserve">
+    <value>Service is up and running.</value>
+  </data>
+  <data name="ServiceIsStarting" xml:space="preserve">
+    <value>Service is starting ...</value>
+  </data>
+  <data name="ServiceStartedWith" xml:space="preserve">
+    <value>Service started with {0}</value>
+  </data>
+  <data name="ServiceWasStopped" xml:space="preserve">
+    <value>Service was stopped.</value>
+  </data>
+  <data name="No_certificate_found__cannot_establish_a_secure_connection" xml:space="preserve">
+    <value>No certificate found, cannot establish a secure connection.</value>
+  </data>
+  <data name="ServiceControl_ImportCertifcate_Not_a_valid_certificate_thumbprint" xml:space="preserve">
+    <value>Not a valid certificate thumbprint: "{0}"</value>
+  </data>
 </root>

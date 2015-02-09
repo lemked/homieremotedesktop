@@ -94,7 +94,7 @@ namespace Homie.Service
             consoleLogger.LogLevel = LogLevel.Debug;
             Log.Register(consoleLogger);
 
-            Log.Info("Service started with " + NoServiceArgument);
+            Log.Info(Resources.Properties.Resources.ServiceStartedWith, NoServiceArgument);
             var lServiceControl = new ServiceControl();
             lServiceControl.OnStart(new string[0]);
 
@@ -106,7 +106,7 @@ namespace Homie.Service
         // Start the Windows service.
         protected override void OnStart(string[] arguments)
         {
-            Log.Info("Service is starting ...");
+            Log.Info(Resources.Properties.Resources.ServiceIsStarting);
 
             if (serviceHost != null)
             {
@@ -120,7 +120,7 @@ namespace Homie.Service
             AddServiceEndpoint();
             serviceHost.Open();
 
-            Log.Info(ServiceName + " is up and running.");
+            Log.Info(Resources.Properties.Resources.ServiceIsUpAndRunning);
         }
 
         private void AddServiceEndpoint()
@@ -144,7 +144,7 @@ namespace Homie.Service
                     ImportCertifcate();
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException("Unsupported authentication mode");
+                    throw new ArgumentOutOfRangeException(Resources.Properties.Resources.UnsupportedAuthenticationMode);
             }
 
             var protocol = Protocol.Http;
@@ -202,11 +202,11 @@ namespace Homie.Service
                 }
                 catch (FormatException exception)
                 {
-                    throw new SecurityException(string.Format("Not a valid certificate thumbprint: \"{0}\"", Settings.Default.CertificateThumbprint), exception);
+                    throw new SecurityException(string.Format(Resources.Properties.Resources.ServiceControl_ImportCertifcate_Not_a_valid_certificate_thumbprint, Settings.Default.CertificateThumbprint), exception);
                 }
             }
 
-            throw new SecurityException("No certificate found, cannot establish a secure connection.");
+            throw new SecurityException(Resources.Properties.Resources.No_certificate_found__cannot_establish_a_secure_connection);
         }
         
         protected override void OnStop()
@@ -217,7 +217,7 @@ namespace Homie.Service
                 serviceHost = null;
             }
 
-            Log.Info(ServiceName + " was stopped.");
+            Log.Info(Resources.Properties.Resources.ServiceWasStopped);
         }
     }
 

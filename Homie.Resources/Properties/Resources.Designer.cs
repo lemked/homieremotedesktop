@@ -367,6 +367,15 @@ namespace Homie.Resources.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No certificate found, cannot establish a secure connection..
+        /// </summary>
+        public static string No_certificate_found__cannot_establish_a_secure_connection {
+            get {
+                return ResourceManager.GetString("No_certificate_found__cannot_establish_a_secure_connection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No authentication.
         /// </summary>
         public static string NoAuthentication {
@@ -484,6 +493,42 @@ namespace Homie.Resources.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not a valid certificate thumbprint: &quot;{0}&quot;.
+        /// </summary>
+        public static string ServiceControl_ImportCertifcate_Not_a_valid_certificate_thumbprint {
+            get {
+                return ResourceManager.GetString("ServiceControl_ImportCertifcate_Not_a_valid_certificate_thumbprint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service is starting ....
+        /// </summary>
+        public static string ServiceIsStarting {
+            get {
+                return ResourceManager.GetString("ServiceIsStarting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service is up and running..
+        /// </summary>
+        public static string ServiceIsUpAndRunning {
+            get {
+                return ResourceManager.GetString("ServiceIsUpAndRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service started with {0}.
+        /// </summary>
+        public static string ServiceStartedWith {
+            get {
+                return ResourceManager.GetString("ServiceStartedWith", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Starting service ....
         /// </summary>
         public static string ServiceStarting {
@@ -507,6 +552,15 @@ namespace Homie.Resources.Properties {
         public static string ServiceStopping {
             get {
                 return ResourceManager.GetString("ServiceStopping", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service was stopped..
+        /// </summary>
+        public static string ServiceWasStopped {
+            get {
+                return ResourceManager.GetString("ServiceWasStopped", resourceCulture);
             }
         }
         
@@ -552,6 +606,15 @@ namespace Homie.Resources.Properties {
         public static string UnableToRemoveUserAccountUserNotFound {
             get {
                 return ResourceManager.GetString("UnableToRemoveUserAccountUserNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unsupported authentication mode.
+        /// </summary>
+        public static string UnsupportedAuthenticationMode {
+            get {
+                return ResourceManager.GetString("UnsupportedAuthenticationMode", resourceCulture);
             }
         }
         
