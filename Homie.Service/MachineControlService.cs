@@ -18,16 +18,6 @@ namespace Homie.Service
     {
         private readonly IMachineDataSource machineDataSource = new DbMachineDataSource();
 
-        public Task ConnectAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Authenticate(string user, string pPassword)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<int> AddMachineAsync(Machine machine)
         {
             return await Task.Factory.StartNew(() => AddMachine(machine));
@@ -35,20 +25,20 @@ namespace Homie.Service
 
         private int AddMachine(Machine machine)
         {
-            Log.Debug(String.Format("Request for adding machine \"{0}\" ...", machine.NameOrAddress));
+            Log.Debug("Request for adding machine \"{0}\" ...", machine.NameOrAddress);
 
             // TODO: Implement SingleOrDefault for IMachineDataSource, see http://stackoverflow.com/questions/14849202/the-objectstatemanager-cannot-track-multiple-objects-with-the-same-key
             
             // Check if a machine with the same name already exists.
             if (machineDataSource.GetAllMachines().SingleOrDefault(item => item.NameOrAddress == machine.NameOrAddress) != null)
             {
-                throw new ArgumentException(String.Format("Name/address \"{0}\" already exists.", machine.NameOrAddress));
+                throw new InvalidOperationException(String.Format("Name/address \"{0}\" already exists.", machine.NameOrAddress));
             }
 
             // Check if a machine with the same MAC address already exists.
             if (machineDataSource.GetAllMachines().SingleOrDefault(pItem => pItem.NameOrAddress == machine.NameOrAddress) != null)
             {
-                throw new ArgumentException(String.Format("MAC address {0} already exists.", machine.MacAddress));
+                throw new InvalidOperationException(String.Format("MAC address {0} already exists.", machine.MacAddress));
             }
 
             // Add machine.

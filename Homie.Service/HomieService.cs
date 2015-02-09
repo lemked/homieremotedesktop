@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using System.ServiceModel;
 using System.Threading.Tasks;
@@ -13,24 +12,27 @@ using Homie.Model.Logging;
 
 namespace Homie.Service
 {
-    using System.ServiceProcess;
-
 #if DEBUG
     [ServiceBehavior(IncludeExceptionDetailInFaults = true)] 
 #endif
-    public class HomieService : IMachineControlService, IServiceLogProvider
+    public class HomieService : IUserControlService, IMachineControlService, IServiceLogProvider
     {
         private readonly IServiceLogProvider serviceLogProvider;
         private readonly IMachineControlService machineControlService;
+        private readonly IUserControlService userControlService;
 
-        public HomieService() : this(DependencyInjector.Resolve<IMachineControlService>(), DependencyInjector.Resolve<IServiceLogProvider>())
+        public HomieService(): this(
+            DependencyInjector.Resolve<IMachineControlService>(), 
+            DependencyInjector.Resolve<IUserControlService>(), 
+            DependencyInjector.Resolve<IServiceLogProvider>())
         {
             
         }
 
-        public HomieService(IMachineControlService machineControlService, IServiceLogProvider serviceLogProvider)
+        public HomieService(IMachineControlService machineControlService, IUserControlService userControlService, IServiceLogProvider serviceLogProvider)
         {
             this.machineControlService = machineControlService;
+            this.userControlService = userControlService;
             this.serviceLogProvider = serviceLogProvider;
         }
 
@@ -97,6 +99,35 @@ namespace Homie.Service
             await machineControlService.ShutdownAsync(machine);
         }
 
+        #endregion
+
+        #region IUserControlService
+
+        public Task<int> AddUserAsync(User user)
+        {
+            return userControlService.AddUserAsync(user);
+        }
+
+        public Task UpdateUserAsync(User user)
+        {
+            return userControlService.UpdateUserAsync(user);
+        }
+
+        public Task RemoveUserAsync(int userID)
+        {
+            return userControlService.RemoveUserAsync(userID);
+        }
+
+        public Task<IEnumerable<User>> GetUsersAsync()
+        {
+            return userControlService.GetUsersAsync();
+        }
+
+        public Task<User> GetUserAsync(int userID)
+        {
+            return userControlService.GetUserAsync(userID);
+        }
+        
         #endregion
     }
 }

@@ -7,10 +7,8 @@ using System.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
-using System.ServiceModel.Security;
 using System.ServiceProcess;
 using System.Threading.Tasks;
-
 using Homie.Common;
 using Homie.Common.Interfaces;
 using Homie.Common.Logging;
@@ -52,6 +50,7 @@ namespace Homie.Service
             DependencyInjector.Register<IServiceLogDataSource, DbServiceLogDataSource>();
             DependencyInjector.Register<IServiceLogProvider, ServiceLogProvider>();
             DependencyInjector.Register<IMachineControlService, MachineControlService>();
+            DependencyInjector.Register<IUserControlService, UserControlService>();
 
             // Configure default logger
             ILogger textLogger = new FileLogger();
@@ -166,6 +165,10 @@ namespace Homie.Service
             var machineServiceEndPoint = baseAddress + Constants.MachineControlServiceEndPoint;
             serviceHost.AddServiceEndpoint(typeof(IMachineControlService), binding, new Uri(machineServiceEndPoint));
             Log.Debug("Service endpoint added: " + machineServiceEndPoint);
+
+            var userServiceEndPoint = baseAddress + Constants.UserControlServiceEndPoint;
+            serviceHost.AddServiceEndpoint(typeof(IUserControlService), binding, new Uri(userServiceEndPoint));
+            Log.Debug("Service endpoint added: " + userServiceEndPoint);
 
             var serviceLogProviderEndPoint = baseAddress + Constants.ServiceLogProviderEndPoint;
             serviceHost.AddServiceEndpoint(typeof(IServiceLogProvider), binding, new Uri(serviceLogProviderEndPoint));

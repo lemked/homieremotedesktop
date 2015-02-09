@@ -87,6 +87,7 @@
     <Compile Include="HomieService.cs" />
     <Compile Include="ServiceLogProvider.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="UserControlService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -104,6 +105,10 @@
     <ProjectReference Include="..\Homie.Model\Homie.Model.csproj">
       <Project>{27f8f5c6-56ce-41f1-aa8f-da6718b61546}</Project>
       <Name>Homie.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Homie.Resources\Homie.Resources.csproj">
+      <Project>{5141880d-0642-4605-a391-dcb6832fb097}</Project>
+      <Name>Homie.Resources</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
