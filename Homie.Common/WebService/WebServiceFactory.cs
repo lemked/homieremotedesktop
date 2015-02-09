@@ -42,6 +42,10 @@ namespace Homie.Common.WebService
             {
                 endPointUrl = endPointUrl + Constants.MachineControlServiceEndPoint;
             }
+            if (typeof(T) == typeof(IUserControlService))
+            {
+                endPointUrl = endPointUrl + Constants.UserControlServiceEndPoint;
+            }
             if (typeof(T) == typeof(IServiceLogProvider))
             {
                 endPointUrl = endPointUrl + Constants.ServiceLogProviderEndPoint;
