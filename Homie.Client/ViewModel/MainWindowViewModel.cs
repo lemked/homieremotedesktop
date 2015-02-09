@@ -10,7 +10,6 @@ using MVVMLib.Dialog.Service;
 using MVVMLib.ViewModel;
 
 using Homie.Client.Properties;
-using Homie.Common;
 using Homie.Common.Interfaces;
 using Homie.Common.WebService;
 using Homie.Model;
@@ -185,7 +184,6 @@ namespace Homie.Client.ViewModel
             StatusMessage = Resources.Properties.Resources.ConnectingToServer;
             try
             {
-                await machineControlService.ConnectAsync();
                 this.StatusMessage = Resources.Properties.Resources.DeterminingAvailableHosts;
                 this.Machines.Clear();
                 // Retrieve the machines from the service.

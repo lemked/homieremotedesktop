@@ -252,7 +252,6 @@ namespace Homie.Admin.ViewModel
                 // Connect to the server.
                 IsConnected = false;
                 StatusMessage = Resources.Properties.Resources.ConnectingToServer;
-                await machineControlService.ConnectAsync();
 
                 // If connected, retrieve the data.
                 StatusMessage = "Retrieving data ...";
