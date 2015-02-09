@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
 using System.ServiceModel;
-using System.ServiceModel.Channels;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -13,7 +10,6 @@ using MVVMLib.Dialog.Service;
 
 using Homie.Common.Interfaces;
 using Homie.Model;
-using Homie.Model.Logging;
 using Homie.Admin.Properties;
 using Homie.Common.Logging;
 using Homie.Common.WebService;
@@ -239,6 +235,7 @@ namespace Homie.Admin.ViewModel
             var factory = new WebServiceFactory(binding, Settings.Default.ServerAddress, Settings.Default.ServerPort, Settings.Default.ServiceEndPoint);
 
             machineControlService = factory.Create<IMachineControlService>();
+            userControlService = factory.Create<IUserControlService>();
             serviceLogProvider = factory.Create<IServiceLogProvider>();
 
             eventLogViewModel = new EventLogViewModel(serviceLogProvider);
