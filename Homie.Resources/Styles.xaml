@@ -10,6 +10,9 @@
 
     <Style x:Key="DefaultTextBoxStyle" TargetType="TextBox">
         <Setter Property="Height" Value="23" />
+        <Setter Property="MinHeight" Value="23" />
+        <Setter Property="MinWidth" Value="260" />
+        <Setter Property="Margin" Value="0,3" />
     </Style>
 
     <Style x:Key="DefaultPasswordBoxStyle" TargetType="PasswordBox">
