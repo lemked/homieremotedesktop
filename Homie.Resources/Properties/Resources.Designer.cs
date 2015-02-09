@@ -70,7 +70,7 @@ namespace Homie.Resources.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add new userID.
+        ///   Looks up a localized string similar to Add new user.
         /// </summary>
         public static string AddNewUser {
             get {
