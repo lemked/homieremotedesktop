@@ -38,19 +38,22 @@
   <ItemGroup>
     <Compile Include="DatabaseContext.cs" />
     <Compile Include="DbMachineDataSource.cs" />
-    <Compile Include="DummyMachineProvider.cs" />
+    <Compile Include="DbUserDataSource.cs" />
     <Compile Include="IMachineDataSource.cs" />
     <Compile Include="IMachineProvider.cs" />
+    <Compile Include="IUserDataSource.cs" />
     <Compile Include="Logging\IServiceLogDataSource.cs" />
     <Compile Include="Logging\LogLevel.cs" />
     <Compile Include="Logging\LogMessage.cs" />
     <Compile Include="Logging\DbServiceLogDataSource.cs" />
     <Compile Include="Machine.cs" />
+    <Compile Include="Machines.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
