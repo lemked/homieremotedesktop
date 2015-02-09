@@ -29,12 +29,27 @@ namespace Homie.Common.Logging
             Debug(String.Format(pLogMessage, pArgument));
         }
 
+        public static void Debug(string pLogMessage, object pArgument1, object pArgument2)
+        {
+            Debug(String.Format(pLogMessage, pArgument1, pArgument2));
+        }
+
+        public static void Debug(string pLogMessage, object pArgument1, object pArgument2, object pArgument3)
+        {
+            Debug(String.Format(pLogMessage, pArgument1, pArgument2, pArgument3));
+        }
+
         public static void Info(string pLogMessage)
         {
             foreach (var logger in loggers)
             {
                 logger.Info(pLogMessage);
             }
+        }
+
+        public static void Info(string pLogMessage, object pArgument)
+        {
+            Info(String.Format(pLogMessage, pArgument));
         }
 
         public static void Exception(Exception pException)
