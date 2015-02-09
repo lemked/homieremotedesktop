@@ -99,26 +99,26 @@
     <Compile Include="ViewModel\MachineDetailsViewModel.cs" />
     <Compile Include="ViewModel\MachinesViewModel.cs" />
     <Compile Include="ViewModel\MachineWindowViewModelBase.cs" />
-    <Compile Include="View\AddMachineWindow.xaml.cs">
+    <Compile Include="View\Machine\AddMachineWindow.xaml.cs">
       <DependentUpon>AddMachineWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
-    <Compile Include="View\AddUserWindow.xaml.cs">
+    <Compile Include="View\User\AddUserWindow.xaml.cs">
       <DependentUpon>AddUserWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\EditUserWindow.xaml.cs">
+    <Compile Include="View\User\EditUserWindow.xaml.cs">
       <DependentUpon>EditUserWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\EditMachineWindow.xaml.cs">
+    <Compile Include="View\Machine\EditMachineWindow.xaml.cs">
       <DependentUpon>EditMachineWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\EventLogView.xaml.cs">
       <DependentUpon>EventLogView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UsersView.xaml.cs">
+    <Compile Include="View\User\UsersView.xaml.cs">
       <DependentUpon>UsersView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\MachinesView.xaml.cs">
+    <Compile Include="View\Machine\MachinesView.xaml.cs">
       <DependentUpon>MachinesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="WindowViewModelMappings.cs" />
@@ -130,19 +130,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\AddMachineWindow.xaml">
+    <Page Include="View\Machine\AddMachineWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\AddUserWindow.xaml">
+    <Page Include="View\User\AddUserWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\EditUserWindow.xaml">
+    <Page Include="View\User\EditUserWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\EditMachineWindow.xaml">
+    <Page Include="View\Machine\EditMachineWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -150,11 +150,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\UsersView.xaml">
+    <Page Include="View\User\UsersView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\MachinesView.xaml">
+    <Page Include="View\Machine\MachinesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 
 using Homie.Admin.View;
+using Homie.Admin.View.Machine;
+using Homie.Admin.View.User;
 using Homie.Admin.ViewModel;
 
 using MVVMLib.WindowViewModelMapping;

@@ -1,4 +1,4 @@
-﻿namespace Homie.Admin.View
+﻿namespace Homie.Admin.View.Machine
 {
     /// <summary>
     /// Interaction logic for MachinesView.xaml

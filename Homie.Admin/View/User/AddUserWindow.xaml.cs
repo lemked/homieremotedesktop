@@ -1,4 +1,4 @@
-﻿namespace Homie.Admin.View
+﻿namespace Homie.Admin.View.User
 {
     /// <summary>
     /// Interaction logic for AddUserWindow.xaml

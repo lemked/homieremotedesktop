@@ -1,4 +1,4 @@
-﻿<Window x:Class="Homie.Admin.View.EditUserWindow"
+﻿<Window x:Class="Homie.Admin.View.User.EditUserWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:userControls="clr-namespace:Homie.Admin.UserControls"
