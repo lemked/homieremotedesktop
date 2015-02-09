@@ -28,12 +28,12 @@
         </Grid.ColumnDefinitions>
         
         <TextBlock Text="{Binding Source={x:Static localization:Resources.HostNameIPAddress}, StringFormat={}{0}:}" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" />
-        <TextBox Text="{Binding Machine.NameOrAddress}" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" TabIndex="0" />
+        <TextBox Text="{Binding Machine.NameOrAddress}" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" TabIndex="0" Style="{StaticResource DefaultTextBoxStyle}" />
 
         <TextBlock Text="{Binding Source={x:Static localization:Resources.MacAddress}, StringFormat={}{0}:}" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" />
-        <TextBox Text="{Binding Machine.MacAddress}" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" TabIndex="1" />
+        <TextBox Text="{Binding Machine.MacAddress}" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" TabIndex="1" Style="{StaticResource DefaultTextBoxStyle}" />
 
         <TextBlock Text="{Binding Source={x:Static localization:Resources.Port}, StringFormat={}{0}:}" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" />
-        <TextBox Text="{Binding Machine.Port}" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" TabIndex="3" />
+        <TextBox Text="{Binding Machine.Port}" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" TabIndex="2" Style="{StaticResource DefaultTextBoxStyle}" />
     </Grid>
 </UserControl>

@@ -10,7 +10,8 @@
         dialog:DialogCloser.DialogResult="{Binding DialogResult}"
         service:DialogService.IsRegisteredView="True"
         
-        Title="EditUserWindow" Height="150" Width="450" ShowInTaskbar="False" Margin="0">
+        Background="#FFF0F0F0"
+        Title="EditUserWindow" ShowInTaskbar="False" Margin="0" SizeToContent="WidthAndHeight">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -27,13 +28,13 @@
         
     </Window.Resources>
 
-    <DockPanel Margin="5">
+    <DockPanel Margin="10">
         <!-- Buttons-->
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Command="{Binding SaveCommand}" Content="{x:Static localization:Resources.Save}" Style="{StaticResource DefaultButtonStyle}" TabIndex="4" />
             <Button Command="{Binding CancelCommand}" Content="{x:Static localization:Resources.Cancel}" Style="{StaticResource DefaultButtonStyle}" TabIndex="5" Margin="0" />
         </StackPanel>
         <!--Content -->
-        <ContentControl Content="{Binding UserDetailsViewModel}" Padding="0,0,0,6" />
+        <ContentControl Content="{Binding UserDetailsViewModel}" Padding="0,0,0,6" Margin="0,0,0,10"/>
     </DockPanel>
 </Window>

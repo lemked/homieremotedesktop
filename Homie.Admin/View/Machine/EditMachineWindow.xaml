@@ -10,7 +10,8 @@
         dialog:DialogCloser.DialogResult="{Binding DialogResult}"
         service:DialogService.IsRegisteredView="True"
         
-        Title="EditMachineWindow" Height="150" Width="450" ShowInTaskbar="False" Margin="0">
+        Background="#FFF0F0F0"
+        Title="EditMachineWindow" ShowInTaskbar="False" Margin="0" SizeToContent="WidthAndHeight">
 
     <Window.Resources>
         <ResourceDictionary>
