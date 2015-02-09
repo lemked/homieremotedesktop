@@ -12,6 +12,7 @@
         public const string HttpPrefix = "http";
         public const string HttpsPrefix = "https";
 
+        public const string UserControlServiceEndPoint = "IUserControlService";
         public const string MachineControlServiceEndPoint = "IMachineControlService";
         public const string ServiceLogProviderEndPoint = "IServiceLogProvider";
     }
