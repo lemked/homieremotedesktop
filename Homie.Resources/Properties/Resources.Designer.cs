@@ -628,7 +628,7 @@ namespace Homie.Resources.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Username \&quot;{0}\&quot; already exists..
+        ///   Looks up a localized string similar to Username &quot;{0}&quot; already exists..
         /// </summary>
         public static string UsernameAlreadyExists {
             get {
@@ -655,11 +655,20 @@ namespace Homie.Resources.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to User \&quot;{0}\&quot; was successfully added..
+        ///   Looks up a localized string similar to User &quot;{0}&quot; was successfully added..
         /// </summary>
         public static string UserSuccessfullyAdded {
             get {
                 return ResourceManager.GetString("UserSuccessfullyAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User &quot;{0}&quot; was successfully updated..
+        /// </summary>
+        public static string UserSuccessfullyUpdated {
+            get {
+                return ResourceManager.GetString("UserSuccessfullyUpdated", resourceCulture);
             }
         }
         

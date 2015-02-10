@@ -53,7 +53,7 @@ namespace Homie.Service
             // Apply changes.            
             dataSource.Update(user);
 
-            Log.Info(String.Format(Resources.Properties.Resources.MachineSuccessfullyUpdated, user.Username));
+            Log.Info(String.Format(Resources.Properties.Resources.UserSuccessfullyUpdated, user.Username));
         }
 
         public async Task RemoveUserAsync(int userID)
