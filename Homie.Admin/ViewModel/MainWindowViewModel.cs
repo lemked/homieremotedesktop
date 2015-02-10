@@ -270,6 +270,7 @@ namespace Homie.Admin.ViewModel
                 StatusMessage = "Retrieving data ...";
                 await eventLogViewModel.GetEventLogEntriesAsync();
                 await machinesViewModel.GetMachinesAsync();
+                await usersViewModel.GetUsersAsync();
 
                 // Show the event log as default view.
                 CurrentViewModel = eventLogViewModel;
