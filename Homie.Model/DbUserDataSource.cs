@@ -22,8 +22,8 @@ namespace Homie.Model
 
         public void Update(User user)
         {
-            var existingMachine = databaseContext.Machines.Find(user.ID);
-            databaseContext.Detach(existingMachine);
+            var existinguser = databaseContext.Users.Find(user.ID);
+            databaseContext.Detach(existinguser);
 
             databaseContext.Entry(user).State = EntityState.Modified;
             databaseContext.SaveChanges();
@@ -36,7 +36,7 @@ namespace Homie.Model
 
         public bool Exists(User user)
         {
-            return databaseContext.Exists<Machine>(user.ID);
+            return databaseContext.Exists<User>(user.ID);
         }
 
         public IEnumerable<User> GetAllUsers()
