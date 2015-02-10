@@ -22,7 +22,7 @@
     </UserControl.Resources>
 
     <Grid>
-        <GroupBox DockPanel.Dock="Top" Header="{x:Static localization:Resources.Computer}" Margin="10,0,10,10" VerticalContentAlignment="Stretch">
+        <GroupBox DockPanel.Dock="Top" Header="{x:Static localization:Resources.Users}" Margin="10,0,10,10" VerticalContentAlignment="Stretch">
             <DockPanel>
                 <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="4,5,0,5">
                     <Button Content="{x:Static localization:Resources.Add}" Style="{StaticResource DefaultButtonStyle}" Command="{Binding Path=AddUserCommand}" />
