@@ -54,15 +54,6 @@
             </StackPanel>
             <TextBlock Text="2012-2014 © Daniel Lemke" HorizontalAlignment="Right" Padding="0,0,6,0" Margin="0,-3,0,0" Foreground="#FF6A6A6A" FontSize="9"/>
         </StackPanel>
-        <!-- Separator header/body (using color gradient) -->
-        <StackPanel DockPanel.Dock="Top" Height="3">
-            <StackPanel.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FFD1D1D1" Offset="0"/>
-                    <GradientStop Color="#FFE5E5E5" Offset="1"/>
-                </LinearGradientBrush>
-            </StackPanel.Background>
-        </StackPanel>
         
         <!-- Footer -->
         <DockPanel DockPanel.Dock="Bottom" Height="25" Background="Gainsboro">
@@ -83,27 +74,36 @@
         </DockPanel>
         
         <!-- Navigation pane -->
-        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-            <Button 
-                            Content="{x:Static localization:Resources.EventLog}" 
-                            VerticalAlignment="Top" 
-                            Command="{Binding Path=ShowEventLogCommand}" 
-                            Style="{StaticResource DefaultButtonStyle}" 
-                        />
-            <Button
-                            Content="{x:Static localization:Resources.Machines}" 
-                            Command="{Binding Path=ShowMachinesCommand}"
-                            Style="{StaticResource DefaultButtonStyle}" 
-                        />
-            <Button
-                            Content="{x:Static localization:Resources.Users}" 
-                            Command="{Binding Path=ShowUsersCommand}"
-                            Style="{StaticResource DefaultButtonStyle}" 
-                        />
-        </StackPanel>
+        <Border DockPanel.Dock="Top" BorderThickness="0 1 0 1" BorderBrush="#FF5B5B5B">
+            <StackPanel Orientation="Horizontal" >
+                
+                <Button Style="{StaticResource MenuButtonStyle}" VerticalAlignment="Top" Command="{Binding Path=ShowEventLogCommand}">
+                    <DockPanel>
+                        <Image Source="{StaticResource EventLog_32x32}" DockPanel.Dock="Left" Margin="3" />
+                        <TextBlock FontSize="16" Margin="10,0,0,0"  Text="{x:Static localization:Resources.EventLog}" VerticalAlignment="Center" />
+                    </DockPanel>
+                </Button>
+
+                <Button Style="{StaticResource MenuButtonStyle}" VerticalAlignment="Top" Command="{Binding Path=ShowMachinesCommand}">
+                    <DockPanel>
+                        <Image Source="{StaticResource Computer_32x32}" DockPanel.Dock="Left" Margin="3" />
+                        <TextBlock FontSize="16" Margin="10,0,0,0"  Text="{x:Static localization:Resources.Machines}" VerticalAlignment="Center" />
+                    </DockPanel>
+                </Button>
+
+                <Button Style="{StaticResource MenuButtonStyle}" VerticalAlignment="Top" Command="{Binding Path=ShowUsersCommand}">
+                    <DockPanel>
+                        <Image Source="{StaticResource Users_32x32}" DockPanel.Dock="Left" Margin="3" />
+                        <TextBlock FontSize="16" Margin="10,0,0,0"  Text="{x:Static localization:Resources.Users}" VerticalAlignment="Center" />
+                    </DockPanel>
+                </Button>
+
+            </StackPanel>
+        </Border>
+        
 
         <!-- Body -->
-        <ContentControl Content="{Binding CurrentViewModel}" Padding="10" />
+        <ContentControl Content="{Binding CurrentViewModel}" Margin="16" />
 
     </DockPanel>
     

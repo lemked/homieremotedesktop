@@ -3,6 +3,9 @@
 
     <BitmapImage x:Key="AppIcon_48x48" UriSource="pack://application:,,,/Homie.Resources;component/Images/AppIcon_48x48.png" />
     <BitmapImage x:Key="Settings_32x32" UriSource="pack://application:,,,/Homie.Resources;component/Images/Settings_32x32.png" />
+    <BitmapImage x:Key="EventLog_32x32" UriSource="pack://application:,,,/Homie.Resources;component/Images/EventLog_32x32.png" />
+    <BitmapImage x:Key="Computer_32x32" UriSource="pack://application:,,,/Homie.Resources;component/Images/Computer_32x32.png" />
+    <BitmapImage x:Key="Users_32x32" UriSource="pack://application:,,,/Homie.Resources;component/Images/Users_32x32.png" />
     <BitmapImage x:Key="Refresh_16x16" UriSource="pack://application:,,,/Homie.Resources;component/Images/Refresh_16x16.png" />
 
 </ResourceDictionary>

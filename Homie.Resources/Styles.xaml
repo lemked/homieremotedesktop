@@ -7,16 +7,30 @@
         <Setter Property="Width" Value="95" />
         <Setter Property="Margin" Value="0,0,6,0" />
     </Style>
+    
+    <Style x:Key="MenuButtonStyle" TargetType="Button">
+        <Setter Property="Height" Value="30" />
+        <Setter Property="Width" Value="140" />
+        <Setter Property="BorderThickness" Value="0 0 1 0" />        
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFF3F3F3" Offset="0"/>
+                    <GradientStop Color="#FFE5E5E5" Offset="1"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
     <Style x:Key="DefaultTextBoxStyle" TargetType="TextBox">
-        <Setter Property="Height" Value="23" />
+        <Setter Property="Height" Value="21" />
         <Setter Property="MinHeight" Value="23" />
         <Setter Property="MinWidth" Value="260" />
         <Setter Property="Margin" Value="0,3" />
     </Style>
 
     <Style x:Key="DefaultPasswordBoxStyle" TargetType="PasswordBox">
-        <Setter Property="Height" Value="23" />
+        <Setter Property="Height" Value="21" />
     </Style>
 
     <!-- Resource Mapper for determining the maximum column width (using WidthConverter class) -->

@@ -4,8 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:localization="clr-namespace:Homie.Resources.Properties;assembly=Homie.Resources"
-             mc:Ignorable="d" 
-             d:DesignWidth="300">
+             mc:Ignorable="d">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -34,6 +33,6 @@
         <TextBox Text="{Binding Machine.MacAddress}" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" TabIndex="1" Style="{StaticResource DefaultTextBoxStyle}" />
 
         <TextBlock Text="{Binding Source={x:Static localization:Resources.Port}, StringFormat={}{0}:}" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" />
-        <TextBox Text="{Binding Machine.Port}" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" TabIndex="2" Style="{StaticResource DefaultTextBoxStyle}" />
+        <TextBox Text="{Binding Machine.Port}" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" TabIndex="2" Style="{StaticResource DefaultTextBoxStyle}" MinWidth="60" Width="60" HorizontalAlignment="Left" />
     </Grid>
 </UserControl>

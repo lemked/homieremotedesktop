@@ -22,36 +22,34 @@
     </UserControl.Resources>
 
     <Grid>
-        <GroupBox DockPanel.Dock="Top" Header="{x:Static localization:Resources.Users}" Margin="10,0,10,10" VerticalContentAlignment="Stretch">
-            <DockPanel>
-                <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="4,5,0,5">
-                    <Button Content="{x:Static localization:Resources.Add}" Style="{StaticResource DefaultButtonStyle}" Command="{Binding Path=AddUserCommand}" />
-                    <Button Content="{x:Static localization:Resources.Edit}" Style="{StaticResource DefaultButtonStyle}" Command="{Binding Path=EditUserCommand}" />
-                    <Button Content="{x:Static localization:Resources.Remove}" Style="{StaticResource DefaultButtonStyle}" Command="{Binding Path=RemoveUserCommand}" />
-                </StackPanel>
-                <ListView DockPanel.Dock="Top" Margin="4,10,5,5" ItemsSource="{Binding Users}" SelectedItem="{Binding SelectedUser}" MinHeight="147">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="MouseDoubleClick">
-                            <i:InvokeCommandAction Command="{Binding Path=EditUserCommand}" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn
+        <DockPanel>
+            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0,5,0,0">
+                <Button Content="{x:Static localization:Resources.Add}" Style="{StaticResource DefaultButtonStyle}" Command="{Binding Path=AddUserCommand}" />
+                <Button Content="{x:Static localization:Resources.Edit}" Style="{StaticResource DefaultButtonStyle}" Command="{Binding Path=EditUserCommand}" />
+                <Button Content="{x:Static localization:Resources.Remove}" Style="{StaticResource DefaultButtonStyle}" Command="{Binding Path=RemoveUserCommand}" />
+            </StackPanel>
+            <ListView DockPanel.Dock="Top" ItemsSource="{Binding Users}" SelectedItem="{Binding SelectedUser}" MinHeight="147">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <i:InvokeCommandAction Command="{Binding Path=EditUserCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn
                                 Header="{x:Static localization:Resources.Username}" 
                                 DisplayMemberBinding="{Binding Username}" />
-                            <GridViewColumn 
+                        <GridViewColumn 
                                 Header="{x:Static localization:Resources.FirstName}"
                                 Width="180" 
                                 DisplayMemberBinding="{Binding FirstName}" />
-                            <GridViewColumn
+                        <GridViewColumn
                                 Header="{x:Static localization:Resources.LastName}"
                                 Width="100"
                                 DisplayMemberBinding="{Binding LastName}" />
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-            </DockPanel>
-        </GroupBox>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </DockPanel>
     </Grid>
 </UserControl>
