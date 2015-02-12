@@ -1,11 +1,9 @@
-﻿using System.Windows.Controls;
-
-namespace Homie.Admin.UserControls
+﻿namespace Homie.Admin.UserControls
 {
     /// <summary>
     /// Interaction logic for MachineDetails.xaml
     /// </summary>
-    public partial class MachineDetails : UserControl
+    public partial class MachineDetails
     {
         public MachineDetails()
         {
