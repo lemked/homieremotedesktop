@@ -99,10 +99,14 @@
     <Compile Include="ViewModel\MachineDetailsViewModel.cs" />
     <Compile Include="ViewModel\MachinesViewModel.cs" />
     <Compile Include="ViewModel\MachineWindowViewModelBase.cs" />
+    <Compile Include="View\ConnectionSettingsView.xaml.cs">
+      <DependentUpon>ConnectionSettingsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Machine\AddMachineWindow.xaml.cs">
       <DependentUpon>AddMachineWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
+    <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="View\User\AddUserWindow.xaml.cs">
       <DependentUpon>AddUserWindow.xaml</DependentUpon>
     </Compile>
@@ -127,6 +131,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\UserDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ConnectionSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -203,6 +211,10 @@
     <None Include="Resources\edit.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Homie.Common.UI\Homie.Common.UI.csproj">
+      <Project>{93a305a3-5614-4dc1-a403-f643ffa1d95d}</Project>
+      <Name>Homie.Common.UI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Homie.Common\Homie.Common.csproj">
       <Project>{ad46a3b9-886a-41be-8081-23b01827ae57}</Project>
       <Name>Homie.Common</Name>

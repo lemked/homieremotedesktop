@@ -33,6 +33,9 @@
                     <DataTemplate DataType="{x:Type local:UsersViewModel}">
                         <user:UsersView />
                     </DataTemplate>
+                    <DataTemplate DataType="{x:Type view:SettingsViewModel}">
+                        <view:ConnectionSettingsView />
+                    </DataTemplate>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -95,6 +98,13 @@
                     <DockPanel>
                         <Image Source="{StaticResource Users_32x32}" DockPanel.Dock="Left" Margin="3" />
                         <TextBlock FontSize="16" Margin="10,0,0,0"  Text="{x:Static localization:Resources.Users}" VerticalAlignment="Center" />
+                    </DockPanel>
+                </Button>
+
+                <Button Style="{StaticResource MenuButtonStyle}" VerticalAlignment="Top" Command="{Binding Path=ShowSettingsCommand}">
+                    <DockPanel>
+                        <Image Source="{StaticResource Settings_32x32}" DockPanel.Dock="Left" Margin="3" />
+                        <TextBlock FontSize="16" Margin="10,0,0,0"  Text="{x:Static localization:Resources.Settings}" VerticalAlignment="Center" />
                     </DockPanel>
                 </Button>
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ServiceModel;
+using System.ServiceModel.Security;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -11,6 +12,7 @@ using MVVMLib.Dialog.Service;
 using Homie.Common.Interfaces;
 using Homie.Model;
 using Homie.Admin.Properties;
+using Homie.Admin.View;
 using Homie.Common.Logging;
 using Homie.Common.WebService;
 
@@ -31,8 +33,10 @@ namespace Homie.Admin.ViewModel
         private EventLogViewModel eventLogViewModel;
         private UsersViewModel usersViewModel;
         private MachinesViewModel machinesViewModel;
+        private SettingsViewModel settingsViewModel;
 
         private RelayCommand reconnectCommand;
+        private RelayCommand showSettingsCommand;
         private RelayCommand showMachinesCommand;
         private RelayCommand showUsersCommand;
         private RelayCommand showEventLogCommand;
@@ -135,6 +139,18 @@ namespace Homie.Admin.ViewModel
             }
         }
 
+        public ICommand ShowSettingsCommand
+        {
+            get
+            {
+                if (showSettingsCommand == null)
+                {
+                    showSettingsCommand = new RelayCommand(action => CurrentViewModel = settingsViewModel);
+                }
+                return showSettingsCommand;
+            }
+        }
+
         public ICommand ShowMachinesCommand
         {
             get
@@ -201,6 +217,8 @@ namespace Homie.Admin.ViewModel
             textLogger.LogLevel = Settings.Default.LogLevel;
             Log.Register(textLogger);
 
+            settingsViewModel = new SettingsViewModel();
+
             CreateChannelsAndAssignToViewModels();
             ConnectToServer();
         }
@@ -212,7 +230,9 @@ namespace Homie.Admin.ViewModel
         private void CreateChannelsAndAssignToViewModels()
         {
             HttpBindingBase binding;
-            switch (Settings.Default.AuthenticationMode)
+
+            AuthenticationMode authenticationMode = Settings.Default.AuthenticationMode;
+            switch (authenticationMode)
             {
                 case AuthenticationMode.None:
                     binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
@@ -230,9 +250,22 @@ namespace Homie.Admin.ViewModel
                     throw new ArgumentOutOfRangeException("Unsupported authentication mode");
             }
 
-            binding.MaxReceivedMessageSize = 5242880; 
+            binding.MaxReceivedMessageSize = 5242880;
 
             var factory = new WebServiceFactory(binding, Settings.Default.ServerAddress, Settings.Default.ServerPort, Settings.Default.ServiceEndPoint);
+            
+            // For these authentication modes, credentials have to be set for the factory.
+            if (authenticationMode == AuthenticationMode.Credentials ||
+                authenticationMode == AuthenticationMode.CertificateAndCredentials)
+            {
+                if (string.IsNullOrEmpty(Settings.Default.Username) || string.IsNullOrEmpty(Settings.Default.Password))
+                {
+                    throw new ArgumentException("Invalid username or password. Please review your settings.");
+                }
+
+                factory.Username = Settings.Default.Username;
+                factory.Password = Settings.Default.Password;
+            }
 
             machineControlService = factory.Create<IMachineControlService>();
             userControlService = factory.Create<IUserControlService>();
@@ -262,12 +295,11 @@ namespace Homie.Admin.ViewModel
 
             try
             {
-                // Connect to the server.
+                // Connect to the server and retrieve the data.
                 IsConnected = false;
                 StatusMessage = Resources.Properties.Resources.ConnectingToServer;
 
                 // If connected, retrieve the data.
-                StatusMessage = "Retrieving data ...";
                 await eventLogViewModel.GetEventLogEntriesAsync();
                 await machinesViewModel.GetMachinesAsync();
                 await usersViewModel.GetUsersAsync();
