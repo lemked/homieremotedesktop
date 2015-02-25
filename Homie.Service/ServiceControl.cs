@@ -7,12 +7,14 @@ using System.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.ServiceModel.Security;
 using System.ServiceProcess;
 using System.Threading.Tasks;
 using Homie.Common;
 using Homie.Common.Interfaces;
 using Homie.Common.Logging;
 using Homie.Common.WebService;
+using Homie.Model;
 using Homie.Model.Logging;
 using Homie.Service.Properties;
 
@@ -123,6 +125,13 @@ namespace Homie.Service
             Log.Info(Resources.Properties.Resources.ServiceIsUpAndRunning);
         }
 
+        private void SetCredentialsStore()
+        {
+            IUserDataSource userDataSource = new DbUserDataSource(); // TODO: Resolve dependency
+            serviceHost.Credentials.UserNameAuthentication.UserNamePasswordValidationMode = UserNamePasswordValidationMode.Custom;
+            serviceHost.Credentials.UserNameAuthentication.CustomUserNamePasswordValidator = new CredentialsValidator(userDataSource);
+        }
+
         private void AddServiceEndpoint()
         {
             Binding binding;
@@ -134,6 +143,7 @@ namespace Homie.Service
                     break;
                 case AuthenticationMode.Credentials:
                     binding = new BasicHttpBinding(BasicHttpSecurityMode.TransportCredentialOnly);
+                    SetCredentialsStore();
                     break;
                 case AuthenticationMode.Certificate:
                     binding = new BasicHttpsBinding(BasicHttpsSecurityMode.Transport);
@@ -142,6 +152,7 @@ namespace Homie.Service
                 case AuthenticationMode.CertificateAndCredentials:
                     binding = new BasicHttpsBinding(BasicHttpsSecurityMode.TransportWithMessageCredential);
                     ImportCertifcate();
+                    SetCredentialsStore();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(Resources.Properties.Resources.UnsupportedAuthenticationMode);

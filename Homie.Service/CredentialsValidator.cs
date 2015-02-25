@@ -1,25 +1,46 @@
 ﻿using System;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
-using System.ServiceModel;
+using System.Linq;
+using Homie.Common;
+using Homie.Model;
 
 namespace Homie.Service
 {
-    class CredentialsValidator: UserNamePasswordValidator
+    public class CredentialsValidator: UserNamePasswordValidator
     {
-        public override void Validate(string userName, string password)
+        private readonly IUserDataSource userDataSource;
+        public CredentialsValidator(IUserDataSource userDataSource)
         {
-            if (userName == null || password == null)
+            this.userDataSource = userDataSource;
+        }
+        /// <summary>
+        /// Validates the specified username and password.
+        /// </summary>
+        /// <param name="username">The username to validate.</param>
+        /// <param name="password">The password to validate.</param>
+        /// <exception cref="System.ArgumentNullException"></exception>
+        /// <exception cref="System.IdentityModel.Tokens.SecurityTokenValidationException">
+        /// </exception>
+        public override void Validate(string username, string password)
+        {
+            if (username == null || password == null)
             {
                 throw new ArgumentNullException();
             }
 
-            throw new NotImplementedException();
+            // Check if an user with the same name already exists.
+            User user = this.userDataSource.GetAllUsers().SingleOrDefault(item => item.Username == username);
+            if (user == null)
+            {
+                throw new SecurityTokenValidationException(String.Format(Resources.Properties.Resources.UsernameDoesNotExist, username));
+            }
 
-//            if (!(userName == "admin" && password == "admin"))
-//            {
-//                throw new FaultException("Password or name is wrong");
-//            }
+            var passwordHash = new PasswordHash(user.PasswordHash);
+            if (!passwordHash.Verify(password))
+            {
+                throw new SecurityTokenValidationException(Resources.Properties.Resources.InvalidPassword);
+            }
         }
     }
 }
