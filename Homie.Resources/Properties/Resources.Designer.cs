@@ -295,6 +295,15 @@ namespace Homie.Resources.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid password.
+        /// </summary>
+        public static string InvalidPassword {
+            get {
+                return ResourceManager.GetString("InvalidPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Last name.
         /// </summary>
         public static string LastName {
@@ -561,6 +570,15 @@ namespace Homie.Resources.Properties {
         public static string ServiceWasStopped {
             get {
                 return ResourceManager.GetString("ServiceWasStopped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string Settings {
+            get {
+                return ResourceManager.GetString("Settings", resourceCulture);
             }
         }
         

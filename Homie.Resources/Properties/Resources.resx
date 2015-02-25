@@ -327,4 +327,10 @@
   <data name="UserSuccessfullyUpdated" xml:space="preserve">
     <value>User "{0}" was successfully updated.</value>
   </data>
+  <data name="InvalidPassword" xml:space="preserve">
+    <value>Invalid password</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
 </root>
