@@ -258,13 +258,13 @@ namespace Homie.Admin.ViewModel
             if (authenticationMode == AuthenticationMode.Credentials ||
                 authenticationMode == AuthenticationMode.CertificateAndCredentials)
             {
-                if (string.IsNullOrEmpty(Settings.Default.Username) || string.IsNullOrEmpty(Settings.Default.Password))
+                if (string.IsNullOrEmpty(Settings.Default.Username) || Settings.Default.PasswordHash == null || string.IsNullOrEmpty(Settings.Default.PasswordHash.ToString()))
                 {
                     throw new ArgumentException("Invalid username or password. Please review your settings.");
                 }
 
                 factory.Username = Settings.Default.Username;
-                factory.Password = Settings.Default.Password;
+                factory.Password = Settings.Default.PasswordHash.ToString();
             }
 
             machineControlService = factory.Create<IMachineControlService>();

@@ -33,7 +33,7 @@
                     <DataTemplate DataType="{x:Type local:UsersViewModel}">
                         <user:UsersView />
                     </DataTemplate>
-                    <DataTemplate DataType="{x:Type view:SettingsViewModel}">
+                    <DataTemplate DataType="{x:Type local:SettingsViewModel}">
                         <view:ConnectionSettingsView />
                     </DataTemplate>
                 </ResourceDictionary>
