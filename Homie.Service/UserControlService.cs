@@ -10,7 +10,12 @@ namespace Homie.Service
 {
     public class UserControlService : IUserControlService
     {
-        private readonly IUserDataSource dataSource = new DbUserDataSource();
+        private readonly IUserDataSource dataSource;
+
+        public UserControlService(IUserDataSource userDataSource)
+        {
+            this.dataSource = userDataSource;
+        }
 
         public async Task<int> AddUserAsync(User user)
         {

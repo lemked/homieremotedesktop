@@ -16,7 +16,12 @@ namespace Homie.Service
 {
     public class MachineControlService : IMachineControlService
     {
-        private readonly IMachineDataSource machineDataSource = new DbMachineDataSource();
+        private readonly IMachineDataSource machineDataSource;
+
+        public MachineControlService(IMachineDataSource machineDataSource)
+        {
+            this.machineDataSource = machineDataSource;
+        }
 
         public async Task<int> AddMachineAsync(Machine machine)
         {
