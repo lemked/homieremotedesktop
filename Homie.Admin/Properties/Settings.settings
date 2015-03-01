@@ -2,9 +2,6 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Homie.Admin.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="ServerAddress" Type="System.String" Scope="User">
-      <Value Profile="(Default)">surface</Value>
-    </Setting>
     <Setting Name="ServerPort" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">8730</Value>
     </Setting>
@@ -16,12 +13,6 @@
     </Setting>
     <Setting Name="LogLevel" Type="Homie.Model.Logging.LogLevel" Scope="User">
       <Value Profile="(Default)">Info</Value>
-    </Setting>
-    <Setting Name="Username" Type="System.String" Scope="User">
-      <Value Profile="(Default)">admin</Value>
-    </Setting>
-    <Setting Name="PasswordHash" Type="System.Byte" Scope="User">
-      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="CertificateFilePath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />

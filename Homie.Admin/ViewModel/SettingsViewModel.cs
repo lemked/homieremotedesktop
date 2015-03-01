@@ -9,27 +9,7 @@ namespace Homie.Admin.ViewModel
     {
 
         #region Properties
-
-        /// <summary>
-        /// Gets or sets the server address.
-        /// </summary>
-        /// <value>
-        /// The server address.
-        /// </value>
-        public string ServerAddress
-        {
-            get
-            {
-                return Properties.Settings.Default.ServerAddress;
-            }
-            set
-            {
-
-                Properties.Settings.Default.ServerAddress = value;
-                base.OnPropertyChanged();
-            }
-        }
-
+        
         /// <summary>
         /// Gets or sets the server port.
         /// </summary>
@@ -83,50 +63,6 @@ namespace Homie.Admin.ViewModel
             set
             {
                 Properties.Settings.Default.CertificateFilePath = value;
-            }
-        }
-
-
-        /// <summary>
-        /// Gets or sets the username.
-        /// </summary>
-        /// <value>
-        /// The username.
-        /// </value>
-        public string Username
-        {
-            get
-            {
-                return Properties.Settings.Default.Username;
-            }
-            set
-            {
-                Properties.Settings.Default.Username = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the password.
-        /// </summary>
-        /// <value>
-        /// The password.
-        /// </value>
-        public string Password
-        {
-            get
-            {
-                if (Properties.Settings.Default.PasswordHash != null)
-                {
-                    return Properties.Settings.Default.PasswordHash.ToString();
-                }
-
-                return string.Empty;
-            }
-            set
-            {
-                var passwordHash = new PasswordHash(value);
-                byte[] hashBytes = passwordHash.ToArray();
-                Properties.Settings.Default.PasswordHash = hashBytes;
             }
         }
 

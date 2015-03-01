@@ -1,20 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ServiceModel;
-using System.ServiceModel.Security;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
-using MVVMLib;
-using MVVMLib.ViewModel;
-using MVVMLib.Dialog.Service;
-
-using Homie.Common.Interfaces;
-using Homie.Model;
 using Homie.Admin.Properties;
-using Homie.Admin.View;
+using Homie.Common.Interfaces;
 using Homie.Common.Logging;
-using Homie.Common.WebService;
+using Homie.Model;
+
+using MVVMLib;
+using MVVMLib.Dialog.Service;
+using MVVMLib.ViewModel;
 
 namespace Homie.Admin.ViewModel
 {
@@ -126,19 +121,6 @@ namespace Homie.Admin.ViewModel
         #endregion Properties
 
         #region Commands
-
-        public ICommand ReconnectCommand
-        {
-            get
-            {
-                if (reconnectCommand == null)
-                {
-                    reconnectCommand = new RelayCommand(action => ConnectToServer());
-                }
-                return reconnectCommand;
-            }
-        }
-
         public ICommand ShowSettingsCommand
         {
             get
@@ -218,119 +200,9 @@ namespace Homie.Admin.ViewModel
             Log.Register(textLogger);
 
             settingsViewModel = new SettingsViewModel();
-
-            CreateChannelsAndAssignToViewModels();
-            ConnectToServer();
         }
 
         #endregion Constructor
-
-        #region Methods
-
-        private void CreateChannelsAndAssignToViewModels()
-        {
-            HttpBindingBase binding;
-
-            AuthenticationMode authenticationMode = Settings.Default.AuthenticationMode;
-            switch (authenticationMode)
-            {
-                case AuthenticationMode.None:
-                    binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
-                    break;
-                case AuthenticationMode.Credentials:
-                    binding = new BasicHttpBinding(BasicHttpSecurityMode.TransportCredentialOnly);
-                    break;
-                case AuthenticationMode.Certificate:
-                    binding = new BasicHttpsBinding(BasicHttpsSecurityMode.Transport);
-                    break;
-                case AuthenticationMode.CertificateAndCredentials:
-                    binding = new BasicHttpsBinding(BasicHttpsSecurityMode.TransportWithMessageCredential);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException("Unsupported authentication mode");
-            }
-
-            binding.MaxReceivedMessageSize = 5242880;
-
-            var factory = new WebServiceFactory(binding, Settings.Default.ServerAddress, Settings.Default.ServerPort, Settings.Default.ServiceEndPoint);
-            
-            // For these authentication modes, credentials have to be set for the factory.
-            if (authenticationMode == AuthenticationMode.Credentials ||
-                authenticationMode == AuthenticationMode.CertificateAndCredentials)
-            {
-                if (string.IsNullOrEmpty(Settings.Default.Username) || Settings.Default.PasswordHash == null || string.IsNullOrEmpty(Settings.Default.PasswordHash.ToString()))
-                {
-                    throw new ArgumentException("Invalid username or password. Please review your settings.");
-                }
-
-                factory.Username = Settings.Default.Username;
-                factory.Password = Settings.Default.PasswordHash.ToString();
-            }
-
-            machineControlService = factory.Create<IMachineControlService>();
-            userControlService = factory.Create<IUserControlService>();
-            serviceLogProvider = factory.Create<IServiceLogProvider>();
-
-            eventLogViewModel = new EventLogViewModel(serviceLogProvider);
-            machinesViewModel = new MachinesViewModel(dialogService, machineControlService);
-            usersViewModel = new UsersViewModel(dialogService, userControlService);
-        }
-
-        private async void ConnectToServer(bool faulted = false, int failCount = 0)
-        {
-            // If already faulted, wait a moment before trying again.
-            if (faulted && failCount < 10)
-            {
-                await Task.Delay(1000);
-
-                // Recreate the channels.
-                CreateChannelsAndAssignToViewModels();
-            }
-            else if (faulted)
-            {
-                // If maximum retry count reached, do not try again.
-                StatusMessage = Resources.Properties.Resources.ConnectionFailed;
-                return;
-            }
-
-            try
-            {
-                // Connect to the server and retrieve the data.
-                IsConnected = false;
-                StatusMessage = Resources.Properties.Resources.ConnectingToServer;
-
-                // If connected, retrieve the data.
-                await eventLogViewModel.GetEventLogEntriesAsync();
-                await machinesViewModel.GetMachinesAsync();
-                await usersViewModel.GetUsersAsync();
-
-                // Show the event log as default view.
-                CurrentViewModel = eventLogViewModel;
-
-                StatusMessage = "Connected to server.";
-                IsConnected = true;
-            }
-            catch (EndpointNotFoundException exception) // e.g. server not found / service not running
-            {
-                Log.Exception(exception);
-                LastException = exception;
-                ConnectToServer(true, failCount+1);
-            }
-            catch (CommunicationObjectFaultedException exception)
-            {
-                Log.Exception(exception);
-                LastException = exception;
-                ConnectToServer(true, failCount+1);
-            }
-            catch (CommunicationException exception) // e.g. connection aborted
-            {
-                Log.Exception(exception);
-                LastException = exception;
-                ConnectToServer(true, failCount+1);
-            }
-        }
-
-        #endregion Methods
     }
 
 
