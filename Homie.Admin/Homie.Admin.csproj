@@ -115,8 +115,8 @@
     <Compile Include="ViewModel\MachineDetailsViewModel.cs" />
     <Compile Include="ViewModel\MachinesViewModel.cs" />
     <Compile Include="ViewModel\MachineWindowViewModelBase.cs" />
-    <Compile Include="View\ConnectionSettingsView.xaml.cs">
-      <DependentUpon>ConnectionSettingsView.xaml</DependentUpon>
+    <Compile Include="View\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Machine\AddMachineWindow.xaml.cs">
       <DependentUpon>AddMachineWindow.xaml</DependentUpon>
@@ -150,7 +150,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ConnectionSettingsView.xaml">
+    <Page Include="View\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
