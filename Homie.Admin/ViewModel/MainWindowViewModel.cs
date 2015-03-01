@@ -6,7 +6,7 @@ using Homie.Admin.Properties;
 using Homie.Common.Interfaces;
 using Homie.Common.Logging;
 using Homie.Model;
-
+using Homie.Model.Logging;
 using MVVMLib;
 using MVVMLib.Dialog.Service;
 using MVVMLib.ViewModel;
@@ -198,6 +198,11 @@ namespace Homie.Admin.ViewModel
             ILogger textLogger = new FileLogger();
             textLogger.LogLevel = Settings.Default.LogLevel;
             Log.Register(textLogger);
+
+            // Service log
+            IServiceLogDataSource serviceLogDataSource = new DbServiceLogDataSource(); // TODO: Use DI container 
+            serviceLogProvider = new ServiceLogProvider(serviceLogDataSource);
+            eventLogViewModel = new EventLogViewModel(serviceLogProvider);
 
             settingsViewModel = new SettingsViewModel();
         }

@@ -6,6 +6,7 @@
       xmlns:wpf="clr-namespace:Homie.Common.WPF;assembly=Homie.Common"
       xmlns:src="clr-namespace:Homie.Common;assembly=Homie.Common"
       xmlns:globalization="clr-namespace:System.Globalization;assembly=mscorlib"
+      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300">
 
@@ -26,6 +27,13 @@
 
     
     <Grid>
+
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="Loaded">
+                <i:InvokeCommandAction Command="{Binding LoadEntriesCommand}"/>
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
+
         <ListView 
             ItemsSource="{Binding EventLogEntries}" 
             VirtualizingStackPanel.IsVirtualizing="True"

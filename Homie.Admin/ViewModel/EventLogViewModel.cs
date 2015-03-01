@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-
+using System.Windows.Input;
 using MVVMLib.ViewModel;
 
 using Homie.Common.Interfaces;
@@ -20,6 +20,14 @@ namespace Homie.Admin.ViewModel
         public EventLogViewModel(IServiceLogProvider serviceLogProvider)
         {
             this.serviceLogProvider = serviceLogProvider;
+        }
+
+        public ICommand LoadEntriesCommand
+        {
+            get
+            {
+                return new RelayCommand(action => GetEventLogEntriesAsync());
+            }
         }
 
         public async Task GetEventLogEntriesAsync()
