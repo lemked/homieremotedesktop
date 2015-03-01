@@ -40,6 +40,14 @@ namespace Homie.Admin.ViewModel
 
         #region Commands
 
+        public ICommand LoadUsersCommand
+        {
+            get
+            {
+                return new RelayCommand(action => GetUsersAsync());
+            }
+        }
+
         private RelayCommand addUserCommand;
 
         public ICommand AddUserCommand

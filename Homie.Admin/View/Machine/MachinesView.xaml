@@ -21,6 +21,13 @@
     </UserControl.Resources>
 
     <Grid>
+
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="Loaded">
+                <i:InvokeCommandAction Command="{Binding LoadMachinesCommand}"/>
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
+
         <DockPanel>
             <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0,5,0,0">
                 <Button Content="{x:Static localization:Resources.Add}" Style="{StaticResource DefaultButtonStyle}" Command="{Binding Path=AddMachineCommand}" />

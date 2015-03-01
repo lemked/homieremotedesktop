@@ -7,6 +7,7 @@ using Homie.Common.Interfaces;
 using Homie.Common.Logging;
 using Homie.Model;
 using Homie.Model.Logging;
+using Homie.Service;
 using MVVMLib;
 using MVVMLib.Dialog.Service;
 using MVVMLib.ViewModel;
@@ -17,20 +18,14 @@ namespace Homie.Admin.ViewModel
     {
         #region Fields
 
-        private readonly IDialogService dialogService;
-
         private List<Machine> machines = new List<Machine>();
-        private IMachineControlService machineControlService;
-        private IUserControlService userControlService;
-        private IServiceLogProvider serviceLogProvider;
 
         private IViewModel currentViewModel;
-        private EventLogViewModel eventLogViewModel;
-        private UsersViewModel usersViewModel;
-        private MachinesViewModel machinesViewModel;
-        private SettingsViewModel settingsViewModel;
+        private readonly EventLogViewModel eventLogViewModel;
+        private readonly UsersViewModel usersViewModel;
+        private readonly MachinesViewModel machinesViewModel;
+        private readonly SettingsViewModel settingsViewModel;
 
-        private RelayCommand reconnectCommand;
         private RelayCommand showSettingsCommand;
         private RelayCommand showMachinesCommand;
         private RelayCommand showUsersCommand;
@@ -192,8 +187,6 @@ namespace Homie.Admin.ViewModel
         /// <author>Daniel Lemke - lemked@web.de</author>
         public MainWindowViewModel(IDialogService dialogService)
         {
-            this.dialogService = dialogService;
-
             // Configure default logger
             ILogger textLogger = new FileLogger();
             textLogger.LogLevel = Settings.Default.LogLevel;
@@ -201,8 +194,18 @@ namespace Homie.Admin.ViewModel
 
             // Service log
             IServiceLogDataSource serviceLogDataSource = new DbServiceLogDataSource(); // TODO: Use DI container 
-            serviceLogProvider = new ServiceLogProvider(serviceLogDataSource);
+            IServiceLogProvider serviceLogProvider = new ServiceLogProvider(serviceLogDataSource);
             eventLogViewModel = new EventLogViewModel(serviceLogProvider);
+
+            // Users
+            IUserDataSource userDataSource = new DbUserDataSource();
+            IUserControlService userControlService = new UserControlService(userDataSource);
+            usersViewModel = new UsersViewModel(dialogService, userControlService);
+
+            // Users
+            IMachineDataSource machinedaDataSource = new DbMachineDataSource();
+            IMachineControlService machineControlService = new MachineControlService(machinedaDataSource);
+            machinesViewModel = new MachinesViewModel(dialogService, machineControlService);
 
             settingsViewModel = new SettingsViewModel();
         }

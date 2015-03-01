@@ -246,6 +246,10 @@
       <Project>{5141880d-0642-4605-a391-dcb6832fb097}</Project>
       <Name>Homie.Resources</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Homie.Service\Homie.Service.csproj">
+      <Project>{A3AC98C1-9971-4871-B442-A0B250958736}</Project>
+      <Name>Homie.Service</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MVVMLib\MVVMLib.csproj">
       <Project>{18b3e87e-1ad2-42e8-99de-94854247b6ef}</Project>
       <Name>MVVMLib</Name>

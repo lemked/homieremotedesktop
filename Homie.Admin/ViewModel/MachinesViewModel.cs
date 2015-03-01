@@ -40,6 +40,14 @@ namespace Homie.Admin.ViewModel
 
         #region Commands
 
+        public ICommand LoadMachinesCommand
+        {
+            get
+            {
+                return new RelayCommand(action => GetMachinesAsync());
+            }
+        }
+
         private RelayCommand addMachineCommand;
 
         public ICommand AddMachineCommand
