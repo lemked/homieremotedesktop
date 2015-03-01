@@ -21,6 +21,22 @@
     </UserControl.Resources>
 
     <StackPanel Orientation="Vertical">
+        <GroupBox Header="Server Address" Style="{StaticResource DefaultGroupBoxStyle}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Text="{x:Static localization:Resources.Port}" />
+                <TextBox Grid.Row="0" Grid.Column="1" Width="80" MinWidth="80" Style="{StaticResource DefaultTextBoxStyle}" 
+                         Text="{Binding ServerPort}"
+                         />
+            </Grid>
+        </GroupBox>
         <GroupBox Header="Authentication Mode" Style="{StaticResource DefaultGroupBoxStyle}">
             <StackPanel Orientation="Vertical">
                 <RadioButton IsChecked="{Binding Path=AuthenticationMode, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=None}" Content="{x:Static localization:Resources.NoAuthentication }" />
@@ -44,5 +60,6 @@
                 </Grid>
             </StackPanel>
         </GroupBox>
+        <Button Command="{Binding SaveSettingsCommand}" Margin="0,10,0,0" Content="{x:Static localization:Resources.Save}" Style="{StaticResource DefaultButtonStyle}" HorizontalAlignment="Right" />
     </StackPanel>
 </UserControl>

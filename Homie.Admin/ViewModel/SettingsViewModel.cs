@@ -76,15 +76,10 @@ namespace Homie.Admin.ViewModel
         {
             get
             {
-                if (saveSettingsCommand == null)
+                return saveSettingsCommand ?? (saveSettingsCommand = new RelayCommand(param =>
                 {
-                    saveSettingsCommand = new RelayCommand(param =>
-                    {
-                        this.SaveSettings();
-                        DialogResult = true; // Closes the dialog.
-                    });
-                }
-                return saveSettingsCommand;
+                    this.SaveSettings(); // TODO: Enable button only if a setting has changed
+                }));
             }
         }
 
