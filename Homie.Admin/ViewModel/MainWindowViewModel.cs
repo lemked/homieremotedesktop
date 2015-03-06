@@ -198,12 +198,12 @@ namespace Homie.Admin.ViewModel
             eventLogViewModel = new EventLogViewModel(serviceLogProvider);
 
             // Users
-            IUserDataSource userDataSource = new DbUserDataSource();
+            IUserDataSource userDataSource = new DbUserDataSource(); // TODO: Use DI container 
             IUserControlService userControlService = new UserControlService(userDataSource);
             usersViewModel = new UsersViewModel(dialogService, userControlService);
 
             // Users
-            IMachineDataSource machinedaDataSource = new DbMachineDataSource();
+            IMachineDataSource machinedaDataSource = new DbMachineDataSource(); // TODO: Use DI container 
             IMachineControlService machineControlService = new MachineControlService(machinedaDataSource);
             machinesViewModel = new MachinesViewModel(dialogService, machineControlService);
 
