@@ -25,17 +25,6 @@ namespace Homie.Service.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::Homie.Model.Machines Machines {
-            get {
-                return ((global::Homie.Model.Machines)(this["Machines"]));
-            }
-            set {
-                this["Machines"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("8730")]
         public int ListenPort {
             get {
