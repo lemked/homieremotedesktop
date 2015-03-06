@@ -27,6 +27,8 @@ namespace Homie.Service
 
         private ServiceHost serviceHost;
 
+        private IServiceSettingsProvider serviceSettingsProvider;
+
         public ServiceControl()
         {
             // Name the Windows Service
@@ -36,6 +38,11 @@ namespace Homie.Service
             ILogger dbLogger = new DbLogger();
             dbLogger.LogLevel = LogLevel.Info;
             Log.Register(dbLogger);
+        }
+
+        public ServiceControl(IServiceSettingsProvider serviceSettingsProvider) : this()
+        {
+            this.serviceSettingsProvider = serviceSettingsProvider;
         }
 
         /// <summary>
@@ -73,8 +80,8 @@ namespace Homie.Service
                     return;
                 }
             }
-            
-            Run(new ServiceControl());
+
+            Run(new ServiceControl(Properties.Settings.Default)); // TODO: Use DI container
         }
 
         private static void TaskSchedulerUnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
@@ -97,7 +104,7 @@ namespace Homie.Service
             Log.Register(consoleLogger);
 
             Log.Info(Resources.Properties.Resources.ServiceStartedWith, NoServiceArgument);
-            var lServiceControl = new ServiceControl();
+            var lServiceControl = new ServiceControl(Properties.Settings.Default); // TODO: Use DI container
             lServiceControl.OnStart(new string[0]);
 
             Console.WriteLine(@"Service started, press any key to finish execution.");
@@ -136,7 +143,7 @@ namespace Homie.Service
         {
             Binding binding;
 
-            switch (Settings.Default.AuthenticationMode)
+            switch (serviceSettingsProvider.AuthenticationMode)
             {
                 case AuthenticationMode.None:
                     binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
@@ -167,9 +174,9 @@ namespace Homie.Service
             var baseAddress = new Uri(String.Format(
                 Constants.WebServiceUrlTemplate,
                 protocol,
-                Settings.Default.Hostname,
-                Settings.Default.ListenPort,
-                Settings.Default.EndPoint));
+                serviceSettingsProvider.Hostname,
+                serviceSettingsProvider.ListenPort,
+                serviceSettingsProvider.EndPoint));
 
             Log.Debug("Adding service endpoints ...");
 
@@ -188,9 +195,9 @@ namespace Homie.Service
 
         private void ImportCertifcate()
         {
-            if (Directory.Exists(Settings.Default.CertificateDirectoryName))
+            if (Directory.Exists(serviceSettingsProvider.CertificateDirectoryName))
             {
-                var certificates = Directory.GetFiles(Settings.Default.CertificateDirectoryName, "*.cer", SearchOption.TopDirectoryOnly);
+                var certificates = Directory.GetFiles(serviceSettingsProvider.CertificateDirectoryName, "*.cer", SearchOption.TopDirectoryOnly);
                 if (certificates.Length > 0)
                 {
                     // Load the certificate into an X509Certificate object.
@@ -203,17 +210,17 @@ namespace Homie.Service
             }
 
             // Attach a Certificate from the Certificate Store to the HTTP Binding using the specified Thumbprint
-            if (!string.IsNullOrEmpty(Settings.Default.CertificateThumbprint))
+            if (!string.IsNullOrEmpty(serviceSettingsProvider.CertificateThumbprint))
             {
                 try
                 {
-                    serviceHost.Credentials.ServiceCertificate.SetCertificate(StoreLocation.LocalMachine, StoreName.My, X509FindType.FindByThumbprint, Settings.Default.CertificateThumbprint);
-                    Log.Info(string.Format("Imported certificate with Thumbprint \"{0}\" from Certificate Store.", Settings.Default.CertificateThumbprint));
+                    serviceHost.Credentials.ServiceCertificate.SetCertificate(StoreLocation.LocalMachine, StoreName.My, X509FindType.FindByThumbprint, serviceSettingsProvider.CertificateThumbprint);
+                    Log.Info(string.Format("Imported certificate with Thumbprint \"{0}\" from Certificate Store.", serviceSettingsProvider.CertificateThumbprint));
                     return;
                 }
                 catch (FormatException exception)
                 {
-                    throw new SecurityException(string.Format(Resources.Properties.Resources.ServiceControl_ImportCertifcate_Not_a_valid_certificate_thumbprint, Settings.Default.CertificateThumbprint), exception);
+                    throw new SecurityException(string.Format(Resources.Properties.Resources.ServiceControl_ImportCertifcate_Not_a_valid_certificate_thumbprint, serviceSettingsProvider.CertificateThumbprint), exception);
                 }
             }
 
