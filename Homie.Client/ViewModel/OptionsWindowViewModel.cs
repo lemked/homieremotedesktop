@@ -3,6 +3,7 @@ using System.Windows.Input;
 using Homie.Common;
 using Homie.Common.WebService;
 using MVVMLib.ViewModel;
+using Homie.Model;
 
 namespace Homie.Client.ViewModel
 {

@@ -36,11 +36,13 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AuthenticationMode.cs" />
     <Compile Include="DatabaseContext.cs" />
     <Compile Include="DbMachineDataSource.cs" />
     <Compile Include="DbUserDataSource.cs" />
     <Compile Include="IMachineDataSource.cs" />
     <Compile Include="IMachineProvider.cs" />
+    <Compile Include="IServiceSettingsProvider.cs" />
     <Compile Include="IUserDataSource.cs" />
     <Compile Include="Logging\IServiceLogDataSource.cs" />
     <Compile Include="Logging\LogLevel.cs" />
@@ -53,6 +55,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Protocol.cs" />
     <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>

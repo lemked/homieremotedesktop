@@ -50,9 +50,9 @@ namespace Homie.Admin.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("None")]
-        public global::Homie.Common.WebService.AuthenticationMode AuthenticationMode {
+        public global::Homie.Model.AuthenticationMode AuthenticationMode {
             get {
-                return ((global::Homie.Common.WebService.AuthenticationMode)(this["AuthenticationMode"]));
+                return ((global::Homie.Model.AuthenticationMode)(this["AuthenticationMode"]));
             }
             set {
                 this["AuthenticationMode"] = value;

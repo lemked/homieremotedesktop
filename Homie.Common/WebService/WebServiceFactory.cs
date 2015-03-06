@@ -2,6 +2,7 @@
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using Homie.Common.Interfaces;
+using Homie.Model;
 
 namespace Homie.Common.WebService
 {

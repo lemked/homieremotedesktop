@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Homie.Common.WebService
+namespace Homie.Model
 {
     public enum Protocol
     {

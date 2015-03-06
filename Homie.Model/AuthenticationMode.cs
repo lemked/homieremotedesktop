@@ -1,4 +1,4 @@
-﻿namespace Homie.Common.WebService
+﻿namespace Homie.Model
 {
     /// <summary>
     /// Defines the available authentication modes.
