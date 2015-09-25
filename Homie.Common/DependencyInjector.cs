@@ -104,7 +104,11 @@ namespace Homie.Common
 					return services[type].ServiceImplementation;
 				}
 
-				ConstructorInfo ctor = type.GetConstructors().First();
+				ConstructorInfo ctor = type.GetConstructors().FirstOrDefault();
+                if (ctor == null)
+                {
+                    throw new InvalidOperationException(string.Format("Cannot resolve type {0}. Did you forget a mapping?", type.Name));
+                }
 
 				var parameters =
 					from parameter in ctor.GetParameters()
