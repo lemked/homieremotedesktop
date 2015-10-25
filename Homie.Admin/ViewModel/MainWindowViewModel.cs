@@ -8,6 +8,7 @@ using Homie.Common.Logging;
 using Homie.Model;
 using Homie.Model.Logging;
 using Homie.Service;
+using Homie.Service.Settings;
 using MVVMLib;
 using MVVMLib.Dialog.Service;
 using MVVMLib.ViewModel;
@@ -207,7 +208,9 @@ namespace Homie.Admin.ViewModel
             IMachineControlService machineControlService = new MachineControlService(machinedaDataSource);
             machinesViewModel = new MachinesViewModel(dialogService, machineControlService);
 
-            settingsViewModel = new SettingsViewModel();
+            // Settings
+            IServiceSettingsProvider serviceSettingsProvider = new DbServiceSettingsProvider();
+            settingsViewModel = new SettingsViewModel(serviceSettingsProvider);
         }
 
         #endregion Constructor

@@ -38,17 +38,19 @@
   <ItemGroup>
     <Compile Include="AuthenticationMode.cs" />
     <Compile Include="DatabaseContext.cs" />
+    <Compile Include="DatabaseDatasource.cs" />
     <Compile Include="DatabaseInitializer.cs" />
     <Compile Include="DbMachineDataSource.cs" />
     <Compile Include="DbUserDataSource.cs" />
+    <Compile Include="IEntityWithId.cs" />
     <Compile Include="IMachineDataSource.cs" />
     <Compile Include="IMachineProvider.cs" />
-    <Compile Include="IServiceSettingsProvider.cs" />
     <Compile Include="IUserDataSource.cs" />
     <Compile Include="Logging\IServiceLogDataSource.cs" />
     <Compile Include="Logging\LogLevel.cs" />
     <Compile Include="Logging\LogMessage.cs" />
     <Compile Include="Logging\DbServiceLogDataSource.cs" />
+    <Compile Include="Setting.cs" />
     <Compile Include="Machine.cs" />
     <Compile Include="Machines.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

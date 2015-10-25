@@ -1,4 +1,5 @@
 ﻿using Homie.Model;
+using Homie.Service.Settings;
 
 namespace Homie.Service.Properties {
     
@@ -8,7 +9,7 @@ namespace Homie.Service.Properties {
     //  The PropertyChanged event is raised after a setting's value is changed.
     //  The SettingsLoaded event is raised after the setting values are loaded.
     //  The SettingsSaving event is raised before the setting values are saved.
-    internal sealed partial class Settings : IServiceSettingsProvider {
+    internal sealed partial class Settings {
         
         public Settings() {
             // // To add event handlers for saving and changing settings, uncomment the lines below:

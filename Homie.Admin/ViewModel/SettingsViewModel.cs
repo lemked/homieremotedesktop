@@ -1,31 +1,35 @@
 ﻿using System.Windows.Input;
-using Homie.Common;
-using Homie.Common.WebService;
 using MVVMLib.ViewModel;
 using Homie.Model;
+using Homie.Model.Logging;
+using Homie.Service.Settings;
 
 namespace Homie.Admin.ViewModel
 {
     public class SettingsViewModel : DialogViewModelBase
     {
+        private IServiceSettingsProvider serviceSettingsProvider;
+        private ServiceSettings settings;
 
         #region Properties
-        
+
+        public LogLevel LogLevel { get; set; }
+
         /// <summary>
-        /// Gets or sets the server port.
+        /// Gets or sets the port the service is lisenting on.
         /// </summary>
         /// <value>
         /// The server port.
         /// </value>
-        public int ServerPort
+        public int ListenPort
         {
             get
             {
-                return Properties.Settings.Default.ServerPort;
+                return serviceSettingsProvider.GetSettings().ListenPort;
             }
             set
             {
-                Properties.Settings.Default.ServerPort = value;
+                settings.ListenPort = value;
                 base.OnPropertyChanged();
             }
         }
@@ -40,14 +44,17 @@ namespace Homie.Admin.ViewModel
         {
             get
             {
-                return Properties.Settings.Default.AuthenticationMode;
+                return settings.AuthenticationMode;
             }
             set
             {
-                Properties.Settings.Default.AuthenticationMode = value;
+                settings.AuthenticationMode = value;
                 base.OnPropertyChanged();
             }
         }
+
+        public string EndPoint { get; set; }
+        public string Hostname { get; set; }
 
         /// <summary>
         /// Gets or sets the certificate file path.
@@ -59,11 +66,11 @@ namespace Homie.Admin.ViewModel
         {
             get
             {
-                return Properties.Settings.Default.CertificateFilePath;
+                return settings.CertificateFilePath;
             }
             set
             {
-                Properties.Settings.Default.CertificateFilePath = value;
+                settings.CertificateFilePath = value;
             }
         }
 
@@ -90,9 +97,15 @@ namespace Homie.Admin.ViewModel
 
         #region Methods
 
+        public SettingsViewModel(IServiceSettingsProvider serviceSettingsProvider)
+        {
+            this.serviceSettingsProvider = serviceSettingsProvider;
+            settings = serviceSettingsProvider.GetSettings();
+        }
+
         private void SaveSettings()
         {
-            Properties.Settings.Default.Save();
+            serviceSettingsProvider.SaveSettings(settings);
         }
 
         #endregion Methods

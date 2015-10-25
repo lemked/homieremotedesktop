@@ -17,6 +17,7 @@ using Homie.Common.WebService;
 using Homie.Model;
 using Homie.Model.Logging;
 using Homie.Service.Properties;
+using Homie.Service.Settings;
 
 namespace Homie.Service
 {
@@ -27,7 +28,7 @@ namespace Homie.Service
 
         private ServiceHost serviceHost;
 
-        private IServiceSettingsProvider serviceSettingsProvider;
+        private readonly IServiceSettingsProvider serviceSettingsProvider;
 
         public ServiceControl()
         {
@@ -38,11 +39,9 @@ namespace Homie.Service
             ILogger dbLogger = new DbLogger();
             dbLogger.LogLevel = LogLevel.Info;
             Log.Register(dbLogger);
-        }
-
-        public ServiceControl(IServiceSettingsProvider serviceSettingsProvider) : this()
-        {
-            this.serviceSettingsProvider = serviceSettingsProvider;
+            
+            // Load the service settings 
+            serviceSettingsProvider = DependencyInjector.Resolve<IServiceSettingsProvider>();
         }
 
         /// <summary>
@@ -60,6 +59,8 @@ namespace Homie.Service
             DependencyInjector.Register<IServiceLogProvider, ServiceLogProvider>();
             DependencyInjector.Register<IMachineControlService, MachineControlService>();
             DependencyInjector.Register<IUserControlService, UserControlService>();
+            DependencyInjector.Register<IServiceSettingsProvider, DbServiceSettingsProvider>();
+
 
             // Configure default logger
             ILogger textLogger = new FileLogger();
@@ -81,7 +82,7 @@ namespace Homie.Service
                 }
             }
 
-            Run(new ServiceControl(Properties.Settings.Default)); // TODO: Use DI container
+            Run(new ServiceControl()); // TODO: Use DI container
         }
 
         private static void TaskSchedulerUnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
@@ -104,7 +105,7 @@ namespace Homie.Service
             Log.Register(consoleLogger);
 
             Log.Info(Resources.Properties.Resources.ServiceStartedWith, NoServiceArgument);
-            var lServiceControl = new ServiceControl(Properties.Settings.Default); // TODO: Use DI container
+            var lServiceControl = new ServiceControl();
             lServiceControl.OnStart(new string[0]);
 
             Console.WriteLine(@"Service started, press any key to finish execution.");
@@ -142,8 +143,9 @@ namespace Homie.Service
         private void AddServiceEndpoint()
         {
             Binding binding;
+            ServiceSettings settings = serviceSettingsProvider.GetSettings();
 
-            switch (serviceSettingsProvider.AuthenticationMode)
+            switch (settings.AuthenticationMode)
             {
                 case AuthenticationMode.None:
                     binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
@@ -174,9 +176,9 @@ namespace Homie.Service
             var baseAddress = new Uri(String.Format(
                 Constants.WebServiceUrlTemplate,
                 protocol,
-                serviceSettingsProvider.Hostname,
-                serviceSettingsProvider.ListenPort,
-                serviceSettingsProvider.EndPoint));
+                Environment.MachineName,
+                settings.ListenPort,
+                settings.EndPoint));
 
             Log.Debug("Adding service endpoints ...");
 
@@ -195,36 +197,19 @@ namespace Homie.Service
 
         private void ImportCertifcate()
         {
-            if (Directory.Exists(serviceSettingsProvider.CertificateDirectoryName))
-            {
-                var certificates = Directory.GetFiles(serviceSettingsProvider.CertificateDirectoryName, "*.cer", SearchOption.TopDirectoryOnly);
-                if (certificates.Length > 0)
-                {
-                    // Load the certificate into an X509Certificate object.
-                    X509Certificate cert = new X509Certificate();
-                    cert.Import(certificates[0]);
+            ServiceSettings settings = serviceSettingsProvider.GetSettings();
 
-                    Log.Info(string.Format("Imported certificate \"{0}\" from certificate directory.", cert.Subject));
-                    return;
-                }
+            if (!File.Exists(settings.CertificateFilePath))
+            {
+                throw new SecurityException(
+                    Resources.Properties.Resources.No_certificate_found__cannot_establish_a_secure_connection);
             }
 
-            // Attach a Certificate from the Certificate Store to the HTTP Binding using the specified Thumbprint
-            if (!string.IsNullOrEmpty(serviceSettingsProvider.CertificateThumbprint))
-            {
-                try
-                {
-                    serviceHost.Credentials.ServiceCertificate.SetCertificate(StoreLocation.LocalMachine, StoreName.My, X509FindType.FindByThumbprint, serviceSettingsProvider.CertificateThumbprint);
-                    Log.Info(string.Format("Imported certificate with Thumbprint \"{0}\" from Certificate Store.", serviceSettingsProvider.CertificateThumbprint));
-                    return;
-                }
-                catch (FormatException exception)
-                {
-                    throw new SecurityException(string.Format(Resources.Properties.Resources.ServiceControl_ImportCertifcate_Not_a_valid_certificate_thumbprint, serviceSettingsProvider.CertificateThumbprint), exception);
-                }
-            }
+            // Load the certificate into an X509Certificate object.
+            X509Certificate cert = new X509Certificate();
+            cert.Import(settings.CertificateFilePath);
 
-            throw new SecurityException(Resources.Properties.Resources.No_certificate_found__cannot_establish_a_secure_connection);
+            Log.Info($"Imported certificate \"{cert.Subject}\" from certificate directory.");
         }
         
         protected override void OnStop()

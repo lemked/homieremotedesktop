@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 
 namespace Homie.Model
 {
@@ -20,6 +21,11 @@ namespace Homie.Model
                 NameOrAddress = "machine1",
                 Port = 1234
             });
+
+            context.Settings.Add(new Setting {Key = "AuthenticationMode", Value = "None" });
+            context.Settings.Add(new Setting { Key = "CertificateFilePath", Value = "" });
+            context.Settings.Add(new Setting { Key = "EndPoint", Value = "HomieService" });
+            context.Settings.Add(new Setting { Key = "ListenPort", Value = "1234" });
 
             base.Seed(context);
         }

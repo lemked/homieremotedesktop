@@ -2,20 +2,8 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Homie.Admin.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="ServerPort" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">8730</Value>
-    </Setting>
-    <Setting Name="ServiceEndPoint" Type="System.String" Scope="User">
-      <Value Profile="(Default)">HomieServices</Value>
-    </Setting>
-    <Setting Name="AuthenticationMode" Type="Homie.Common.WebService.AuthenticationMode" Scope="User">
-      <Value Profile="(Default)">None</Value>
-    </Setting>
     <Setting Name="LogLevel" Type="Homie.Model.Logging.LogLevel" Scope="User">
-      <Value Profile="(Default)">Info</Value>
-    </Setting>
-    <Setting Name="CertificateFilePath" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">Debug</Value>
     </Setting>
   </Settings>
 </SettingsFile>

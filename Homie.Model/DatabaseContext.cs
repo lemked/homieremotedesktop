@@ -16,6 +16,11 @@ namespace Homie.Model
         }
 
         /// <summary>
+        /// Gets or sets the settings.
+        /// </summary>
+        public DbSet<Setting> Settings { get; set; }
+
+        /// <summary>
         /// Gets or sets the machines.
         /// </summary>
         /// <value>

@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:localization="clr-namespace:Homie.Resources.Properties;assembly=Homie.Resources"
              xmlns:converter="clr-namespace:MVVMLib.Converter;assembly=MVVMLib"
+             xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=PresentationFramework"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="400">
 
@@ -17,6 +18,15 @@
                 <ResourceDictionary Source="pack://application:,,,/Homie.Resources;component/Styles.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Homie.Resources;component/Images.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="{x:Type UserControl}">
+                <Style.Triggers>
+                    <Trigger Property="componentModel:DesignerProperties.IsInDesignMode"
+                 Value="true">
+                        <Setter Property="Background"
+                    Value="White" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -31,9 +41,12 @@
                     <ColumnDefinition Width="100" />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Text="{x:Static localization:Resources.Port}" />
-                <TextBox Grid.Row="0" Grid.Column="1" Width="80" MinWidth="80" Style="{StaticResource DefaultTextBoxStyle}" 
-                         Text="{Binding ServerPort}"
+                <TextBlock Grid.Row="0" Grid.Column="0" 
+                           VerticalAlignment="Center" Text="{x:Static localization:Resources.Port}" />
+                <TextBox Grid.Row="0" Grid.Column="1" 
+                         Width="80" MinWidth="80"  
+                         Text="{Binding ListenPort}"
+                         Style="{StaticResource DefaultTextBoxStyle}"
                          />
             </Grid>
         </GroupBox>
