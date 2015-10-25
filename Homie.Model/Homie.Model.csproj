@@ -38,6 +38,7 @@
   <ItemGroup>
     <Compile Include="AuthenticationMode.cs" />
     <Compile Include="DatabaseContext.cs" />
+    <Compile Include="DatabaseInitializer.cs" />
     <Compile Include="DbMachineDataSource.cs" />
     <Compile Include="DbUserDataSource.cs" />
     <Compile Include="IMachineDataSource.cs" />

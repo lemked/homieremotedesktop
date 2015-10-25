@@ -10,6 +10,11 @@ namespace Homie.Model
     /// </summary>
     public class DatabaseContext : DbContext
     {
+        public DatabaseContext() :base("DatabaseContext")
+        {
+            Database.SetInitializer(new DatabaseInitializer());
+        }
+
         /// <summary>
         /// Gets or sets the machines.
         /// </summary>
