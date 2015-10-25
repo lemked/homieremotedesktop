@@ -60,7 +60,8 @@ namespace Homie.Service
             DependencyInjector.Register<IMachineControlService, MachineControlService>();
             DependencyInjector.Register<IUserControlService, UserControlService>();
             DependencyInjector.Register<IServiceSettingsProvider, DbServiceSettingsProvider>();
-
+            DependencyInjector.Register<IMachineDataSource, DbMachineDataSource>();
+            DependencyInjector.Register<IUserDataSource, DbUserDataSource>();
 
             // Configure default logger
             ILogger textLogger = new FileLogger();
