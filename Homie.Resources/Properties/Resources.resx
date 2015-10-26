@@ -268,7 +268,7 @@
     <value>No authentication</value>
   </data>
   <data name="FilePath" xml:space="preserve">
-    <value>Dateipfad</value>
+    <value>File path</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Password</value>
@@ -332,5 +332,8 @@
   </data>
   <data name="Settings" xml:space="preserve">
     <value>Settings</value>
+  </data>
+  <data name="Preview" xml:space="preserve">
+    <value>Preview</value>
   </data>
 </root>

@@ -58,7 +58,8 @@
                 <RadioButton Margin="0,8,0,0" IsChecked="{Binding Path=AuthenticationMode, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=CertificateAndCredentials}" Content="{x:Static localization:Resources.CredentialsAndCertificate }" />
             </StackPanel>
         </GroupBox>
-        <GroupBox Header="{x:Static localization:Resources.Certificate}" Style="{StaticResource DefaultGroupBoxStyle}">
+
+        <GroupBox IsEnabled="{Binding IsCertificateRequired}" Header="{x:Static localization:Resources.Certificate}" Style="{StaticResource DefaultGroupBoxStyle}">
             <StackPanel Orientation="Vertical">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -66,13 +67,19 @@
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="100" />
-                        <ColumnDefinition />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Text="{x:Static localization:Resources.FilePath}" />
-                    <TextBox Grid.Column="1" Grid.Row="0" Style="{StaticResource DefaultTextBoxStyle}" Text="{Binding CertificateFilePath}" />
+                    <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding CertificateFilePath}" Style="{StaticResource DefaultTextBoxStyle}" />
                 </Grid>
             </StackPanel>
         </GroupBox>
-        <Button Command="{Binding SaveSettingsCommand}" Margin="0,10,0,0" Content="{x:Static localization:Resources.Save}" Style="{StaticResource DefaultButtonStyle}" HorizontalAlignment="Right" />
+        
+        <Button 
+            Command="{Binding SaveSettingsCommand}" 
+            Margin="0,10,0,0" 
+            Content="{x:Static localization:Resources.Save}" 
+            Style="{StaticResource DefaultButtonStyle}" 
+            HorizontalAlignment="Right" />
     </StackPanel>
 </UserControl>

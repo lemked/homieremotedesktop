@@ -257,12 +257,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\bg_fill.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\bg.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\bg.jpg" />
   </ItemGroup>
   <ItemGroup>
