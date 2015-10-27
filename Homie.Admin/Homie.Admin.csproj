@@ -231,10 +231,6 @@
     <None Include="Resources\edit.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Homie.Common.UI\Homie.Common.UI.csproj">
-      <Project>{93a305a3-5614-4dc1-a403-f643ffa1d95d}</Project>
-      <Name>Homie.Common.UI</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Homie.Common\Homie.Common.csproj">
       <Project>{ad46a3b9-886a-41be-8081-23b01827ae57}</Project>
       <Name>Homie.Common</Name>
