@@ -29,11 +29,29 @@ namespace Homie.Common
         public static void ShowException(Exception pException)
         {
             var exception = UnwrapExceptionObject(pException);
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (Action) (() =>
+
+            if (!Application.Current.Dispatcher.CheckAccess())
             {
-                MessageBox.Show(String.Format("Unexpected error: {0}", exception.Message), Application.Current.MainWindow.GetType().Assembly.GetName().Name, MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-            }));
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (Action) (() =>
+                {
+                    ShowExceptionMessageDialog(exception.Message);
+                }));
+            }
+            else
+            {
+                ShowExceptionMessageDialog(exception.Message);
+            }
+        }
+
+        private static void ShowExceptionMessageDialog(string errorMessage)
+        {
+            MessageBox.Show
+            (
+                $"Unexpected error: {errorMessage}", 
+                Application.Current.MainWindow.GetType().Assembly.GetName().Name, 
+                MessageBoxButton.OK,
+                MessageBoxImage.Error
+            );
         }
     }
 }
