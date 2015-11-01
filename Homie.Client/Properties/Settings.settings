@@ -12,7 +12,7 @@
       <Value Profile="(Default)">8730</Value>
     </Setting>
     <Setting Name="ServiceEndPoint" Type="System.String" Scope="User">
-      <Value Profile="(Default)">HomieServices</Value>
+      <Value Profile="(Default)">HomieService</Value>
     </Setting>
     <Setting Name="AuthenticationMode" Type="Homie.Common.WebService.AuthenticationMode" Scope="User">
       <Value Profile="(Default)">None</Value>
