@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace Homie.Common.WPF
+namespace MVVMLib.Converter
 {
     public class WidthConverter : IValueConverter
     {
@@ -11,10 +11,9 @@ namespace Homie.Common.WPF
         public object Convert(object pObject, Type pType, object pArameter, CultureInfo pCulture)
         {
 
-            ListView lListView = pObject as ListView;
-            if (lListView == null) return null;
+            var lListView = pObject as ListView;
 
-            GridView lGridView = lListView.View as GridView;
+            var lGridView = lListView?.View as GridView;
             if (lGridView == null) return null;
 
 

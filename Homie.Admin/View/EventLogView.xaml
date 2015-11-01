@@ -7,6 +7,7 @@
       xmlns:src="clr-namespace:Homie.Common;assembly=Homie.Common"
       xmlns:globalization="clr-namespace:System.Globalization;assembly=mscorlib"
       xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+      xmlns:converter="clr-namespace:MVVMLib.Converter;assembly=MVVMLib"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300">
 
@@ -14,7 +15,7 @@
     <UserControl.Resources>
 
         <!-- Resource Mapper for determining the maximum column width (using WidthConverter class) -->
-        <wpf:WidthConverter x:Key="WidthConverterRes" />
+        <converter:WidthConverter x:Key="WidthConverterRes" />
         <!-- Alignment of the columns -->
         <DataTemplate x:Key="Alignment">
             <TextBlock HorizontalAlignment="Left" Text="{Binding}" Margin="3,0,0,0"/>

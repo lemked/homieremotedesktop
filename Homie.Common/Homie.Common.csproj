@@ -83,7 +83,6 @@
     <Compile Include="WebService\WebServiceFactory.cs" />
     <Compile Include="WPF\ListViewCustomComparer.cs" />
     <Compile Include="WPF\ListViewSorter.cs" />
-    <Compile Include="WPF\WidthConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Homie.Model\Homie.Model.csproj">

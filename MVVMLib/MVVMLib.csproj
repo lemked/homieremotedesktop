@@ -50,6 +50,8 @@
   <ItemGroup>
     <Compile Include="Converter\EnumBooleanConverter.cs" />
     <Compile Include="Converter\InverseBooleanConverter.cs" />
+    <Compile Include="Converter\NullVisibilityConverter.cs" />
+    <Compile Include="Converter\WidthConverter.cs" />
     <Compile Include="Dialog\DialogCloser.cs" />
     <Compile Include="PasswordBoxAssistant.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -73,6 +75,12 @@
     <Compile Include="WindowViewModelMapping\IWindowViewModelMappings.cs" />
     <Compile Include="WindowViewModelMapping\IWindowViewModelMappingsContract.cs" />
     <Compile Include="WindowViewModelMapping\WindowViewModelMappingBase.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Converter\Converters.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
