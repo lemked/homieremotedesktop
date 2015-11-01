@@ -76,8 +76,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ConnectionHandler.cs" />
-    <Compile Include="Interface\IConnectionHandler.cs" />
+    <Compile Include="ConnectionManagement\IConnectionHandler.cs" />
+    <Compile Include="ConnectionManagement\IServerConnectionHandler.cs" />
+    <Compile Include="ConnectionManagement\MachineConnectionHandler.cs" />
+    <Compile Include="ConnectionManagement\IMachineConnectionHandler.cs" />
+    <Compile Include="ConnectionManagement\ServerConnectionHandler.cs" />
+    <Compile Include="ConnectionManagement\StatusChangedEventArgs.cs" />
     <Compile Include="ViewModel\ConnectWindowViewModel.cs" />
     <Compile Include="ViewModel\MachineViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
@@ -144,6 +148,7 @@
       <Name>MVVMLib</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
-
+using Homie.Client.ConnectionManagement;
 using MVVMLib.ViewModel;
-
-using Homie.Client.Interface;
 using Homie.Model;
 
 namespace Homie.Client.ViewModel
@@ -12,7 +10,7 @@ namespace Homie.Client.ViewModel
     {
         #region Fields
 
-        private readonly IConnectionHandler connectionHandler;
+        private readonly IMachineConnectionHandler machineConnectionHandler;
         private readonly Machine machine;
         private bool isConnecting;
 
@@ -78,14 +76,14 @@ namespace Homie.Client.ViewModel
 
         #endregion
 
-        public ConnectWindowViewModel(IConnectionHandler pConnectionHandler, Machine pMachine)
+        public ConnectWindowViewModel(IMachineConnectionHandler machineConnectionHandler, Machine machine)
         {
-            connectionHandler = pConnectionHandler;
-            machine = pMachine;
+            this.machineConnectionHandler = machineConnectionHandler;
+            this.machine = machine;
 
-            machineName = pMachine.NameOrAddress;
-            pConnectionHandler.StatusChanged += ConnectionHandlerStatusChanged;
-            pConnectionHandler.ConnectionInitiated += ConnectionHandlerConnectionInitiated;
+            machineName = machine.NameOrAddress;
+            machineConnectionHandler.StatusChanged += ConnectionHandlerStatusChanged;
+            machineConnectionHandler.ConnectionInitiated += ConnectionHandlerConnectionInitiated;
 
             Connect();
         }
@@ -99,7 +97,7 @@ namespace Homie.Client.ViewModel
         private async void Connect()
         {
             isConnecting = true;
-            await connectionHandler.Connect(machine);
+            await machineConnectionHandler.Connect(machine);
         }
 
         private void ConnectionHandlerStatusChanged(object sender, StatusChangedEventArgs e)
@@ -109,7 +107,7 @@ namespace Homie.Client.ViewModel
 
         private void Abort(object param)
         {
-            connectionHandler.Abort();
+            machineConnectionHandler.Abort();
             isConnecting = false;
             DialogResult = true;
         }

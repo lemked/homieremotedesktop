@@ -9,6 +9,9 @@ namespace Homie.Common.Interfaces
     [ServiceContract]
     public interface IMachineControlService
     {
+        [OperationContract]
+        Task ConnectToServerAsync();
+
         /// <summary>
         /// Adds a new machine.
         /// </summary>

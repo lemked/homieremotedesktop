@@ -3,20 +3,18 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
-using Homie.Common;
 using Homie.Common.Interfaces;
 using Homie.Model;
-using Homie.Client.Interface;
 
-namespace Homie.Client
+namespace Homie.Client.ConnectionManagement
 {
-    class ConnectionHandler : ConnectionHandlerBase
+    public class MachineConnectionHandler : IMachineConnectionHandler
     {
-        public override event EventHandler ConnectionInitiated;
+        public event EventHandler ConnectionInitiated;
 
-        public override event EventHandler ConnectionClosed;
+        public event EventHandler ConnectionClosed;
 
-        public override event EventHandler<StatusChangedEventArgs> StatusChanged;
+        public event EventHandler<StatusChangedEventArgs> StatusChanged;
 
         private bool isAborted;
 
@@ -24,17 +22,21 @@ namespace Homie.Client
 
         private readonly Task rdpProcessWatcher;
 
-        public ConnectionHandler(IMachineControlService machineControlService) : base(machineControlService)
+        private IMachineControlService service;
+
+        public MachineConnectionHandler(IMachineControlService machineControlService)
         {
+            service = machineControlService;
             rdpProcess.StartInfo.FileName = Environment.ExpandEnvironmentVariables(@"%SystemRoot%\system32\mstsc.exe");
             rdpProcessWatcher = new Task(Watch);
         }
-        public override Task Connect(Machine pMachine)
+
+        public Task Connect(Machine pMachine)
         {
             return Connect(pMachine, 600);
         }
 
-        public override async Task Connect(Machine pMachine, int pTimeout)
+        public async Task Connect(Machine pMachine, int pTimeout)
         {
             OnRaiseStatusChangedEvent(new StatusChangedEventArgs("Verbinde"));
             
@@ -44,7 +46,7 @@ namespace Homie.Client
             while (stopWatch.Elapsed.TotalSeconds < pTimeout)
             {
                 // Ping machine. If this was successful, go and and establish the connection.
-                IPStatus lPingResult = await Service.PingAsync(pMachine);
+                IPStatus lPingResult = await service.PingAsync(pMachine);
                 if (lPingResult == IPStatus.Success)
                 {
                     OnRaiseStatusChangedEvent(new StatusChangedEventArgs("Rechner ist online, initiiere RDP-Verbindung ..."));
@@ -114,7 +116,7 @@ namespace Homie.Client
             }
         }
 
-        public override void Abort()
+        public void Abort()
         {
             isAborted = true;
         }

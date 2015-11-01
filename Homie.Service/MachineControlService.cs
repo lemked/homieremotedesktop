@@ -23,6 +23,11 @@ namespace Homie.Service
             this.machineDataSource = machineDataSource;
         }
 
+        public async Task ConnectToServerAsync()
+        {
+            await Task.Factory.StartNew(() => {});
+        }
+
         public async Task<int> AddMachineAsync(Machine machine)
         {
             return await Task.Factory.StartNew(() => AddMachine(machine));

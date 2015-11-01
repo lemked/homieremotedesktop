@@ -70,6 +70,11 @@ namespace Homie.Service
             return await machineControlService.PingAsync(pMachine);
         }
 
+        public async Task ConnectToServerAsync()
+        {
+            await machineControlService.ConnectToServerAsync();
+        }
+
         public async Task<int> AddMachineAsync(Machine machine)
         {
             return await machineControlService.AddMachineAsync(machine);

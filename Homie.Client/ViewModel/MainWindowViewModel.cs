@@ -5,7 +5,7 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Windows;
 using System.Windows.Input;
-
+using Homie.Client.ConnectionManagement;
 using MVVMLib;
 using MVVMLib.Dialog.Service;
 using MVVMLib.ViewModel;
@@ -22,8 +22,8 @@ namespace Homie.Client.ViewModel
         #region Fields
 
         private readonly IDialogService dialogService;
-        private IEnumerable<Machine> machines = new List<Machine>();
-        private readonly IMachineControlService machineControlService;
+        private IMachineControlService machineControlService;
+        private IEnumerable<Machine> machines;
         private Machine currentMachine;
         private string statusMessage;
 
@@ -53,16 +53,16 @@ namespace Homie.Client.ViewModel
             }
         }
 
-        public IList<Machine> Machines
+        public IEnumerable<Machine> Machines
         {
-            get
-            {
-                return new List<Machine>(machines);
-            }
+            get { return machines; }
             set
             {
-                machines = value;
-                OnPropertyChanged();
+                if (machines != value)
+                {
+                    machines = value;
+                    OnPropertyChanged();
+                }
             }
         }
 
@@ -128,29 +128,7 @@ namespace Homie.Client.ViewModel
         {
             dialogService = pdialogService;
 
-            Binding binding;
-            switch (Settings.Default.AuthenticationMode)
-            {
-                case AuthenticationMode.None:
-                    binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
-                    break;
-                case AuthenticationMode.Credentials:
-                    binding = new BasicHttpBinding(BasicHttpSecurityMode.TransportCredentialOnly);
-                    break;
-                case AuthenticationMode.Certificate:
-                    binding = new BasicHttpsBinding(BasicHttpsSecurityMode.Transport);
-                    break;
-                case AuthenticationMode.CertificateAndCredentials:
-                    binding = new BasicHttpsBinding(BasicHttpsSecurityMode.TransportWithMessageCredential);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException("Unsupported authentication mode");
-            }
-
-            var factory = new WebServiceFactory(binding, Settings.Default.ServerAddress, Settings.Default.ServerPort, Settings.Default.ServiceEndPoint);
-            machineControlService = factory.Create<IMachineControlService>();
-
-            Initialize();
+            ConnectToServer();
         }
         
         #endregion Constructor
@@ -175,7 +153,7 @@ namespace Homie.Client.ViewModel
             {
                 if (connectToHostCommand == null)
                 {
-                    connectToHostCommand = new RelayCommand(pAction => this.ConnectToHost(), pPredicate => IsMachineSelected());
+                    connectToHostCommand = new RelayCommand(pAction => this.ConnectToMachine(), pPredicate => IsMachineSelected());
                 }
                 return connectToHostCommand;
             }
@@ -211,7 +189,7 @@ namespace Homie.Client.ViewModel
             {
                 if (reconnectCommand == null)
                 {
-                    reconnectCommand = new RelayCommand(action => Initialize());
+                    reconnectCommand = new RelayCommand(action => ConnectToServer());
                 }
                 return reconnectCommand;
             }
@@ -226,45 +204,77 @@ namespace Homie.Client.ViewModel
             return dialogService.ShowMessageBox(this, LastException.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
-        private async void Initialize()
+        private IMachineControlService GetService()
         {
-            LastException = null;
-            StatusMessage = Resources.Properties.Resources.ConnectingToServer;
-            try
+            Binding binding;
+            switch (Settings.Default.AuthenticationMode)
             {
-                this.StatusMessage = Resources.Properties.Resources.DeterminingAvailableHosts;
-                this.Machines.Clear();
-                // Retrieve the machines from the service.
-                this.Machines = await machineControlService.GetMachinesAsync() as IList<Machine>;
-                if (Machines.Count > 0)
-                {
-                    CurrentMachine = this.Machines.First();
-                    StatusMessage = Resources.Properties.Resources.ReadyToConnectChooseHost;
-                    IsMachinesComboBoxEnabled = true;
-                }
-                else
-                {
-                    StatusMessage = Resources.Properties.Resources.NoHostToConnectWasFound;
-                }
+                case AuthenticationMode.None:
+                    binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
+                    break;
+                case AuthenticationMode.Credentials:
+                    binding = new BasicHttpBinding(BasicHttpSecurityMode.TransportCredentialOnly);
+                    break;
+                case AuthenticationMode.Certificate:
+                    binding = new BasicHttpsBinding(BasicHttpsSecurityMode.Transport);
+                    break;
+                case AuthenticationMode.CertificateAndCredentials:
+                    binding = new BasicHttpsBinding(BasicHttpsSecurityMode.TransportWithMessageCredential);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("Unsupported authentication mode");
             }
-            catch (Exception exception)
+
+            var factory = new WebServiceFactory(binding, Settings.Default.ServerAddress, Settings.Default.ServerPort, Settings.Default.ServiceEndPoint);
+            var service = factory.Create<IMachineControlService>();
+
+            return service;
+        }
+
+        private async void ConnectToServer()
+        {
+            machineControlService = GetService();
+            var connectionHandler = new ServerConnectionHandler(machineControlService);
+
+            connectionHandler.StatusChanged += ConnectionHandler_StatusChanged;
+            connectionHandler.MachinesRetrieved += ConnectionHandler_MachinesRetrieved;
+            connectionHandler.ConnectionFailed += ConnectionHandler_ConnectionFailed;
+
+            await connectionHandler.ConnectAsync();
+        }
+
+        private void ConnectionHandler_ConnectionFailed(object sender, CommunicationException exception)
+        {
+            LastException = exception;
+        }
+
+        private void ConnectionHandler_MachinesRetrieved(object sender, IEnumerable<Machine> retrievedMachines)
+        {
+            var machineList = retrievedMachines as IList<Machine> ?? retrievedMachines.ToList();
+
+            Machines = machineList;
+
+            if (Machines.Any())
             {
-                StatusMessage = Resources.Properties.Resources.UnexpectedErrorHasOccurred;
-
-                if (exception is CommunicationException) // server not found, connection aborted
-                {
-                    StatusMessage = Resources.Properties.Resources.ConnectionFailed;
-                }
-
-                LastException = exception;
+                CurrentMachine = Machines.First();
+                StatusMessage = Resources.Properties.Resources.ReadyToConnectChooseHost;
+                IsMachinesComboBoxEnabled = true;
+            }
+            else
+            {
+                StatusMessage = Resources.Properties.Resources.NoHostToConnectWasFound;
             }
         }
 
+        private void ConnectionHandler_StatusChanged(object sender, StatusChangedEventArgs e)
+        {
+            StatusMessage = e.StatusMessage;
+        }
 
-        private void ConnectToHost()
+        private void ConnectToMachine()
         {
             this.StatusMessage = Resources.Properties.Resources.ConnectingToServer;
-            var connectionHandler = new ConnectionHandler(machineControlService);
+            var connectionHandler = new MachineConnectionHandler(machineControlService);
             var connectionWindowViewModel = new ConnectWindowViewModel(connectionHandler, currentMachine);
             dialogService.ShowDialog(this, connectionWindowViewModel);
         }
