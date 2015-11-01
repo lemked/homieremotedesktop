@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.Windows;
 using System.Windows.Input;
 
 using MVVMLib;
@@ -26,9 +27,31 @@ namespace Homie.Client.ViewModel
         private Machine currentMachine;
         private string statusMessage;
 
+        private ICommand shutdownHostCommand;
+        private ICommand openOptionsCommand;
+        private ICommand connectToHostCommand;
+        private ICommand showErrorCommand;
+        private ICommand reconnectCommand;
+
         #endregion Fields
 
         #region Properties
+
+        public Exception LastException
+        {
+            get
+            {
+                return lastException;
+            }
+            private set
+            {
+                if (value != lastException)
+                {
+                    lastException = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public IList<Machine> Machines
         {
@@ -77,6 +100,7 @@ namespace Homie.Client.ViewModel
         }
 
         private bool isMachinesComboBoxEnabled;
+        private Exception lastException;
 
         public bool IsMachinesComboBoxEnabled
         {
@@ -132,8 +156,6 @@ namespace Homie.Client.ViewModel
         #endregion Constructor
 
         #region Commands
-
-        RelayCommand openOptionsCommand;
         
         public ICommand OpenOpenOptionsCommand
         {
@@ -146,8 +168,6 @@ namespace Homie.Client.ViewModel
                 return openOptionsCommand;
             }
         }
-
-        private ICommand connectToHostCommand;
 
         public ICommand ConnectToHostCommand
         {
@@ -173,14 +193,42 @@ namespace Homie.Client.ViewModel
             }
         }
 
-        private ICommand shutdownHostCommand;
+        public ICommand ShowErrorCommand
+        {
+            get
+            {
+                if (showErrorCommand == null)
+                {
+                    showErrorCommand = new RelayCommand(action => ShowLastError(), canExecute => LastException != null);
+                }
+                return showErrorCommand;
+            }
+        }
+
+        public ICommand ReconnectCommand
+        {
+            get
+            {
+                if (reconnectCommand == null)
+                {
+                    reconnectCommand = new RelayCommand(action => Initialize());
+                }
+                return reconnectCommand;
+            }
+        }
 
         #endregion Commands
 
         #region Methods
 
+        private MessageBoxResult ShowLastError()
+        {
+            return dialogService.ShowMessageBox(this, LastException.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
         private async void Initialize()
         {
+            LastException = null;
             StatusMessage = Resources.Properties.Resources.ConnectingToServer;
             try
             {
@@ -188,7 +236,7 @@ namespace Homie.Client.ViewModel
                 this.Machines.Clear();
                 // Retrieve the machines from the service.
                 this.Machines = await machineControlService.GetMachinesAsync() as IList<Machine>;
-                if (this.Machines.Count > 0)
+                if (Machines.Count > 0)
                 {
                     CurrentMachine = this.Machines.First();
                     StatusMessage = Resources.Properties.Resources.ReadyToConnectChooseHost;
@@ -199,13 +247,16 @@ namespace Homie.Client.ViewModel
                     StatusMessage = Resources.Properties.Resources.NoHostToConnectWasFound;
                 }
             }
-            catch (EndpointNotFoundException) // e.g. server not found
+            catch (Exception exception)
             {
-                StatusMessage = Resources.Properties.Resources.ConnectionFailed;
-            }
-            catch (CommunicationException) // e.g. connection aborted
-            {
-                StatusMessage = Resources.Properties.Resources.ConnectionFailed;
+                StatusMessage = Resources.Properties.Resources.UnexpectedErrorHasOccurred;
+
+                if (exception is CommunicationException) // server not found, connection aborted
+                {
+                    StatusMessage = Resources.Properties.Resources.ConnectionFailed;
+                }
+
+                LastException = exception;
             }
         }
 
