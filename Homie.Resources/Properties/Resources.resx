@@ -336,4 +336,7 @@
   <data name="Preview" xml:space="preserve">
     <value>Preview</value>
   </data>
+  <data name="UnexpectedErrorHasOccurred" xml:space="preserve">
+    <value>An unexpected error has occurred.</value>
+  </data>
 </root>

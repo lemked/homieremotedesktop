@@ -637,6 +637,15 @@ namespace Homie.Resources.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An unexpected error has occurred..
+        /// </summary>
+        public static string UnexpectedErrorHasOccurred {
+            get {
+                return ResourceManager.GetString("UnexpectedErrorHasOccurred", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unsupported authentication mode.
         /// </summary>
         public static string UnsupportedAuthenticationMode {

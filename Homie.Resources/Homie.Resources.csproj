@@ -95,12 +95,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Homie.Common\Homie.Common.csproj">
-      <Project>{AD46A3B9-886A-41BE-8081-23B01827AE57}</Project>
-      <Name>Homie.Common</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\EventLog_32x32.png" />
   </ItemGroup>
   <ItemGroup>
