@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.ServiceProcess;
 using System.Windows.Input;
 
 using Homie.Admin.Properties;
+using Homie.Admin.Services;
 using Homie.Common.Interfaces;
 using Homie.Common.Logging;
 using Homie.Model;
@@ -27,13 +30,11 @@ namespace Homie.Admin.ViewModel
         private readonly MachinesViewModel machinesViewModel;
         private readonly SettingsViewModel settingsViewModel;
 
-        private RelayCommand showSettingsCommand;
-        private RelayCommand showMachinesCommand;
-        private RelayCommand showUsersCommand;
-        private RelayCommand showEventLogCommand;
+        private ICommand startServiceCommand;
 
-        private string statusMessage;
+        private ServiceControllerStatus status = 0;
         private bool isConnected;
+        private IServiceControl serviceControl;
 
         #endregion Fields
 
@@ -42,10 +43,6 @@ namespace Homie.Admin.ViewModel
         /// <summary>
         /// Gets or sets the current view model.
         /// </summary>
-        /// <value>
-        /// The current view model.
-        /// </value>
-        /// <author>Daniel Lemke - lemked@web.de</author>
         public IViewModel CurrentViewModel
         {
             get
@@ -69,20 +66,19 @@ namespace Homie.Admin.ViewModel
         /// <summary>
         /// Gets or sets the status message.
         /// </summary>
-        /// <value>
-        /// The status message.
-        /// </value>
-        /// <author>Daniel Lemke - lemked@web.de</author>
-        public string StatusMessage
+        public ServiceControllerStatus Status
         {
             get
             {
-                return statusMessage;
+                return status;
             }
             set
             {
-                statusMessage = value;
-                base.OnPropertyChanged();
+                if (status != value)
+                {
+                    status = value;
+                    OnPropertyChanged();
+                }
             }
         }
 
@@ -94,8 +90,11 @@ namespace Homie.Admin.ViewModel
             }
             set
             {
-                isConnected = value;
-                base.OnPropertyChanged();
+                if (isConnected != value)
+                {
+                    isConnected = value;
+                    OnPropertyChanged();
+                }
             }
         }
 
@@ -117,53 +116,18 @@ namespace Homie.Admin.ViewModel
         #endregion Properties
 
         #region Commands
-        public ICommand ShowSettingsCommand
-        {
-            get
-            {
-                if (showSettingsCommand == null)
-                {
-                    showSettingsCommand = new RelayCommand(action => CurrentViewModel = settingsViewModel);
-                }
-                return showSettingsCommand;
-            }
-        }
 
-        public ICommand ShowMachinesCommand
-        {
-            get
-            {
-                if (showMachinesCommand == null)
-                {
-                    showMachinesCommand = new RelayCommand(action => CurrentViewModel = machinesViewModel);
-                }
-                return showMachinesCommand;
-            }
-        }
+        public ICommand ShowSettingsCommand { get; }
 
-        public ICommand ShowUsersCommand
-        {
-            get
-            {
-                if (showUsersCommand == null)
-                {
-                    showUsersCommand = new RelayCommand(action => CurrentViewModel = usersViewModel);
-                }
-                return showUsersCommand;
-            }
-        }
+        public ICommand ShowMachinesCommand { get; }
 
-        public ICommand ShowEventLogCommand
-        {
-            get
-            {
-                if (showEventLogCommand == null)
-                {
-                    showEventLogCommand = new RelayCommand(action => CurrentViewModel = eventLogViewModel);
-                }
-                return showEventLogCommand;
-            }
-        }
+        public ICommand ShowUsersCommand { get; }
+
+        public ICommand ShowEventLogCommand { get; }
+
+        public ICommand StartServiceCommand { get; }
+
+        public ICommand StopServiceCommand { get; }
 
         #endregion
 
@@ -175,18 +139,30 @@ namespace Homie.Admin.ViewModel
         /// <remarks>
         /// Resolves all required interfaces via the ServiceLocator class.
         /// </remarks>
-        /// <author>Daniel Lemke - lemked@web.de</author>
-        public MainWindowViewModel() : this(ServiceLocator.Resolve<IDialogService>())
+        public MainWindowViewModel() : this(ServiceLocator.Resolve<IDialogService>(), ServiceLocator.Resolve<IServiceControl>())
         {
-            
+            ShowEventLogCommand = new RelayCommand(action => CurrentViewModel = eventLogViewModel);
+            ShowUsersCommand = new RelayCommand(action => CurrentViewModel = usersViewModel);
+            ShowMachinesCommand = new RelayCommand(action => CurrentViewModel = machinesViewModel);
+            ShowSettingsCommand = new RelayCommand(action => CurrentViewModel = settingsViewModel);
+
+            var timeout = new TimeSpan(0, 0, 0, 5);
+            StartServiceCommand = new RelayCommand(action => serviceControl.StartServiceAsync(timeout));
+            StopServiceCommand = new RelayCommand(action => serviceControl.StopServiceAsync(timeout));
+
+            UpdateServiceStatus();
+        }
+
+        private async void UpdateServiceStatus()
+        {
+            Status = await serviceControl.GetStatusAsync();
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindowViewModel"/> class.
         /// </summary>
         /// <param name="dialogService">The pdialog service.</param>
-        /// <author>Daniel Lemke - lemked@web.de</author>
-        public MainWindowViewModel(IDialogService dialogService)
+        public MainWindowViewModel(IDialogService dialogService, IServiceControl serviceControl)
         {
             // Configure default logger
             ILogger textLogger = new FileLogger();
@@ -211,6 +187,14 @@ namespace Homie.Admin.ViewModel
             // Settings
             IServiceSettingsProvider serviceSettingsProvider = new DbServiceSettingsProvider();
             settingsViewModel = new SettingsViewModel(serviceSettingsProvider);
+
+            this.serviceControl = serviceControl;
+            this.serviceControl.StatusChanged += ServiceControl_StatusChanged;
+        }
+
+        private void ServiceControl_StatusChanged(object sender, ServiceControllerStatus serviceControllerStatus)
+        {
+            Status = serviceControllerStatus;
         }
 
         #endregion Constructor

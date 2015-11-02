@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-
+using Homie.Admin.Services;
 using MVVMLib;
 using MVVMLib.Dialog.Service;
 using MVVMLib.WindowViewModelMapping;
@@ -31,6 +31,7 @@ namespace Homie.Admin
 
             // Configure service locator
             ServiceLocator.RegisterSingleton<IDialogService, DialogService>();
+            ServiceLocator.RegisterSingleton<IServiceControl, ServiceControl>();
             ServiceLocator.RegisterSingleton<IWindowViewModelMappings, WindowViewModelMappings>();
 
             // Create and show main window

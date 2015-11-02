@@ -104,6 +104,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="ServiceLogProvider.cs" />
+    <Compile Include="ServiceStatusToStringConverter.cs" />
+    <Compile Include="Services\IServiceControl.cs" />
+    <Compile Include="Services\ServiceControl.cs" />
     <Compile Include="UserControls\MachineDetails.xaml.cs">
       <DependentUpon>MachineDetails.xaml</DependentUpon>
     </Compile>

@@ -9,6 +9,7 @@
     xmlns:converter="clr-namespace:MVVMLib.Converter;assembly=MVVMLib"
     xmlns:machine="clr-namespace:Homie.Admin.View.Machine"
     xmlns:user="clr-namespace:Homie.Admin.View.User"
+    xmlns:admin="clr-namespace:Homie.Admin"
     mc:Ignorable="d" 
     x:Class="Homie.Admin.View.MainWindow"
     Title="Homie RemoteDesktop Server" Width="636"
@@ -20,6 +21,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary >
                     <converter:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+                    <admin:ServiceStatusToStringConverter x:Key="ServiceStatusToStringConverter"/>
                 </ResourceDictionary>
                 <ResourceDictionary Source="pack://application:,,,/Homie.Resources;component/Styles.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Homie.Resources;component/Images.xaml" />
@@ -92,7 +94,18 @@
 
             </StackPanel>
         </Border>
-        
+
+        <Border DockPanel.Dock="Top" BorderThickness="0 0 0 1" BorderBrush="#FF5B5B5B">
+            <StackPanel Margin="5" Orientation="Horizontal">
+                <TextBlock Margin="0,0,4,0">Service Status:</TextBlock>
+                <TextBlock Text="{Binding Status, FallbackValue=Stopped., Converter={StaticResource ServiceStatusToStringConverter}}" />
+                <TextBlock Margin="10,0,0,0">Actions:</TextBlock>
+                <Button Margin="4,0,0,0" Style="{StaticResource Link}" Command="{Binding StartServiceCommand}">Start</Button>
+                <Button Margin="4,0,0,0" Style="{StaticResource Link}" Command="{Binding StopServiceCommand}">Stop</Button>
+                <Button Margin="4,0,0,0" Style="{StaticResource Link}">Restart</Button>
+            </StackPanel>
+        </Border>
+
 
         <!-- Body -->
         <ContentControl Content="{Binding CurrentViewModel}" Margin="16" />
