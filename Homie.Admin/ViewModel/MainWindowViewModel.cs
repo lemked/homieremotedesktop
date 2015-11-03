@@ -30,8 +30,6 @@ namespace Homie.Admin.ViewModel
         private readonly MachinesViewModel machinesViewModel;
         private readonly SettingsViewModel settingsViewModel;
 
-        private ICommand startServiceCommand;
-
         private ServiceControllerStatus status = 0;
         private bool isConnected;
         private IServiceControl serviceControl;
