@@ -25,8 +25,9 @@ namespace Homie.Service
         private ServiceHost serviceHost;
 
         private readonly IServiceSettingsProvider serviceSettingsProvider;
+        private readonly IUserDataSource userDataSource;
 
-        public ServiceControl()
+        public ServiceControl(IServiceSettingsProvider serviceSettingsProvider, IUserDataSource userDataSource)
         {
             // Name the Windows Service
             ServiceName = Constants.ServiceName;
@@ -36,8 +37,10 @@ namespace Homie.Service
             dbLogger.LogLevel = LogLevel.Info;
             Log.Register(dbLogger);
             
-            // Load the service settings 
-            serviceSettingsProvider = DependencyInjector.Resolve<IServiceSettingsProvider>();
+            // Service that loads the settings for the Windows service.
+            this.serviceSettingsProvider = serviceSettingsProvider;
+
+            this.userDataSource = userDataSource;
         }
 
         /// <summary>
@@ -65,7 +68,6 @@ namespace Homie.Service
 
         private void SetCredentialsStore()
         {
-            IUserDataSource userDataSource = new DbUserDataSource(); // TODO: Resolve dependency
             serviceHost.Credentials.UserNameAuthentication.UserNamePasswordValidationMode = UserNamePasswordValidationMode.Custom;
             serviceHost.Credentials.UserNameAuthentication.CustomUserNamePasswordValidator = new CredentialsValidator(userDataSource);
         }

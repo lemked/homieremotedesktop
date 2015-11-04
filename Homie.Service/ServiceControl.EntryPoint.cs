@@ -9,6 +9,7 @@ using Homie.Common.Logging;
 using Homie.Model;
 using Homie.Model.Logging;
 using Homie.Service.Settings;
+using Ninject;
 
 namespace Homie.Service
 {
@@ -25,24 +26,28 @@ namespace Homie.Service
             TaskScheduler.UnobservedTaskException += TaskSchedulerUnobservedTaskException;
 
             // Set up depedency injection.
-            DependencyInjector.Register<IServiceLogDataSource, DbServiceLogDataSource>();
-            DependencyInjector.Register<IServiceLogProvider, ServiceLogProvider>();
-            DependencyInjector.Register<IMachineControlService, MachineControlService>();
-            DependencyInjector.Register<IUserControlService, UserControlService>();
-            DependencyInjector.Register<IServiceSettingsProvider, DbServiceSettingsProvider>();
-            DependencyInjector.Register<IMachineDataSource, DbMachineDataSource>();
-            DependencyInjector.Register<IUserDataSource, DbUserDataSource>();
+            var kernel = new StandardKernel();
+            kernel.Bind<IServiceLogDataSource>().To<DbServiceLogDataSource>();
+            kernel.Bind<IServiceLogProvider>().To<ServiceLogProvider>();
+            kernel.Bind<IMachineControlService>().To<MachineControlService>();
+            kernel.Bind<IUserControlService>().To<UserControlService>();
+            kernel.Bind<IServiceSettingsProvider>().To<DbServiceSettingsProvider>();
+            kernel.Bind<IMachineDataSource>().To<DbMachineDataSource>();
+            kernel.Bind<IUserDataSource>().To<DbUserDataSource>();
 
             // Configure default logger
             ILogger textLogger = new FileLogger();
             textLogger.LogLevel = LogLevel.Trace;
             Log.Register(textLogger);
 
+            // The service control object
+            var serviceControl = kernel.Get<ServiceControl>();
+
             foreach (string lArgument in arguments)
             {
                 if (lArgument.Equals(NoServiceArgument, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    RunInConsoleMode();
+                    RunInConsoleMode(serviceControl);
                     return;
                 }
 
@@ -53,7 +58,7 @@ namespace Homie.Service
                 }
             }
 
-            Run(new ServiceControl()); // TODO: Use DI container
+            Run(serviceControl);
         }
 
         private static void TaskSchedulerUnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
@@ -68,7 +73,7 @@ namespace Homie.Service
             Environment.Exit((int)ExceptionUtils.ExitCodes.UnhandledException);
         }
 
-        private static void RunInConsoleMode()
+        private static void RunInConsoleMode(ServiceControl serviceControl)
         {
             // Configure console logger
             ILogger consoleLogger = new ConsoleLogger();
@@ -76,12 +81,11 @@ namespace Homie.Service
             Log.Register(consoleLogger);
 
             Log.Info(Resources.Properties.Resources.ServiceStartedWith, NoServiceArgument);
-            var lServiceControl = new ServiceControl();
-            lServiceControl.OnStart(new string[0]);
+            serviceControl.OnStart(new string[0]);
 
             Console.WriteLine(@"Service started, press any key to finish execution.");
             Console.ReadKey();
-            lServiceControl.OnStop();
+            serviceControl.OnStop();
         }
     }
 }
